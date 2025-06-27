@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   // 画像の最適化設定
   images: {
     domains: ['localhost'],

@@ -1,7 +1,5 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendContactEmail({
   name,
   email,
@@ -14,7 +12,8 @@ export async function sendContactEmail({
   phone: string;
   subject: string;
   message: string;
-}) {
+}, apiKey: string) {
+  const resend = new Resend(apiKey);
   const subjectMap = {
     reservation: '宿泊予約について',
     facility: '施設について',
@@ -51,7 +50,8 @@ export async function sendReservationEmail(data: {
   email: string;
   phone: string;
   notes?: string;
-}) {
+}, apiKey: string) {
+  const resend = new Resend(apiKey);
   function parseDate(str: string) {
     if (!str) return null;
     const [y, m, d] = str.split('-').map(Number);

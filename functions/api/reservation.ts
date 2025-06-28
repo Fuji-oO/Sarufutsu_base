@@ -1,5 +1,5 @@
 // import type { PagesFunction } from '@cloudflare/workers-types';
-import { sendReservationEmail } from '../src/lib/email';
+import { sendReservationEmail } from '../../src/lib/email';
 
 export const onRequestPost = async (context: any) => {
   try {

@@ -1,4 +1,4 @@
-import { sendContactEmail } from '../src/lib/email';
+import { sendContactEmail } from '../../src/lib/email';
 
 export const onRequestPost = async (context: any) => {
   try {

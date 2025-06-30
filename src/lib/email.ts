@@ -89,7 +89,22 @@ export async function sendReservationEmail(data: {
   const baseChild = totalChild * 4400 * stayNights;
   const heatingNights = countHeatingNights();
   const heatingFee = totalGuests * 550 * heatingNights;
-  const totalPrice = baseAdult + baseChild + heatingFee;
+  const isKashikiri = data.roomType === '貸切';
+  let totalPrice, priceDetail;
+
+  if (isKashikiri) {
+    const kashikiriBase = 44000 * stayNights;
+    totalPrice = kashikiriBase + heatingFee;
+    priceDetail = `  ・貸切 ${stayNights}泊 × 44,000円 = ${(kashikiriBase).toLocaleString()}円
+${heatingFee > 0 ? `  ・暖房費 ${totalGuests}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円
+` : ''}`;
+  } else {
+    totalPrice = baseAdult + baseChild + heatingFee;
+    priceDetail = `  ・大人 ${totalAdult}名 × ${stayNights}泊 × 9,900円 = ${(baseAdult).toLocaleString()}円
+${totalChild > 0 ? `  ・子供 ${totalChild}名 × ${stayNights}泊 × 4,950円 = ${(baseChild).toLocaleString()}円
+` : ''}${heatingFee > 0 ? `  ・暖房費 ${totalGuests}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円
+` : ''}`;
+  }
 
   const mailBody = `
 【予約内容】
@@ -114,10 +129,7 @@ ${data.notes || '（なし）'}
 ------------------------------
 ■ 料金合計：${totalPrice.toLocaleString()}円（税込）
 ■ 料金明細：
-  ・大人 ${totalAdult}名 × ${stayNights}泊 × 9,900円 = ${(baseAdult).toLocaleString()}円
-${totalChild > 0 ? `  ・子供 ${totalChild}名 × ${stayNights}泊 × 4,950円 = ${(baseChild).toLocaleString()}円
-` : ''}${heatingFee > 0 ? `  ・暖房費 ${totalGuests}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円
-` : ''}`;
+${priceDetail}`;
 
   try {
     const result = await resend.emails.send({

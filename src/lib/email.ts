@@ -85,8 +85,8 @@ export async function sendReservationEmail(data: {
   const totalGuests = Number(data.adultMale || 0) + Number(data.adultFemale || 0) + Number(data.child || 0);
   const totalAdult = Number(data.adultMale || 0) + Number(data.adultFemale || 0);
   const totalChild = Number(data.child || 0);
-  const baseAdult = totalAdult * 8800 * stayNights;
-  const baseChild = totalChild * 4400 * stayNights;
+  const baseAdult = totalAdult * 9900 * stayNights;
+  const baseChild = totalChild * 4950 * stayNights;
   const heatingNights = countHeatingNights();
   const heatingFee = totalGuests * 550 * heatingNights;
   const isKashikiri = data.roomType === '貸切';

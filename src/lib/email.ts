@@ -114,8 +114,8 @@ ${data.notes || '（なし）'}
 ------------------------------
 ■ 料金合計：${totalPrice.toLocaleString()}円（税込）
 ■ 料金明細：
-  ・大人 ${totalAdult}名 × ${stayNights}泊 × 8,800円 = ${(baseAdult).toLocaleString()}円
-${totalChild > 0 ? `  ・子供 ${totalChild}名 × ${stayNights}泊 × 4,400円 = ${(baseChild).toLocaleString()}円
+  ・大人 ${totalAdult}名 × ${stayNights}泊 × 9,900円 = ${(baseAdult).toLocaleString()}円
+${totalChild > 0 ? `  ・子供 ${totalChild}名 × ${stayNights}泊 × 4,950円 = ${(baseChild).toLocaleString()}円
 ` : ''}${heatingFee > 0 ? `  ・暖房費 ${totalGuests}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円
 ` : ''}`;
 

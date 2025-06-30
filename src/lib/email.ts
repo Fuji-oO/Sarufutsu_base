@@ -22,19 +22,35 @@ export async function sendContactEmail({
   };
   const subjectJp = subjectMap[subject] || subject;
 
+  let adminResult, userResult, errorInfo = [];
+  // 管理者宛
   try {
-    const result = await resend.emails.send({
+    adminResult = await resend.emails.send({
       from: 'さるふつbase <onboarding@resend.dev>',
       to: 'sarufutsu.base@gmail.com',
       subject: '【さるふつbase】新規お問い合わせがありました',
       text: `お名前: ${name}\nメールアドレス: ${email}\n電話番号: ${phone}\nお問い合わせ項目: ${subjectJp}\n\nお問い合わせ内容:\n${message}`,
     });
-    console.log('Resend contact email result:', result);
-    return result;
+    console.log('Resend contact email result:', adminResult);
   } catch (error) {
+    errorInfo.push('管理者宛メール送信失敗: ' + String(error));
     console.error('Resend contact email error:', error);
-    throw error;
   }
+  // 送信者宛
+  try {
+    userResult = await resend.emails.send({
+      from: 'さるふつbase <onboarding@resend.dev>',
+      to: email,
+      subject: '【さるふつbase】お問い合わせありがとうございます（自動返信）',
+      text: `この度は「さるふつbase」へお問い合わせいただき、誠にありがとうございます。\n本メールは自動返信です。内容を確認のうえ、担当者より改めてご連絡いたします。\n\n──────────────\n【お問い合わせ内容】\n\nお名前：${name}\nメールアドレス：${email}\n電話番号：${phone}\nお問い合わせ項目：${subjectJp}\nお問い合わせ内容：\n${message}\n\n──────────────\n※本メールは自動送信です。ご返信いただいてもお答えできません。\n※内容に誤りがある場合や、3営業日以内に返信がない場合は、お手数ですが再度ご連絡ください。\n\nさるふつbase\nsarufutsu.base@gmail.com`,
+    });
+    console.log('Resend contact user auto-reply result:', userResult);
+  } catch (error) {
+    errorInfo.push('送信者宛メール送信失敗: ' + String(error));
+    console.error('Resend contact user auto-reply error:', error);
+  }
+  if (errorInfo.length > 0) throw new Error(errorInfo.join(' / '));
+  return { adminResult, userResult };
 }
 
 export async function sendReservationEmail(data: {
@@ -131,17 +147,33 @@ ${data.notes || '（なし）'}
 ■ 料金明細：
 ${priceDetail}`;
 
+  let adminResult, userResult, errorInfo = [];
+  // 管理者宛
   try {
-    const result = await resend.emails.send({
+    adminResult = await resend.emails.send({
       from: 'さるふつbase <onboarding@resend.dev>',
       to: 'sarufutsu.base@gmail.com',
       subject: '【さるふつbase】新規予約がありました',
       text: mailBody,
     });
-    console.log('Resend reservation email result:', result);
-    return result;
+    console.log('Resend reservation email result:', adminResult);
   } catch (error) {
+    errorInfo.push('管理者宛メール送信失敗: ' + String(error));
     console.error('Resend reservation email error:', error);
-    throw error;
   }
+  // 送信者宛
+  try {
+    userResult = await resend.emails.send({
+      from: 'さるふつbase <onboarding@resend.dev>',
+      to: data.email,
+      subject: '【さるふつbase】ご予約内容の確認（自動返信）',
+      text: `この度は「さるふつbase」へご予約いただき、誠にありがとうございます。\n本メールは自動返信です。内容を確認のうえ、担当者より改めてご連絡いたします。\n\n──────────────\n【ご予約内容】\n\nチェックイン日：${data.checkIn}\nチェックアウト日：${data.checkOut}\nチェックイン予定時間：${data.checkInTime}\n\n宿泊人数合計：${data.guests}名\n大人(男性)：${data.adultMale}名\n大人(女性)：${data.adultFemale}名\n子供：${data.child}名\n部屋タイプ：${data.roomType}\n\nお名前：${data.name}\nメールアドレス：${data.email}\n電話番号：${data.phone}\n\nご要望/ご質問：\n${data.notes || '（なし）'}\n\n------------------------------\n■ 料金合計：${totalPrice.toLocaleString()}円（税込）\n■ 料金明細：\n${priceDetail}\n\n──────────────\n※本メールは自動送信です。ご返信いただいてもお答えできません。\n※内容に誤りがある場合や、3営業日以内に返信がない場合は、お手数ですが再度ご連絡ください。\n\nさるふつbase\nsarufutsu.base@gmail.com`,
+    });
+    console.log('Resend reservation user auto-reply result:', userResult);
+  } catch (error) {
+    errorInfo.push('送信者宛メール送信失敗: ' + String(error));
+    console.error('Resend reservation user auto-reply error:', error);
+  }
+  if (errorInfo.length > 0) throw new Error(errorInfo.join(' / '));
+  return { adminResult, userResult };
 } 

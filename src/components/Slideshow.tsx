@@ -2,7 +2,8 @@
 import React, { useEffect, useRef, useState } from "react"
 
 const texts = [
-  "人と人がつながる場所、さるふつbase"
+  "　人と人がつながる場所、",
+  "さるふつbase"
 ]
 
 export default function Slideshow() {
@@ -165,22 +166,22 @@ export default function Slideshow() {
   }, [firstLoad])
 
   return (
-    <div className="relative w-full h-[898px] flex items-center justify-center overflow-hidden" style={{background: '#F5EEDC'}}>
+    <div className="relative w-full h-[100vh] md:h-[898px] flex items-center justify-center overflow-hidden" style={{background: '#F5EEDC'}}>
       {/* 初回ロード時のフェードイン */}
       {showFirstFade && (
         <div className="absolute inset-0 z-30" style={{background: '#F5EEDC', opacity: showFirstFade ? 1 : 0, animation: 'fadeInBeige 1.2s forwards'}} />
       )}
       
       {/* 背景動画 */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 flex items-center justify-center">
         <video
           ref={videoRef}
-          className="w-full h-full object-cover cursor-pointer"
+          className="h-full w-auto md:w-full md:h-full object-cover cursor-pointer mx-auto"
           muted={isMuted}
           loop
           playsInline
-          style={{ pointerEvents: 'auto' }}
-      >
+          style={{ pointerEvents: 'auto', maxWidth: 'none' }}
+        >
           <source src="/images/sarufutsubase_video_music-1.mp4" type="video/mp4" />
           お使いのブラウザは動画の再生に対応していません。
         </video>
@@ -190,13 +191,14 @@ export default function Slideshow() {
 
       {/* テキストオーバーレイ */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
-        <h1 className={`text-4xl md:text-6xl font-bold drop-shadow-lg text-center mb-4 transition-opacity duration-1000 ${showMainText ? 'opacity-100' : 'opacity-0'}`} style={{color:'#F5EEDC', fontFamily: 'Klee One, cursive'}}>
-          {texts[0]}
+        <h1 className={`text-2xl md:text-6xl font-bold drop-shadow-lg text-center mb-2 md:mb-4 transition-opacity duration-1000 ${showMainText ? 'opacity-100' : 'opacity-0'}`} style={{color:'#F5EEDC', fontFamily: 'Klee One, cursive'}}>
+          <span className="text-3xl md:text-5xl font-bold tracking-widest">{texts[0]}</span><br />
+          <span className="text-3xl md:text-5xl font-bold tracking-widest">{texts[1]}</span>
         </h1>
       </div>
 
       {/* 音声案内（右下に配置） */}
-      <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
+      <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 z-20 pointer-events-none">
         {!hasUserInteracted && (
           <div className="text-xs opacity-70" style={{color:'#E8E0D0', fontFamily: 'Klee One, cursive'}}>
             クリックまたはタップで音声を有効にします

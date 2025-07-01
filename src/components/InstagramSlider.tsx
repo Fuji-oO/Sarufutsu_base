@@ -111,11 +111,19 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
   };
 
   let translateX = 0;
+  // PC用（md以上）は±220px、スマホ用（md未満）は±60px
+  if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    if (isAnimating && direction === 'right') translateX = -60;
+    if (isAnimating && direction === 'left') translateX = 60;
+  } else {
   if (isAnimating && direction === 'right') translateX = -220;
   if (isAnimating && direction === 'left') translateX = 220;
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto">
+      {/* PC版スライダー */}
+      <div className="hidden md:block">
       <div className="relative flex items-center justify-center">
         <button onClick={prevSlide} className="absolute left-0 z-10 p-2 hover:opacity-70 transition">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#333" className="w-8 h-8">
@@ -133,16 +141,12 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
             const idx = getIndex(offset);
             const post = sortedPosts[idx];
             const isFadingIn = fadeInIds.includes(post.id);
-
-            // 右スライド時は左端のみ、左スライド時は右端のみフェードアウト
             let fade = false;
             if (isAnimating && direction === 'right' && offset === -2) fade = true;
             if (isAnimating && direction === 'left' && offset === 2) fade = true;
-
-            // リッチなアニメーション用スタイル
             let style: React.CSSProperties = {
               width: 200,
-              height: 250,
+                height: 250,
               opacity: fade ? 0 : isFadingIn ? 0 : 1,
               transition: 'all 0.7s cubic-bezier(0.4,0,0.2,1)',
               zIndex: 5 - Math.abs(offset),
@@ -154,21 +158,16 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
               style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
             } else if (Math.abs(offset) === 1) {
               style.transform = 'scale(0.95) translateY(10px)';
-              // style.opacity = fade ? 0 : 0.7;
               style.filter = 'blur(1px)';
             } else if (Math.abs(offset) === 2) {
               style.transform = 'scale(0.85) translateY(20px)';
-              // style.opacity = fade ? 0 : 0.4;
               style.filter = 'blur(2px)';
             }
-
-            // 端画像のフェードイン
             let fadeInStyle: React.CSSProperties = {};
             if (isFadingIn) {
               fadeInStyle.opacity = 0;
               fadeInStyle.animation = 'fadeInSliderEdge 0.7s forwards';
             }
-
             return (
               <a
                 key={post.id}
@@ -194,18 +193,82 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
           </svg>
         </button>
       </div>
-      <div className="flex justify-center mt-[50px] mb-[120px]">
-        <a
-          href={profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-semibold text-[#333] hover:text-[#111] text-lg flex items-center gap-2 view-more-link"
-        >
-          View More
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 48 48" fill="currentColor">
-            <path d="M 16.5 5 C 10.16639 5 5 10.16639 5 16.5 L 5 31.5 C 5 37.832757 10.166209 43 16.5 43 L 31.5 43 C 37.832938 43 43 37.832938 43 31.5 L 43 16.5 C 43 10.166209 37.832757 5 31.5 5 L 16.5 5 z M 16.5 8 L 31.5 8 C 36.211243 8 40 11.787791 40 16.5 L 40 31.5 C 40 36.211062 36.211062 40 31.5 40 L 16.5 40 C 11.787791 40 8 36.211243 8 31.5 L 8 16.5 C 8 11.78761 11.78761 8 16.5 8 z M 34 12 C 32.895 12 32 12.895 32 14 C 32 15.105 32.895 16 34 16 C 35.105 16 36 15.105 36 14 C 36 12.895 35.105 12 34 12 z M 24 14 C 18.495178 14 14 18.495178 14 24 C 14 29.504822 18.495178 34 24 34 C 29.504822 34 34 29.504822 34 24 C 34 18.495178 29.504822 14 24 14 z M 24 17 C 27.883178 17 31 20.116822 31 24 C 31 27.883178 27.883178 31 24 31 C 20.116822 31 17 27.883178 17 24 C 17 20.116822 20.116822 17 24 17 z"></path>
+      </div>
+      {/* スマホ専用スライダー */}
+      <div className="md:hidden">
+        <div className="flex flex-col items-center justify-center">
+          <div className="relative flex items-center justify-center h-[120px] w-full">
+            <div
+              className="flex gap-1 justify-center items-center w-full px-2 h-[120px]"
+              style={{
+                transform: `translateX(${translateX}px)`,
+                transition: isAnimating ? 'transform 0.7s cubic-bezier(0.4,0,0.2,1)' : 'none',
+              }}
+            >
+              {[-2, -1, 0, 1, 2].map((offset) => {
+                const idx = getIndex(offset);
+                const post = sortedPosts[idx];
+                const isFadingIn = fadeInIds.includes(post.id);
+                let fade = false;
+                if (isAnimating && direction === 'right' && offset === -2) fade = true;
+                if (isAnimating && direction === 'left' && offset === 2) fade = true;
+                // 4:5比率で統一
+                let width = 64, height = 80;
+                if (Math.abs(offset) === 1) { width = 80; height = 100; }
+                if (offset === 0) { width = 96; height = 120; }
+                let style: React.CSSProperties = {
+                  width,
+                  height,
+                  opacity: fade ? 0 : isFadingIn ? 0 : 1,
+                  transition: 'all 0.7s cubic-bezier(0.4,0,0.2,1)',
+                  zIndex: 5 - Math.abs(offset),
+                  transform:
+                    offset === 0
+                      ? 'scale(1.1) translateY(-6px)'
+                      : Math.abs(offset) === 1
+                      ? 'scale(0.85) translateY(8px)'
+                      : 'scale(0.7) translateY(16px)',
+                  filter: offset === 0 ? 'none' : Math.abs(offset) === 1 ? 'blur(1px)' : 'blur(2px)',
+                  boxShadow: offset === 0 ? '0 4px 16px rgba(0,0,0,0.15)' : 'none',
+                };
+                let fadeInStyle: React.CSSProperties = {};
+                if (isFadingIn) {
+                  fadeInStyle.opacity = 0;
+                  fadeInStyle.animation = 'fadeInSliderEdge 0.7s forwards';
+                }
+                return (
+                  <a
+                    key={post.id}
+                    href={post.postUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative rounded-lg overflow-hidden shadow"
+                    style={{ ...style, ...fadeInStyle }}
+                  >
+                    <Image
+                      src={post.imageUrl}
+                      alt="Instagram投稿画像"
+                      fill
+                      className="object-cover"
+                    />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex justify-center gap-6 mt-2">
+            <button onClick={prevSlide} className="z-20 p-1 hover:opacity-70 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#333" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+              </svg>
+            </button>
+            <button onClick={nextSlide} className="z-20 p-1 hover:opacity-70 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#333" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
           </svg>
-        </a>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -16,8 +16,10 @@ const FadeLink = ({ href, children, ...props }: FadeLinkProps) => {
       typeof href === "string" &&
       (href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:"))
     ) {
+      if (props.onClick) props.onClick(e);
       return;
     }
+    if (props.onClick) props.onClick(e);
     e.preventDefault();
     document.body.classList.add("fadeout");
     setTimeout(() => {

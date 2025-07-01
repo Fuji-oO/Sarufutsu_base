@@ -18,7 +18,8 @@ export default function Home() {
   const [showRoom1, setShowRoom1] = useState(false);
   const [showRoom2, setShowRoom2] = useState(false);
   const roomsRef = useRef(null);
-  const communityRef = useRef(null);
+  const communityRefMobile = useRef(null);
+  const communityRefPC = useRef(null);
   const [showCommunityText, setShowCommunityText] = useState(false);
   const [showCommunityImgLeft, setShowCommunityImgLeft] = useState(false);
   const [showCommunityImgRight, setShowCommunityImgRight] = useState(false);
@@ -72,23 +73,30 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const observer = new window.IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShowCommunityText(true);
-          setTimeout(() => {
-            setShowCommunityImgLeft(true);
-            setTimeout(() => setShowCommunityImgRight(true), 400); // 左画像0.4秒後に右画像
-          }, 600); // テキスト表示から0.6秒後に左画像
-        }
-      },
-      { threshold: 0.2 }
-    );
-    if (communityRef.current) {
-      observer.observe(communityRef.current);
+    let observer;
+    const setupObserver = () => {
+      const isMobile = window.innerWidth < 768;
+      const targetRef = isMobile ? communityRefMobile : communityRefPC;
+      if (!targetRef.current) return;
+      observer = new window.IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setShowCommunityText(true);
+            setTimeout(() => {
+              setShowCommunityImgLeft(true);
+              setTimeout(() => setShowCommunityImgRight(true), 400);
+            }, 600);
+          }
+        },
+        { threshold: 0.2 }
+      );
+      observer.observe(targetRef.current);
+    };
+    if (typeof window !== 'undefined') {
+      requestAnimationFrame(setupObserver);
     }
     return () => {
-      if (communityRef.current) observer.unobserve(communityRef.current);
+      if (observer && observer.disconnect) observer.disconnect();
     };
   }, []);
 
@@ -110,8 +118,8 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // スマホ専用: ヒーローセクションが画面に見えている間は非表示、それ以外は表示
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+    // スマホ・PC共通: ヒーローセクションが見えていない時に表示
+    if (typeof window !== 'undefined') {
       const observer = new window.IntersectionObserver(
         (entries) => {
           setShowScrollTop(!entries[0].isIntersecting);
@@ -124,20 +132,6 @@ export default function Home() {
       return () => {
         if (heroRef.current) observer.unobserve(heroRef.current);
       };
-    }
-  }, []);
-
-  useEffect(() => {
-    // スマホ専用: ヒーローセクションの高さ以上スクロールでトップへ戻るボタン表示
-    const handleScroll = () => {
-      if (window.innerWidth < 768 && heroRef.current) {
-        const heroHeight = heroRef.current.offsetHeight;
-        setShowScrollTop(window.scrollY > heroHeight);
-      }
-    };
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
     }
   }, []);
 
@@ -270,7 +264,7 @@ export default function Home() {
           <div ref={roomsRef}></div>
           <div className={`relative z-20 max-w-xl w-full mx-auto bg-transparent px-2 md:px-4 py-4 md:py-8 transition-opacity duration-1000 fade-in${showRoomsText ? ' show' : ''}`}>
             <h2 className="text-base md:text-2xl text-center mt-0 mb-1 md:mb-2" style={{fontFamily: 'Klee One, cursive'}}>- Rooms -</h2>
-            <h3 className="text-lg md:text-3xl text-center md:text-4xl font-bold mt-0 mb-6 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>静けさにひたる、ちょっと特別な時間。</h3>
+            <h3 className="text-xl md:text-3xl text-center md:text-4xl font-bold mt-0 mb-6 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>静けさにひたる、ちょっと特別な時間。</h3>
             {/* スマホのみ */}
             <p className="mb-2 text-sm block md:hidden text-center" style={{fontFamily: 'Klee One, cursive'}}>
               さるふつbaseの客室は、シンプルな中に北国らしい<br />
@@ -350,10 +344,10 @@ export default function Home() {
       <section className="py-16 md:py-[120px] bg-base-section">
         <div className="container min-h-[500px] md:min-h-[600px] min-h-[300px] flex flex-col md:flex-row justify-center items-center w-full max-w-7xl mx-auto">
           {/* スマホ時：テキスト下に画像2枚を横並び＆高さランダム */}
-          <div className="block md:hidden w-full" ref={communityRef}>
+          <div className="block md:hidden w-full" ref={communityRefMobile}>
             <div className={`transition-opacity duration-1000 fade-in${showCommunityText ? ' show' : ''} px-2 pt-4 pb-2`}>
               <h2 className="text-base mt-0 mb-1" style={{fontFamily: 'Klee One, cursive'}}>- Community Space -</h2>
-              <h3 className="text-lg text-center font-bold mt-0 mb-6 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
+              <h3 className="text-xl text-center font-bold mt-0 mb-6 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
               <p className="mb-2 text-sm text-center" style={{fontFamily: 'Klee One, cursive'}}>
                 さるふつbaseのコミュニティスペースは、<br />
                 旅人も地域の人もふらっと立ち寄れる、<br />
@@ -389,7 +383,7 @@ export default function Home() {
             </div>
           </div>
           {/* PC時：従来通りテキスト左右に画像 */}
-          <div className="hidden md:flex flex-row items-center w-full max-w-7xl justify-center" ref={communityRef}>
+          <div className="hidden md:flex flex-row items-center w-full max-w-7xl justify-center" ref={communityRefPC}>
             <div className={`flex-none w-[280px] h-[340px] relative mr-[100px] mt-[250px] transition-opacity duration-1000 fade-in${showCommunityImgLeft ? ' show' : ''}`}>
               <div className="relative w-[280px] h-[340px]">
                 <Image
@@ -403,7 +397,7 @@ export default function Home() {
             <div className={`flex-none max-w-[544px] transition-opacity duration-1000 fade-in${showCommunityText ? ' show' : ''}`}>
               <div className="relative z-20 mx-auto bg-transparent">
                 <h2 className="text-base md:text-2xl mt-0 mb-1 md:mb-2" style={{fontFamily: 'Klee One, cursive'}}>- Community Space -</h2>
-                <h3 className="text-lg md:text-3xl text-center md:text-4xl font-bold mt-0 mb-2 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
+                <h3 className="text-xl md:text-3xl text-center md:text-4xl font-bold mt-0 mb-2 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
                 <p className="mb-2 md:mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
                   さるふつbaseのコミュニティスペースは、<br />
                   旅人も地域の人もふらっと立ち寄れる、気軽でオープンな空間です。  
@@ -477,11 +471,36 @@ export default function Home() {
       {/* トップへ戻るボタン */}
       {showScrollTop && (
         <button
-          onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
-          style={{position:'fixed', right:'32px', bottom:'32px', zIndex:1000, background:'rgba(245,238,220,0.7)', borderRadius:'50%', boxShadow:'0 4px 16px rgba(0,0,0,0.18)', width:'56px', height:'56px', display:'flex', alignItems:'center', justifyContent:'center', transition:'opacity 0.3s', backdropFilter:'blur(2px)'}}
+          onClick={() => {
+            // ゆっくりスクロール（800ms程度）
+            const scrollToTop = () => {
+              const c = window.scrollY;
+              if (c > 0) {
+                window.scrollTo(0, Math.floor(c - c / 8));
+                window.requestAnimationFrame(scrollToTop);
+              }
+            };
+            scrollToTop();
+          }}
+          style={{
+            position: 'fixed',
+            right: '20px',
+            bottom: '20px',
+            zIndex: 1000,
+            background: 'rgba(245,238,220,0.7)',
+            borderRadius: '50%',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
+            width: window.innerWidth < 768 ? '40px' : '56px',
+            height: window.innerWidth < 768 ? '40px' : '56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'opacity 0.3s',
+            backdropFilter: 'blur(2px)'
+          }}
           aria-label="ページトップへ戻る"
         >
-          <FaArrowUp size={28} color="#333" />
+          <FaArrowUp size={window.innerWidth < 768 ? 18 : 28} color="#333" />
         </button>
       )}
     </div>

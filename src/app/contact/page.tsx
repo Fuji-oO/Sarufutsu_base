@@ -42,7 +42,7 @@ const ContactPage = () => {
         throw new Error(data.error || '送信に失敗しました。時間をおいて再度お試しください。')
       }
     } catch (error: any) {
-      setError('予期せぬエラーが発生しました。時間をおいて再度お試しいただくか、お電話（070-2616-1188）にてご連絡ください。')
+      setError('予期せぬエラーが発生しました。時間をおいて再度お試しいただくか、sarufutsu.base@gmail.comまでご連絡ください。')
     } finally {
       setLoading(false)
     }

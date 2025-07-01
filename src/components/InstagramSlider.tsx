@@ -197,9 +197,9 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
       {/* スマホ専用スライダー */}
       <div className="md:hidden">
         <div className="flex flex-col items-center justify-center">
-          <div className="relative flex items-center justify-center h-[150px] w-full">
+          <div className="relative flex items-center justify-center h-[120px] w-full">
             <div
-              className="flex gap-3 justify-center items-center w-full px-6 h-[150px]"
+              className="flex gap-1 justify-center items-center w-full px-2 h-[120px]"
               style={{
                 transform: `translateX(${translateX}px)`,
                 transition: isAnimating ? 'transform 0.7s cubic-bezier(0.4,0,0.2,1)' : 'none',
@@ -212,9 +212,13 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
                 let fade = false;
                 if (isAnimating && direction === 'right' && offset === -2) fade = true;
                 if (isAnimating && direction === 'left' && offset === 2) fade = true;
+                // 4:5比率で統一
+                let width = 64, height = 80;
+                if (Math.abs(offset) === 1) { width = 80; height = 100; }
+                if (offset === 0) { width = 96; height = 120; }
                 let style: React.CSSProperties = {
-                  width: offset === 0 ? 120 : Math.abs(offset) === 1 ? 96 : 72,
-                  height: offset === 0 ? 150 : Math.abs(offset) === 1 ? 120 : 90,
+                  width,
+                  height,
                   opacity: fade ? 0 : isFadingIn ? 0 : 1,
                   transition: 'all 0.7s cubic-bezier(0.4,0,0.2,1)',
                   zIndex: 5 - Math.abs(offset),
@@ -236,8 +240,8 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
                   <a
                     key={post.id}
                     href={post.postUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="relative rounded-lg overflow-hidden shadow"
                     style={{ ...style, ...fadeInStyle }}
                   >

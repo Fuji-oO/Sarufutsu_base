@@ -166,7 +166,7 @@ export default function Slideshow() {
   }, [firstLoad])
 
   return (
-    <div className="relative w-full h-[110vh] md:h-[898px] flex items-center justify-center overflow-hidden" style={{background: '#F5EEDC'}}>
+    <div className="relative w-full h-[100vh] md:h-[898px] flex items-center justify-center overflow-hidden" style={{background: '#F5EEDC'}}>
       {/* 初回ロード時のフェードイン */}
       {showFirstFade && (
         <div className="absolute inset-0 z-30" style={{background: '#F5EEDC', opacity: showFirstFade ? 1 : 0, animation: 'fadeInBeige 1.2s forwards'}} />

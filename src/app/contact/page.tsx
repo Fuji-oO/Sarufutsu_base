@@ -212,11 +212,7 @@ const ContactPage = () => {
                       <div className="text-center mt-2 md:mt-4">
                         <button
                           type="submit"
-                          className={`w-40 md:w-full max-w-xs py-2 md:py-3 rounded-md font-bold transition-colors text-sm md:text-base
-                            ${(!isAgreed || loading)
-                              ? 'bg-gray-300 text-white cursor-not-allowed'
-                              : 'bg-[#BFAE8A] text-white hover:bg-[#A4936A]'}
-                          `}
+                          className={`w-40 md:w-full max-w-xs py-2 md:py-3 rounded-md font-bold transition-colors text-sm md:text-base bg-[#BFAE8A] ${(!isAgreed || loading) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#A4936A]'} text-white`}
                           disabled={loading || !isAgreed}
                         >
                           {loading ? '送信中...' : '送信'}
@@ -234,4 +230,4 @@ const ContactPage = () => {
   )
 }
 
-export default ContactPage 
+export default ContactPage

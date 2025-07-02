@@ -374,7 +374,7 @@ export default function Home() {
               </div>
               <div className={`relative w-[178px] h-[130px] shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showCommunityImgRight ? ' show' : ''}`}> 
                 <Image
-                  src="/images/store1.jpg"
+                  src="/images/store2.jpg"
                   alt="店舗1"
                   fill
                   className="object-cover rounded-lg shadow-lg"
@@ -414,7 +414,7 @@ export default function Home() {
             <div className={`flex-none w-[290px] h-[450px] relative ml-[80px] mb-[150px] transition-opacity duration-1000 fade-in${showCommunityImgRight ? ' show' : ''}`}>
               <div className="relative w-[290px] h-[450px]">
                 <Image
-                  src="/images/store1.jpg"
+                  src="/images/store2.jpg"
                   alt="店舗1"
                   fill
                   className="object-cover rounded-lg shadow-lg"

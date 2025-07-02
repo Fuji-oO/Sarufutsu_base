@@ -242,30 +242,86 @@ export default function ReservationPage() {
   }
 
   // 金額計算
-  const stayNights = getStayNights();
-  const totalGuests = adultMale + adultFemale + child;
-  const totalAdult = adultMale + adultFemale;
-  const totalChild = child;
+  // --- 7月限定セール対応 ---
+  function isJuly2025(date) {
+    return date.getFullYear() === 2025 && date.getMonth() === 6; // 0-indexed: 6=July
+  }
+  function getStayDates() {
+    if (!checkIn || !checkOut) return [];
+    const dates = [];
+    let d = new Date(checkIn.getTime());
+    while (d < checkOut) {
+      dates.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+    }
+    return dates;
+  }
+  const stayDates = getStayDates();
   let basePrice = 0;
   let priceDetail = null;
+  let julyAdultNights = 0, julyChildNights = 0, julyKashikiriNights = 0;
+  let normalAdultNights = 0, normalChildNights = 0, normalKashikiriNights = 0;
   if (roomType === '貸切') {
-    basePrice = 44000 * stayNights;
-    priceDetail = (
-      <li>貸切 × {stayNights}泊 × 44,000円 = {(basePrice).toLocaleString()}円</li>
-    );
-  } else {
-    const baseAdult = totalAdult * 9900 * stayNights;
-    const baseChild = totalChild * 4950 * stayNights;
-    basePrice = baseAdult + baseChild;
+    stayDates.forEach(date => {
+      if (isJuly2025(date)) {
+        julyKashikiriNights++;
+      } else {
+        normalKashikiriNights++;
+      }
+    });
+    basePrice = 38500 * julyKashikiriNights + 44000 * normalKashikiriNights;
     priceDetail = <>
-      <li>大人 {totalAdult}名 × {stayNights}泊 × 9,900円 = {(baseAdult).toLocaleString()}円</li>
-      {totalChild > 0 && (
-        <li>子供 {totalChild}名 × {stayNights}泊 × 4,950円 = {(baseChild).toLocaleString()}円</li>
+      {julyKashikiriNights > 0 && (
+        <li>
+          貸切 × {julyKashikiriNights}泊 × <span className="text-red-600 font-bold">38,500円</span> = <span className="text-red-600 font-bold">{(38500 * julyKashikiriNights).toLocaleString()}円</span> <span className="text-red-600 font-bold">【7月限定セール価格適用】</span>
+        </li>
+      )}
+      {normalKashikiriNights > 0 && (
+        <li>
+          貸切 × {normalKashikiriNights}泊 × 44,000円 = {(44000 * normalKashikiriNights).toLocaleString()}円
+        </li>
+      )}
+    </>;
+  } else {
+    stayDates.forEach(date => {
+      if (isJuly2025(date)) {
+        julyAdultNights += adultMale + adultFemale;
+        julyChildNights += child;
+      } else {
+        normalAdultNights += adultMale + adultFemale;
+        normalChildNights += child;
+      }
+    });
+    const baseAdultJuly = julyAdultNights * 7700;
+    const baseChildJuly = julyChildNights * 3850;
+    const baseAdultNormal = normalAdultNights * 9900;
+    const baseChildNormal = normalChildNights * 4950;
+    basePrice = baseAdultJuly + baseChildJuly + baseAdultNormal + baseChildNormal;
+    priceDetail = <>
+      {julyAdultNights > 0 && (
+        <li>
+          大人 {adultMale + adultFemale}名 × {julyAdultNights / (adultMale + adultFemale) || 0}泊 × <span className="text-red-600 font-bold">7,700円</span> = <span className="text-red-600 font-bold">{baseAdultJuly.toLocaleString()}円</span> <span className="text-red-600 font-bold">【7月限定セール価格適用】</span>
+        </li>
+      )}
+      {normalAdultNights > 0 && (
+        <li>
+          大人 {adultMale + adultFemale}名 × {normalAdultNights / (adultMale + adultFemale) || 0}泊 × 9,900円 = {(baseAdultNormal).toLocaleString()}円
+        </li>
+      )}
+      {julyChildNights > 0 && (
+        <li>
+          子供 {child}名 × {julyChildNights / (child || 1)}泊 × <span className="text-red-600 font-bold">3,850円</span> = <span className="text-red-600 font-bold">{baseChildJuly.toLocaleString()}円</span> <span className="text-red-600 font-bold">【7月限定セール価格適用】</span>
+        </li>
+      )}
+      {normalChildNights > 0 && (
+        <li>
+          子供 {child}名 × {normalChildNights / (child || 1)}泊 × 4,950円 = {(baseChildNormal).toLocaleString()}円
+        </li>
       )}
     </>;
   }
   const heatingNights = countHeatingNights();
-  const heatingFee = totalGuests * 550 * heatingNights;
+  const heatingFee = (adultMale + adultFemale + child) * 550 * heatingNights;
   const totalPrice = basePrice + heatingFee;
 
   return (
@@ -273,6 +329,12 @@ export default function ReservationPage() {
       <div className="container mx-auto px-2 md:px-4">
         <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>Reservation</h1>
         <p className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- ご予約 -</p>
+        <div className="mb-6 md:mb-10 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{border: '2px solid #bfae8a'}}>
+          <div className="mb-2">
+            <span className="text-red-600 font-bold text-base md:text-2xl tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>【7月限定オープニングセール開催中！】</span><br />
+            <span className="text-red-600 text-xs md:text-base tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>さるふつbaseのオープンを記念して、<br />7月のご宿泊を特別セール価格でご案内いたします。</span>
+          </div>
+        </div>
         <div className="max-w-3xl mx-auto bg-white bg-opacity-90 rounded-lg shadow-lg px-4 py-8 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             {/* 人数選択（合計は自動計算） */}
@@ -405,7 +467,7 @@ export default function ReservationPage() {
                       <ul className="list-disc list-inside space-y-1">
                         {priceDetail}
                         {heatingFee > 0 && (
-                          <li>暖房費 {totalGuests}名 × {heatingNights}泊 × 550円 = {heatingFee.toLocaleString()}円</li>
+                          <li>暖房費 {adultMale + adultFemale + child}名 × {heatingNights}泊 × 550円 = {heatingFee.toLocaleString()}円</li>
                         )}
                       </ul>
                     </div>

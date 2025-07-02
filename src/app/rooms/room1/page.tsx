@@ -10,8 +10,8 @@ export default function Room1TypePage() {
     { src: '/images/room1_1.jpg', alt: 'Room1 Main' },
     { src: '/images/room1_2.jpg', alt: 'Room1 View' },
     { src: '/images/room1_3.jpg', alt: 'Room1 Detail' },
-    { src: '/images/room1_4.jpg', alt: 'Room1 Facility' },
-    { src: '/images/room1_5.jpg', alt: 'Room1 Other' }
+    { src: '/images/room1_7.jpg', alt: 'Room1 Facility' },
+    { src: '/images/room1_6.jpg', alt: 'Room1 Other' }
   ];
   const [currentImage, setCurrentImage] = useState(images[0]);
 

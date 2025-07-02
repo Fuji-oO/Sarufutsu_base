@@ -10,7 +10,7 @@ export default function Room2TypePage() {
     { src: '/images/room2_1.jpg', alt: 'Room2 Main' },
     { src: '/images/room2_2.jpg', alt: 'Room2 View' },
     { src: '/images/room2_3.jpg', alt: 'Room2 Detail' },
-    { src: '/images/room2_4.jpg', alt: 'Room2 Facility' },
+    { src: '/images/room2_7.jpg', alt: 'Room2 Facility' },
     { src: '/images/room2_5.jpg', alt: 'Room2 Other' }
   ];
   const [currentImage, setCurrentImage] = useState(images[0]);

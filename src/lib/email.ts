@@ -105,7 +105,7 @@ export async function sendReservationEmail(data: {
   const baseChild = totalChild * 4950 * stayNights;
   const heatingNights = countHeatingNights();
   const isKashikiri = data.roomType === '貸切';
-  let totalPrice, priceDetail;
+  let totalPrice, priceDetail = "";
 
   // --- 7月限定セール対応 ---
   function isJuly2025(date) {

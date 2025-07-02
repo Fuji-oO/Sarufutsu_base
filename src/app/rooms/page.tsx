@@ -47,14 +47,12 @@ export default function RoomsPage() {
           </div>
           {/* スマホ用注意書き */}
           <div className="block md:hidden mt-4 text-xs text-gray-700">
-            ※上記定員は添い寝のお子様も含む人数です。<br />
             ※10月～5月の間は、暖房費としてお一人様1泊につき<br />
             500円(税込550円)を頂戴しております。<br />
             ※村民割引あり(詳細はお問い合わせください)
           </div>
           {/* PC用注意書き */}
           <div className="hidden md:block mt-4 text-sm text-gray-700">
-            ※上記定員は添い寝のお子様も含む人数です。<br />
             ※10月～5月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
             ※村民割引あり(詳細はお問い合わせください)
           </div>

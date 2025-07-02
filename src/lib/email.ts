@@ -104,23 +104,63 @@ export async function sendReservationEmail(data: {
   const baseAdult = totalAdult * 9900 * stayNights;
   const baseChild = totalChild * 4950 * stayNights;
   const heatingNights = countHeatingNights();
-  const heatingFee = totalGuests * 550 * heatingNights;
   const isKashikiri = data.roomType === '貸切';
   let totalPrice, priceDetail;
 
-  if (isKashikiri) {
-    const kashikiriBase = 44000 * stayNights;
-    totalPrice = kashikiriBase + heatingFee;
-    priceDetail = `  ・貸切 ${stayNights}泊 × 44,000円 = ${(kashikiriBase).toLocaleString()}円
-${heatingFee > 0 ? `  ・暖房費 ${totalGuests}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円
-` : ''}`;
-  } else {
-    totalPrice = baseAdult + baseChild + heatingFee;
-    priceDetail = `  ・大人 ${totalAdult}名 × ${stayNights}泊 × 9,900円 = ${(baseAdult).toLocaleString()}円
-${totalChild > 0 ? `  ・子供 ${totalChild}名 × ${stayNights}泊 × 4,950円 = ${(baseChild).toLocaleString()}円
-` : ''}${heatingFee > 0 ? `  ・暖房費 ${totalGuests}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円
-` : ''}`;
+  // --- 7月限定セール対応 ---
+  function isJuly2025(date) {
+    return date.getFullYear() === 2025 && date.getMonth() === 6;
   }
+  function getStayDates() {
+    const inDate = parseDate(data.checkIn);
+    const outDate = parseDate(data.checkOut);
+    if (!inDate || !outDate) return [];
+    const dates = [];
+    let d = new Date(inDate.getTime());
+    while (d < outDate) {
+      dates.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+    }
+    return dates;
+  }
+  const stayDates = getStayDates();
+  let basePrice = 0;
+  let julyAdultNights = 0, julyChildNights = 0, julyKashikiriNights = 0;
+  let normalAdultNights = 0, normalChildNights = 0, normalKashikiriNights = 0;
+  if (data.roomType === '貸切') {
+    stayDates.forEach(date => {
+      if (isJuly2025(date)) {
+        julyKashikiriNights++;
+      } else {
+        normalKashikiriNights++;
+      }
+    });
+    basePrice = 38500 * julyKashikiriNights + 44000 * normalKashikiriNights;
+    priceDetail = julyKashikiriNights > 0 ? `  ・貸切 ${julyKashikiriNights}泊 × 38,500円 = ${(38500 * julyKashikiriNights).toLocaleString()}円 【7月限定セール価格適用】\n` : '';
+    priceDetail += normalKashikiriNights > 0 ? `  ・貸切 ${normalKashikiriNights}泊 × 44,000円 = ${(44000 * normalKashikiriNights).toLocaleString()}円\n` : '';
+  } else {
+    stayDates.forEach(date => {
+      if (isJuly2025(date)) {
+        julyAdultNights += Number(data.adultMale || 0) + Number(data.adultFemale || 0);
+        julyChildNights += Number(data.child || 0);
+      } else {
+        normalAdultNights += Number(data.adultMale || 0) + Number(data.adultFemale || 0);
+        normalChildNights += Number(data.child || 0);
+      }
+    });
+    const baseAdultJuly = julyAdultNights * 7700;
+    const baseChildJuly = julyChildNights * 3850;
+    const baseAdultNormal = normalAdultNights * 9900;
+    const baseChildNormal = normalChildNights * 4950;
+    basePrice = baseAdultJuly + baseChildJuly + baseAdultNormal + baseChildNormal;
+    if (julyAdultNights > 0) priceDetail += `  ・大人 ${Number(data.adultMale || 0) + Number(data.adultFemale || 0)}名 × ${julyAdultNights / ((Number(data.adultMale || 0) + Number(data.adultFemale || 0)) || 1)}泊 × 7,700円 = ${baseAdultJuly.toLocaleString()}円 【7月限定セール価格適用】\n`;
+    if (normalAdultNights > 0) priceDetail += `  ・大人 ${Number(data.adultMale || 0) + Number(data.adultFemale || 0)}名 × ${normalAdultNights / ((Number(data.adultMale || 0) + Number(data.adultFemale || 0)) || 1)}泊 × 9,900円 = ${baseAdultNormal.toLocaleString()}円\n`;
+    if (julyChildNights > 0) priceDetail += `  ・子供 ${Number(data.child || 0)}名 × ${julyChildNights / (Number(data.child || 0) || 1)}泊 × 3,850円 = ${baseChildJuly.toLocaleString()}円 【7月限定セール価格適用】\n`;
+    if (normalChildNights > 0) priceDetail += `  ・子供 ${Number(data.child || 0)}名 × ${normalChildNights / (Number(data.child || 0) || 1)}泊 × 4,950円 = ${baseChildNormal.toLocaleString()}円\n`;
+  }
+  const heatingFee = (Number(data.adultMale || 0) + Number(data.adultFemale || 0) + Number(data.child || 0)) * 550 * heatingNights;
+  totalPrice = basePrice + heatingFee;
+  if (heatingFee > 0) priceDetail += `  ・暖房費 ${Number(data.adultMale || 0) + Number(data.adultFemale || 0) + Number(data.child || 0)}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円\n`;
 
   const mailBody = `
 【予約内容】

@@ -240,8 +240,8 @@ const InstagramSlider: React.FC<InstagramSliderProps> = ({ profileUrl }) => {
                   <a
                     key={post.id}
                     href={post.postUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
                     className="relative rounded-lg overflow-hidden shadow"
                     style={{ ...style, ...fadeInStyle }}
                   >

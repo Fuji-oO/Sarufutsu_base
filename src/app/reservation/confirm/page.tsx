@@ -221,7 +221,7 @@ function ReservationConfirmPage() {
             className={`flex flex-col items-center justify-center min-h-[40vh] transition-opacity duration-800 ${thanksVisible ? 'opacity-100' : 'opacity-0'}`}
             style={{ transitionDuration: '800ms' }}
           >
-            <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center mt-16">ご予約ありがとうございます</h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center">ご予約ありがとうございます</h1>
             <p className="mb-6 md:mb-10 text-center text-xs md:text-base text-gray-800">
               送信いただいた内容を確認のうえ、こちらから改めてご連絡差し上げます。<br />
               恐れ入りますが、今しばらくお待ちくださいませ。

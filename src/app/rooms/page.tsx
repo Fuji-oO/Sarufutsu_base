@@ -26,7 +26,7 @@ export default function RoomsPage() {
     <div className="min-h-screen pt-16 pb-24 md:py-[120px]" style={{background:'#F5EEDC'}}>
       <div className="container mx-auto px-4">
         <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em'}}>Rooms</h1>
-        <p className="text-sm md:text-base text-center mb-8 md:mb-12" style={{letterSpacing:'0.1em'}}>- お部屋 -</p>
+        <p className="text-xs md:text-base text-center mb-8 md:mb-12" style={{letterSpacing:'0.1em'}}>- お部屋 -</p>
         <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{border: '2px solid #bfae8a'}}>
           <div className="mb-4">
             <span className="text-red-600 font-bold text-base md:text-2xl tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>【7月限定オープニングセール開催中！】</span><br />

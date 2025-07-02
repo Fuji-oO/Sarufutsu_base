@@ -269,25 +269,25 @@ export default function ReservationPage() {
   const totalPrice = basePrice + heatingFee;
 
   return (
-    <div className="min-h-screen py-[120px]" style={{background:'#F5EEDC'}}>
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>Reservation</h1>
-        <p className="text-ml text-center mb-12" style={{letterSpacing:'0.1em'}}>- ご予約 -</p>
-        <div className="max-w-3xl mx-auto bg-white bg-opacity-90 rounded-lg shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
+    <div className="min-h-screen pt-16 pb-16 md:py-[120px]" style={{background:'#F5EEDC'}}>
+      <div className="container mx-auto px-2 md:px-4">
+        <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>Reservation</h1>
+        <p className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- ご予約 -</p>
+        <div className="max-w-3xl mx-auto bg-white bg-opacity-90 rounded-lg shadow-lg px-4 py-8 md:p-8">
+          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
             {/* 人数選択（合計は自動計算） */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">宿泊人数</label>
-              <div className="flex gap-4 mb-2">
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">宿泊人数</label>
+              <div className="flex gap-2 md:gap-4 mb-2">
                 <div className="flex-1">
                   <label className="block text-xs text-gray-600 mb-1">大人(男性)</label>
-                  <select value={adultMale} onChange={e => { setAdultMale(Number(e.target.value)); setRoomType(''); setCheckIn(null); setCheckOut(null); }} className="w-full p-2 border rounded-md">
+                  <select value={adultMale} onChange={e => { setAdultMale(Number(e.target.value)); setRoomType(''); setCheckIn(null); setCheckOut(null); }} className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base">
                     {[0,1,2,3,4,5].map(n => <option key={n} value={n}>{n}名</option>)}
                   </select>
                 </div>
                 <div className="flex-1">
                   <label className="block text-xs text-gray-600 mb-1">大人(女性)</label>
-                  <select value={adultFemale} onChange={e => { setAdultFemale(Number(e.target.value)); setRoomType(''); setCheckIn(null); setCheckOut(null); }} className="w-full p-2 border rounded-md">
+                  <select value={adultFemale} onChange={e => { setAdultFemale(Number(e.target.value)); setRoomType(''); setCheckIn(null); setCheckOut(null); }} className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base">
                     {[0,1,2,3,4,5].map(n => <option key={n} value={n}>{n}名</option>)}
                   </select>
                 </div>
@@ -313,23 +313,23 @@ export default function ReservationPage() {
                       )}
                     </span>
                   </label>
-                  <select value={child} onChange={e => { setChild(Number(e.target.value)); setRoomType(''); setCheckIn(null); setCheckOut(null); }} className="w-full p-2 border rounded-md">
+                  <select value={child} onChange={e => { setChild(Number(e.target.value)); setRoomType(''); setCheckIn(null); setCheckOut(null); }} className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base">
                     {[0,1,2,3,4,5].map(n => <option key={n} value={n}>{n}名</option>)}
                   </select>
                 </div>
               </div>
-              <div className="text-sm text-gray-700">合計: {adultMale + adultFemale + child}名</div>
-              {guestsError && <p className="text-red-600 text-sm mt-1">{guestsError}</p>}
+              <div className="text-xs md:text-sm text-gray-700">合計: {adultMale + adultFemale + child}名</div>
+              {guestsError && <p className="text-red-600 text-xs md:text-sm mt-1">{guestsError}</p>}
             </div>
             {/* 部屋タイプ選択 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">部屋タイプ</label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">部屋タイプ</label>
               {availableRoomTypes.length === 0 ? (
-                <div className="text-red-600">この人数で予約可能な部屋タイプがありません</div>
+                <div className="text-red-600 text-xs md:text-sm">この人数で予約可能な部屋タイプがありません</div>
               ) : (
-                <div className="flex gap-4">
+                <div className="flex gap-2 md:gap-4">
                   {availableRoomTypes.map(type => (
-                    <label key={type} className={`px-4 py-2 border rounded cursor-pointer ${roomType === type ? 'bg-blue-200 border-blue-500' : 'bg-white'}`}>
+                    <label key={type} className={`px-2 md:px-4 py-1 md:py-2 border rounded cursor-pointer text-xs md:text-base ${roomType === type ? 'bg-blue-200 border-blue-500' : 'bg-white'}`}> 
                       <input
                         type="radio"
                         name="roomType"
@@ -344,12 +344,12 @@ export default function ReservationPage() {
                   ))}
                 </div>
               )}
-              {roomTypeError && <p className="text-red-600 text-sm mt-1">{roomTypeError}</p>}
+              {roomTypeError && <p className="text-red-600 text-xs md:text-sm mt-1">{roomTypeError}</p>}
             </div>
             {/* カレンダー */}
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h2 className="text-xl font-bold mb-4">チェックイン</h2>
+            <div className="flex flex-col items-center md:grid md:grid-cols-2 gap-4 md:gap-8">
+              <div className="w-full max-w-xs md:max-w-full mx-auto">
+                <h2 className="text-base md:text-xl font-bold mb-2 md:mb-4 text-center md:text-left">チェックイン</h2>
                 <Calendar
                   onChange={(date) => setCheckIn(date as Date)}
                   value={checkIn}
@@ -361,14 +361,14 @@ export default function ReservationPage() {
                   type="date"
                   value={formatYMD(checkIn)}
                   onChange={e => setCheckIn(e.target.value ? new Date(e.target.value) : null)}
-                  className="mt-2 w-full p-2 border rounded-md"
+                  className="mt-2 w-full p-1 md:p-2 border rounded-md text-xs md:text-base"
                   min={formatYMD(new Date())}
                   disabled={!roomType || availableRoomTypes.length === 0}
                 />
-                {checkInError && <p className="text-red-600 text-sm mt-1">{checkInError}</p>}
+                {checkInError && <p className="text-red-600 text-xs md:text-sm mt-1">{checkInError}</p>}
               </div>
-              <div>
-                <h2 className="text-xl font-bold mb-4">チェックアウト</h2>
+              <div className="w-full max-w-xs md:max-w-full mx-auto">
+                <h2 className="text-base md:text-xl font-bold mb-2 md:mb-4 text-center md:text-left">チェックアウト</h2>
                 <Calendar
                   onChange={(date) => setCheckOut(date as Date)}
                   value={checkOut}
@@ -380,19 +380,19 @@ export default function ReservationPage() {
                   type="date"
                   value={formatYMD(checkOut)}
                   onChange={e => setCheckOut(e.target.value ? new Date(e.target.value) : null)}
-                  className="mt-2 w-full p-2 border rounded-md"
+                  className="mt-2 w-full p-1 md:p-2 border rounded-md text-xs md:text-base"
                   min={checkIn ? formatYMD(new Date(checkIn.getTime() + 24*60*60*1000)) : formatYMD(new Date())}
                   disabled={!roomType || !checkIn || availableRoomTypes.length === 0}
                 />
-                {checkOutError && <p className="text-red-600 text-sm mt-1">{checkOutError}</p>}
+                {checkOutError && <p className="text-red-600 text-xs md:text-sm mt-1">{checkOutError}</p>}
               </div>
             </div>
             {/* 宿泊料金合計表示 */}
-            <div className="my-8 text-center">
-              <div className="inline-block bg-[#fff] rounded-lg px-6 py-4 shadow text-lg font-bold text-gray-800 max-w-lg w-full border-2" style={{ borderColor: '#BFAE8A' }}>
+            <div className="my-6 md:my-8 text-center">
+              <div className="inline-block bg-[#fff] rounded-lg px-4 md:px-6 py-2 md:py-4 shadow text-base md:text-lg font-bold text-gray-800 max-w-lg w-full border-2" style={{ borderColor: '#BFAE8A' }}>
                 料金合計：
-                <span className="text-2xl text-gray-800 ml-2">{totalPrice.toLocaleString()}円 <span className="text-lg text-gray-800">(税込)</span></span>
-                <div className="mt-3 text-center font-normal">
+                <span className="text-lg md:text-2xl text-gray-800 ml-2">{totalPrice.toLocaleString()}円 <span className="text-base md:text-lg text-gray-800">(税込)</span></span>
+                <div className="mt-2 md:mt-3 text-center font-normal">
                   <button
                     type="button"
                     className="text-xs text-[#BFAE8A] underline hover:opacity-80 font-bold focus:outline-none"
@@ -414,11 +414,11 @@ export default function ReservationPage() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">チェックイン予定時間 <span className="text-red-500">*</span></label>
+              <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">チェックイン予定時間 <span className="text-red-500">*</span></label>
               <select
                 value={checkInTime}
                 onChange={e => setCheckInTime(e.target.value)}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base"
                 required
               >
                 <option value="">選択してください</option>
@@ -432,56 +432,56 @@ export default function ReservationPage() {
               </select>
             </div>
             {/* お客様情報 */}
-            <div className="space-y-4">
+            <div className="space-y-2 md:space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">お名前 <span className="text-red-500">*</span></label>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">お名前 <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   value={name}
                   onChange={handleNameChange}
                   onBlur={handleNameBlur}
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base"
                   required
                 />
-                {nameError && <p className="text-red-600 text-sm mt-1">{nameError}</p>}
+                {nameError && <p className="text-red-600 text-xs md:text-sm mt-1">{nameError}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">メールアドレス <span className="text-red-500">*</span></label>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">メールアドレス <span className="text-red-500">*</span></label>
                 <input
                   type="email"
                   value={email}
                   onChange={handleEmailChange}
                   onBlur={handleEmailBlur}
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base"
                   required
                 />
-                {emailError && <p className="text-red-600 text-sm mt-1">{emailError}</p>}
+                {emailError && <p className="text-red-600 text-xs md:text-sm mt-1">{emailError}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">電話番号 <span className="text-red-500">*</span></label>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">電話番号 <span className="text-red-500">*</span></label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={handlePhoneChange}
                   onBlur={handlePhoneBlur}
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-1 md:p-2 border rounded-md text-xs md:text-base"
                   required
                 />
-                {phoneError && <p className="text-red-600 text-sm mt-1">{phoneError}</p>}
+                {phoneError && <p className="text-red-600 text-xs md:text-sm mt-1">{phoneError}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">ご要望・ご質問</label>
+                <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">ご要望・ご質問</label>
                 <textarea
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
-                  className="w-full p-2 border rounded-md h-32"
+                  className="w-full p-1 md:p-2 border rounded-md h-24 md:h-32 text-xs md:text-base"
                 />
               </div>
             </div>
             <div className="text-center">
               <button
                 type="submit"
-                className="text-white px-8 py-3 rounded-md font-bold transition hover:opacity-80"
+                className="text-white px-6 md:px-8 py-2 md:py-3 rounded-md font-bold transition hover:opacity-80 text-sm md:text-base"
                 style={{ background: '#BFAE8A' }}
               >
                 予約内容を確認する

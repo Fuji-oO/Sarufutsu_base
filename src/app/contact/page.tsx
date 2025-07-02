@@ -212,7 +212,11 @@ const ContactPage = () => {
                       <div className="text-center mt-2 md:mt-4">
                         <button
                           type="submit"
-                          className="w-40 md:w-full max-w-xs bg-[#BFAE8A] text-white py-2 md:py-3 rounded-md font-bold hover:bg-[#A4936A] transition-colors text-sm md:text-base"
+                          className={`w-40 md:w-full max-w-xs py-2 md:py-3 rounded-md font-bold transition-colors text-sm md:text-base
+                            ${(!isAgreed || loading)
+                              ? 'bg-gray-300 text-white cursor-not-allowed'
+                              : 'bg-[#BFAE8A] text-white hover:bg-[#A4936A]'}
+                          `}
                           disabled={loading || !isAgreed}
                         >
                           {loading ? '送信中...' : '送信'}

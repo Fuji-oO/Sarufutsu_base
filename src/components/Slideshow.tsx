@@ -192,8 +192,8 @@ export default function Slideshow() {
       {/* テキストオーバーレイ */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
         <h1 className={`text-2xl md:text-6xl font-bold drop-shadow-lg text-center mb-2 md:mb-4 transition-opacity duration-1000 ${showMainText ? 'opacity-100' : 'opacity-0'}`} style={{color:'#F5EEDC', fontFamily: 'Klee One, cursive'}}>
-          <span className="text-3xl md:text-5xl font-bold tracking-widest">{texts[0]}</span><br />
-          <span className="text-3xl md:text-5xl font-bold tracking-widest">{texts[1]}</span>
+          <span className="text-2xl md:text-5xl font-bold tracking-widest">{texts[0]}</span><br />
+          <span className="text-2xl md:text-5xl font-bold tracking-widest">{texts[1]}</span>
         </h1>
       </div>
 

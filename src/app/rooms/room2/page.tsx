@@ -78,7 +78,7 @@ export default function Room2TypePage() {
         </div>
         <div className="border-t border-gray-200 my-2 md:my-4" style={{borderColor:'#D9CBB0'}}/>
         <div className="text-xs md:text-sm text-gray-700 mb-1 md:mb-2 font-bold">設備</div>
-        <div className="text-xs md:text-sm text-gray-700 mb-2 md:mb-4">テーブル／Wi-Fi</div>
+        <div className="text-xs md:text-sm text-gray-700 mb-2 md:mb-4">テーブル／Wi-Fi／コンセント(4口)</div>
         <div className="border-t border-gray-200 my-2 md:my-4" style={{borderColor:'#D9CBB0'}}/>
         <div className="text-xs md:text-sm text-gray-700 mb-1 md:mb-2 font-bold">アメニティ</div>
         <div className="text-xs md:text-sm text-gray-700 mb-1 md:mb-2">バスタオル／フェイスタオル／歯ブラシ</div>

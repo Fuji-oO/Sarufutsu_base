@@ -316,7 +316,7 @@ export default function Home() {
             <div className={`bg-[#F5EEDC] rounded-lg shadow-lg overflow-hidden transition-opacity duration-1000 fade-in${showRoom2 ? ' show' : ''} max-w-xs mx-auto md:max-w-full`}>
               <div className="relative w-full h-auto cursor-pointer" onClick={() => router.push('/rooms/room2')} tabIndex={0} role="button" aria-label="Room2詳細へ">
                 <Image
-                  src="/images/room2_1.jpg"
+                  src="/images/room2_8.jpg"
                   alt="Room02"
                   width={400}
                   height={240}

@@ -86,7 +86,7 @@ export default function RoomsPage() {
           <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-8">
             {/* 画像 */}
             <div className="md:w-1/2 w-full h-[300px] md:h-[340px] relative rounded-lg overflow-hidden shadow-lg">
-              <Image src="/images/room2_1.jpg" alt="Room2" fill className="object-cover" />
+              <Image src="/images/room2_8.jpg" alt="Room2" fill className="object-cover" />
             </div>
             {/* 情報 */}
             <div className="md:w-1/2 w-full flex flex-col justify-center">

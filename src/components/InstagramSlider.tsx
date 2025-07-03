@@ -23,7 +23,7 @@ const posts = [
   {
     id: '4',
     imageUrl: '/images/insta4.jpg',
-    postUrl: 'https://www.instagram.com/sarufutsu_base?igsh=d3JjMmcwb3VkcjB0&utm_source=qr',
+    postUrl: 'https://www.instagram.com/sarufutsu_base/p/DLRP_enRZmN/',
     likes: 180,
   },
   {
@@ -35,7 +35,7 @@ const posts = [
   {
     id: '6',
     imageUrl: '/images/insta6.jpg',
-    postUrl: 'https://www.instagram.com/sarufutsu_base/p/DLRP_enRZmN/',
+    postUrl: 'https://www.instagram.com/sarufutsu_base/p/DLjB0_QTal6/',
     likes: 75,
   },
   {
@@ -47,7 +47,7 @@ const posts = [
   {
     id: '8',
     imageUrl: '/images/insta8.jpg',
-    postUrl: 'https://www.instagram.com/sarufutsu_base?igsh=d3JjMmcwb3VkcjB0&utm_source=qr',
+    postUrl: 'https://www.instagram.com/sarufutsu_base/p/DLoF0u5TR11/',
     likes: 250,
   },
 ];

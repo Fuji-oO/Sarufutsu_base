@@ -28,7 +28,7 @@ export default function AboutPage() {
         {/* 左側 タイトル */}
         <div className="flex-1 flex items-start">
           <h1 className="text-4xl md:text-5xl font-bold drop-shadow-lg text-center" style={{color:'#333333'}}>
-            'さるふつbase'について
+            「さるふつbase」について
           </h1>
         </div>
         {/* 右側 コンセプト本文 */}
@@ -41,7 +41,7 @@ export default function AboutPage() {
             「さるふつbase」は、この自然に囲まれた1日1〜2組限定のゲストハウス。<br />
             貸切もでき、静けさの中でゆったりとした時間が過ごせます。<br /><br />
 
-            でも、ここはただの"宿"ではありません。<br />
+            でも、ここはただの宿ではありません。<br />
             地域の人がふらっと立ち寄って、お茶を飲んだりおしゃべりしたり。<br />
             ときにはイベントやワークショップも開かれ、人々の交流が生まれる場所です。<br /><br />
 
@@ -56,10 +56,10 @@ export default function AboutPage() {
       {/* スマホ版: タイトル上部中央＋本文下表示 */}
       <div className="w-full flex flex-col md:hidden justify-start items-center px-2 gap-4 relative" style={{zIndex:2}}>
         <h1 className="text-2xl font-black text-center mb-4 drop-shadow-lg mt-16" style={{color:'#333333', fontFamily: 'Klee One, cursive'}}>
-          'さるふつbase'について
+          「さるふつbase」について
         </h1>
         <div className="w-full max-w-xl rounded-lg mb-80">
-          <p className="text-gray-800 text-sm text-center leading-relaxed text-base" style={{fontFamily: 'Klee One, cursive'}}>
+          <p className="text-gray-800 text-xs text-center leading-relaxed text-base" style={{fontFamily: 'Klee One, cursive'}}>
             日本最北の村、猿払。<br />
             広がる湿原や草原、どこまでも続く空と海。<br />
             そんな雄大な自然の中で、力強く暮らす人たちがいます。<br /><br />
@@ -68,7 +68,7 @@ export default function AboutPage() {
             この自然に囲まれた1日1〜2組限定のゲストハウス。<br />
             貸切もでき、静けさの中でゆったりとした時間が過ごせます。<br /><br />
 
-            でも、ここはただの"宿"ではありません。<br />
+            でも、ここはただの宿ではありません。<br />
             地域の人がふらっと立ち寄って、<br />
             お茶を飲んだりおしゃべりしたり。<br />
             ときにはイベントやワークショップも開かれ、<br />

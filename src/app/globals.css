@@ -59,13 +59,17 @@ body {
   z-index: 0;
 }
 
-/* フェードインアニメーション */
+/* フェードイン・アウトアニメーション（0.8秒） */
 .fade-in {
   opacity: 0;
-  /*transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1);*/
+  transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1);
 }
 .fade-in.show {
   opacity: 1;
+}
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1);
 }
 
 /* フッター専用の背景色 */

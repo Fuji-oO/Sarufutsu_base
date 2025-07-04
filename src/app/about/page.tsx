@@ -6,22 +6,13 @@ export default function AboutPage() {
         backgroundImage: "url('/images/esanuka.jpeg')",
       }}
     >
-      {/* 霞エフェクト */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        zIndex: 1,
-        pointerEvents: 'none',
-        background: 'radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 60%, rgba(255,255,255,0.12) 100%)',
-        mixBlendMode: 'lighten',
-      }} />
-      {/* 右側フェードグラデーション */}
+      {/* フェードグラデーション */}
       <div style={{
         position: 'absolute',
         inset: 0,
         zIndex: 2,
         pointerEvents: 'none',
-        background: 'linear-gradient(to bottom, rgba(245,238,220,0.25) 48%, #F5EEDC 100%)',
+        background: 'linear-gradient(to bottom, rgba(245,238,220,0.25) 80%, #F5EEDC 100%)',
       }} />
       {/* PC版: 従来通り横並び */}
       <div className="w-full flex-row justify-between items-start px-20 py-32 gap-8 relative hidden md:flex" style={{maxWidth:'1600px',margin:'0 auto',zIndex:2}}>

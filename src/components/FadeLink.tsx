@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { useRouter, usePathname } from "next/navigation";
+import React, { useEffect } from "react";
+import { useTransition } from "./TransitionContext";
 
 type FadeLinkProps = React.ComponentProps<typeof Link> & {
   children: React.ReactNode;
@@ -9,6 +10,13 @@ type FadeLinkProps = React.ComponentProps<typeof Link> & {
 
 const FadeLink = ({ href, children, ...props }: FadeLinkProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const { startTransition, endTransition } = useTransition();
+
+  useEffect(() => {
+    endTransition();
+    // eslint-disable-next-line
+  }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     // 外部リンクや新規タブは通常遷移
@@ -21,7 +29,9 @@ const FadeLink = ({ href, children, ...props }: FadeLinkProps) => {
     }
     if (props.onClick) props.onClick(e);
     e.preventDefault();
-    document.body.classList.add("fadeout");
+    // 同じパスなら何もしない
+    if (pathname === href) return;
+    startTransition();
     setTimeout(() => {
       router.push(href as string);
     }, 600);

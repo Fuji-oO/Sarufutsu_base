@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { useRouter } from 'next/navigation'
+import { FaInstagram } from "react-icons/fa";
 
 // サンプル空室状況データ
 const availability: Record<string, { Room1: boolean, Room2: boolean }> = {
@@ -337,6 +338,27 @@ export default function ReservationPage() {
         </div>
         <div className="max-w-3xl mx-auto bg-white bg-opacity-90 rounded-lg shadow-lg px-4 py-8 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
+            <div className="mb-6 md:mb-8 text-center">
+              <p className="text-xs md:text-lg font-bold mb-4">
+                最新の空室状況はInstagramをご覧ください。
+              </p>
+              <a
+                href="https://www.instagram.com/sarufutsu_base/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  text-xs md:text-lg inline-flex items-center gap-2 px-5 py-2 rounded-full font-bold
+                  bg-[#f5f1e6] text-[#3a2e13] transition-colors duration-200
+                  hover:bg-[#bfae8a]
+                  focus:outline-none focus:ring-2 focus:ring-[#bfae8a]
+                  text-base md:text-lg
+                "
+                style={{border: '1px solid #bfae8a'}}
+              >
+                Instagram
+                <FaInstagram size={22} />
+              </a>
+            </div>
             {/* 人数選択（合計は自動計算） */}
             <div>
               <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">宿泊人数</label>

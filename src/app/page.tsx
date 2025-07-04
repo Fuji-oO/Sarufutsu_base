@@ -184,7 +184,7 @@ export default function Home() {
               <div className="relative flex-1 h-full">
                 <div className={`absolute right-0 top-0 w-36 h-20 shadow-lg rounded-lg overflow-hidden bg-white z-20 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
                   <Image
-                    src="/images/river1.png"
+                    src="/images/yuyake.jpeg"
                     alt="画像③"
                     fill
                     className="object-cover"
@@ -213,7 +213,7 @@ export default function Home() {
             </div>
             <div className={`absolute right-[-110px] bottom-[520px] w-70 h-35 md:w-[400px] md:h-72 shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
               <Image
-                src="/images/river1.png" 
+                src="/images/yuyake.jpeg" 
                 alt="画像③"
                 fill
                 className="object-cover"
@@ -316,7 +316,7 @@ export default function Home() {
             <div className={`bg-[#F5EEDC] rounded-lg shadow-lg overflow-hidden transition-opacity duration-1000 fade-in${showRoom2 ? ' show' : ''} max-w-xs mx-auto md:max-w-full`}>
               <div className="relative w-full h-auto cursor-pointer" onClick={() => router.push('/rooms/room2')} tabIndex={0} role="button" aria-label="Room2詳細へ">
                 <Image
-                  src="/images/room2_1.jpg"
+                  src="/images/room2_8.jpg"
                   alt="Room02"
                   width={400}
                   height={240}

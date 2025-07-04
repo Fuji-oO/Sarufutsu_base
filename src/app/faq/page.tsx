@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import FadeTransitionWrapper from '../../components/FadeTransitionWrapper';
 
 const FAQ_CATEGORIES = [
   { key: "stay", label: "ご宿泊に関して" },
@@ -156,47 +157,49 @@ export default function FAQPage() {
   };
 
   return (
-    <div className="min-h-screen pt-16 pb-16 md:py-[120px] px-2 md:px-0" style={{ background: '#f5eedc' }}>
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>FAQ</h1>
-        <div className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- よくあるご質問 -</div>
-        <div className="max-w-3xl mx-auto bg-white rounded-lg shadow py-4 md:py-8 px-2 md:px-6">
-            <div className="grid grid-cols-2 gap-2 mb-8 md:mb-16 md:flex md:flex-wrap md:justify-center md:gap-4">
-            {FAQ_CATEGORIES.map(cat => (
-                <button
-                key={cat.key}
-                className={`px-2 md:px-4 py-2 text-xs md:text-lg font-semibold border-b-2 md:border-b-2 transition-all duration-200 rounded md:rounded-none
-                  ${active === cat.key
-                    ? 'border-[#bfae8a] text-black font-bold bg-[#f5eedc] md:bg-transparent'
-                    : 'border-transparent text-gray-500 hover:text-black bg-white md:bg-transparent'}
-                `}
-                onClick={() => handleTab(cat.key)}
-                >
-                {cat.label}
-                </button>
-            ))}
-            </div>
-            <div className={`transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'}`}> 
-            <section>
-                <h2 className="text-sm md:text-xl font-bold mb-2 md:mb-6">【{FAQ_CATEGORIES.find(c => c.key === active)?.label}】</h2>
-                <div>
-                {FAQ_LIST[active].map((item, idx) => (
-                    <div key={`${active}-${idx}`} className="py-4 md:py-8" style={idx !== FAQ_LIST[active].length - 1 ? { borderBottom: '1px solid #bfae8a' } : {}}>
-                    <div className="mb-1 md:mb-2 flex items-start">
-                        <span className="font-serif text-lg md:text-2xl mr-2">Q</span>
-                        <span className="text-sm md:text-lg font-bold">{item.q}</span>
-                    </div>
-                    <div className="flex items-start">
-                        <span className="font-serif text-base md:text-xl mr-2">A</span>
-                        <span className="text-xs md:text-base text-gray-700 leading-relaxed">{item.a}</span>
-                    </div>
-                    </div>
-                ))}
-                </div>
-            </section>
-            </div>
+    <FadeTransitionWrapper>
+      <div className="min-h-screen pt-16 pb-16 md:py-[120px] px-2 md:px-0" style={{ background: '#f5eedc' }}>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>FAQ</h1>
+          <div className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- よくあるご質問 -</div>
+          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow py-4 md:py-8 px-2 md:px-6">
+              <div className="grid grid-cols-2 gap-2 mb-8 md:mb-16 md:flex md:flex-wrap md:justify-center md:gap-4">
+              {FAQ_CATEGORIES.map(cat => (
+                  <button
+                  key={cat.key}
+                  className={`px-2 md:px-4 py-2 text-xs md:text-lg font-semibold border-b-2 md:border-b-2 transition-all duration-200 rounded md:rounded-none
+                    ${active === cat.key
+                      ? 'border-[#bfae8a] text-black font-bold bg-[#f5eedc] md:bg-transparent'
+                      : 'border-transparent text-gray-500 hover:text-black bg-white md:bg-transparent'}
+                  `}
+                  onClick={() => handleTab(cat.key)}
+                  >
+                  {cat.label}
+                  </button>
+              ))}
+              </div>
+              <div className={`transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'}`}> 
+              <section>
+                  <h2 className="text-sm md:text-xl font-bold mb-2 md:mb-6">【{FAQ_CATEGORIES.find(c => c.key === active)?.label}】</h2>
+                  <div>
+                  {FAQ_LIST[active].map((item, idx) => (
+                      <div key={`${active}-${idx}`} className="py-4 md:py-8" style={idx !== FAQ_LIST[active].length - 1 ? { borderBottom: '1px solid #bfae8a' } : {}}>
+                      <div className="mb-1 md:mb-2 flex items-start">
+                          <span className="font-serif text-lg md:text-2xl mr-2">Q</span>
+                          <span className="text-sm md:text-lg font-bold">{item.q}</span>
+                      </div>
+                      <div className="flex items-start">
+                          <span className="font-serif text-base md:text-xl mr-2">A</span>
+                          <span className="text-xs md:text-base text-gray-700 leading-relaxed">{item.a}</span>
+                      </div>
+                      </div>
+                  ))}
+                  </div>
+              </section>
+              </div>
+          </div>
         </div>
       </div>
-    </div>
+    </FadeTransitionWrapper>
   );
 } 

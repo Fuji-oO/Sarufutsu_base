@@ -3,7 +3,7 @@ export default function AboutPage() {
     <div
       className="w-full bg-cover bg-center flex items-start md:items-center relative min-h-0 md:min-h-screen"
       style={{
-        backgroundImage: "url('/images/F2D672C95457493BBA6F316D8F95B4E3_LL.webp')",
+        backgroundImage: "url('/images/esanuka.jpeg')",
       }}
     >
       {/* 霞エフェクト */}

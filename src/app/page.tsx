@@ -184,7 +184,7 @@ export default function Home() {
               <div className="relative flex-1 h-full">
                 <div className={`absolute right-0 top-0 w-36 h-20 shadow-lg rounded-lg overflow-hidden bg-white z-20 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
                   <Image
-                    src="/images/river1.png"
+                    src="/images/yuyake.jpeg"
                     alt="画像③"
                     fill
                     className="object-cover"
@@ -213,7 +213,7 @@ export default function Home() {
             </div>
             <div className={`absolute right-[-110px] bottom-[520px] w-70 h-35 md:w-[400px] md:h-72 shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
               <Image
-                src="/images/river1.png" 
+                src="/images/yuyake.jpeg" 
                 alt="画像③"
                 fill
                 className="object-cover"

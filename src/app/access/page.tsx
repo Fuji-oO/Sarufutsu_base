@@ -4,10 +4,10 @@ export default function AccessPage() {
   return (
     <div className="min-h-screen py-16 md:py-[120px] px-2 md:px-4" style={{ background: '#F5EEDC' }}>
       <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em'}}>Access</h1>
-      <p className="text-xs md:text-base text-center mb-8 md:mb-20" style={{letterSpacing:'0.1em'}}>- アクセス -</p>
+      <p className="text-xs md:text-base text-center mb-6 md:mb-20" style={{letterSpacing:'0.1em'}}>- アクセス -</p>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-start">
-        {/* Google Map埋め込み */}
-        <div>
+        {/* Google Map埋め込み（PCのみ表示） */}
+        <div className="hidden md:block">
           <iframe
             src="https://www.google.com/maps?q=45.329215,142.112069&z=17&output=embed"
             width="100%"
@@ -65,6 +65,19 @@ export default function AccessPage() {
               </tr>
             </tbody>
           </table>
+          {/* Google Map埋め込み（スマホのみ表示） */}
+          <div className="block md:hidden mt-6">
+            <iframe
+              src="https://www.google.com/maps?q=45.329215,142.112069&z=17&output=embed"
+              width="100%"
+              className="h-[250px] rounded-lg"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="さるふつbase Google Map"
+            ></iframe>
+          </div>
         </div>
       </div>
       <div className="max-w-4xl mx-auto pt-10 md:pt-50 text-center text-xs md:text-base leading-relaxed bg-[#FEFDFC]" style={{border: '2px solid #bfae8a', borderRadius: '16px', marginTop: '24px', padding: '20px 8px', boxSizing: 'border-box'}}>

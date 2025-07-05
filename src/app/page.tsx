@@ -176,7 +176,7 @@ export default function Home() {
                 {/* 画像① */}
                 <div className={`relative w-36 h-[216px] shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg1 ? ' show' : ''}`}> 
                   <Image
-                    src="/images/room_tate1.jpg"
+                    src="/images/s_fuukei21.jpg"
                     alt="画像①"
                     fill
                     className="object-cover"
@@ -186,7 +186,7 @@ export default function Home() {
                 <div className="relative flex-1 h-full">
                   <div className={`absolute right-0 top-0 w-36 h-20 shadow-lg rounded-lg overflow-hidden bg-white z-20 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
                     <Image
-                      src="/images/yuyake.jpeg"
+                      src="/images/s_fuukei29.jpg"
                       alt="画像③"
                       fill
                       className="object-cover"
@@ -207,7 +207,7 @@ export default function Home() {
             <div className="hidden md:block">
           <div className={`absolute -left-20 bottom-[-180px] -translate-y-1/2 w-56 h-80 md:w-80 md:h-[550px] shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg1 ? ' show' : ''}`}>
             <Image
-                  src="/images/room_tate1.jpg"
+                  src="/images/s_fuukei21.jpg"
               alt="画像①"
               fill
               className="object-cover"
@@ -215,7 +215,7 @@ export default function Home() {
           </div>
               <div className={`absolute right-[-110px] bottom-[520px] w-70 h-35 md:w-[400px] md:h-72 shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
             <Image
-                  src="/images/yuyake.jpeg" 
+                  src="/images/s_fuukei29.jpg" 
               alt="画像③"
               fill
               className="object-cover"

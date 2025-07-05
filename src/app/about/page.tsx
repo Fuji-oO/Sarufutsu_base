@@ -6,7 +6,7 @@ export default function AboutPage() {
       <div
         className="w-full bg-cover bg-center flex items-start md:items-center relative min-h-0 md:min-h-screen"
         style={{
-          backgroundImage: "url('/images/esanuka.jpeg')",
+          backgroundImage: "url('/images/s_fuukei23.jpg')"
         }}
       >
         {/* フェードグラデーション */}
@@ -36,7 +36,6 @@ export default function AboutPage() {
               貸切もでき、静けさの中でゆったりとした時間が過ごせます。<br /><br />
 
               でも、ここはただの宿ではありません。<br />
-              地域の人がふらっと立ち寄って、お茶を飲んだりおしゃべりしたり。<br />
               ときにはイベントやワークショップも開かれ、人々の交流が生まれる場所です。<br /><br />
 
               あたたかなつながりや、人との距離の近さ――<br />
@@ -63,8 +62,6 @@ export default function AboutPage() {
               貸切もでき、静けさの中でゆったりとした時間が過ごせます。<br /><br />
 
               でも、ここはただの宿ではありません。<br />
-              地域の人がふらっと立ち寄って、<br />
-              お茶を飲んだりおしゃべりしたり。<br />
               ときにはイベントやワークショップも開かれ、<br />
               人々の交流が生まれる場所です。<br /><br />
 

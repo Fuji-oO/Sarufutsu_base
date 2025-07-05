@@ -186,7 +186,7 @@ export default function Home() {
                 <div className="relative flex-1 h-full">
                   <div className={`absolute right-0 top-0 w-36 h-20 shadow-lg rounded-lg overflow-hidden bg-white z-20 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
                     <Image
-                      src="/images/s_fuukei29.jpg"
+                      src="/images/s_fuukei17.jpg"
                       alt="画像③"
                       fill
                       className="object-cover"
@@ -194,7 +194,7 @@ export default function Home() {
                   </div>
                   <div className={`absolute right-0 bottom-0 w-44 h-28 shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg2 ? ' show' : ''}`}> 
                     <Image
-                      src="/images/hamanasu1.png"
+                      src="/images/s_doubutu18.jpg"
                       alt="画像②"
                       fill
                       className="object-cover"

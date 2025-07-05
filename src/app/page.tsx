@@ -215,7 +215,7 @@ export default function Home() {
           </div>
               <div className={`absolute right-[-110px] bottom-[520px] w-70 h-35 md:w-[400px] md:h-72 shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg3 ? ' show' : ''}`}> 
             <Image
-                  src="/images/s_fuukei29.jpg" 
+                  src="/images/s_fuukei17.jpg" 
               alt="画像③"
               fill
               className="object-cover"
@@ -223,7 +223,7 @@ export default function Home() {
           </div>
           <div className={`absolute right-[150px] bottom-[-70px] w-80 h-48 md:w-96 md:h-56 shadow-lg rounded-lg overflow-hidden bg-white z-10 transition-opacity duration-1000 fade-in${showImg2 ? ' show' : ''}`}>
             <Image
-                  src="/images/hamanasu1.png"
+                  src="/images/s_doubutu18.jpg"
               alt="画像②"
               fill
               className="object-cover"

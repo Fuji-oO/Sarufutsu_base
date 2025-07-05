@@ -352,13 +352,14 @@ export default function Home() {
                 <h3 className="text-xl text-center font-bold mt-0 mb-6 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
                 <p className="mb-2 text-sm text-center" style={{fontFamily: 'Klee One, cursive'}}>
                   さるふつbaseのコミュニティスペースは、<br />
-                  旅人も地域の人もふらっと立ち寄れる、<br />
+                  イベントやワークショップ、<br />
+                  地元の人とのおしゃべりなどから、<br />
+                  いろんな出会いや発見が生まれる、<br />
                   気軽でオープンな空間です。  
                 </p>
                 <p className="mb-2 text-sm text-center" style={{fontFamily: 'Klee One, cursive'}}>
-                  イベントやワークショップ、<br />
-                  地元の人とのおしゃべりなどから、<br />
-                  いろんな出会いや発見が生まれます。
+                  旅の途中でふらっと立ち寄った人同士が<br />
+                  自然につながったり、思いがけない交流が生まれたり。
                 </p>
                 <p className="text-sm text-center" style={{fontFamily: 'Klee One, cursive'}}>
                   ここでのひとときが、<br />
@@ -401,16 +402,18 @@ export default function Home() {
                   <h2 className="text-base md:text-2xl mt-0 mb-1 md:mb-2" style={{fontFamily: 'Klee One, cursive'}}>- Community Space -</h2>
                   <h3 className="text-xl md:text-3xl text-center md:text-4xl font-bold mt-0 mb-2 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
                   <p className="mb-2 md:mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
-                  さるふつbaseのコミュニティスペースは、<br />
-                    旅人も地域の人もふらっと立ち寄れる、気軽でオープンな空間です。  
-                </p>
-                  <p className="mb-2 md:mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
-                    イベントやワークショップ、地元の人とのおしゃべりなどから、<br />
-                    いろんな出会いや発見が生まれます。
-                </p>
-                  <p className="mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
-                    ここでのひとときが、旅の思い出や新しいご縁につながるかもしれません。
-                </p>
+                    さるふつbaseのコミュニティスペースは、<br />
+                    イベントやワークショップ、 地元の人とのおしゃべりなどから、<br />
+                    いろんな出会いや発見が生まれる、気軽でオープンな空間です。  
+                  </p>
+                    <p className="mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
+                      旅の途中でふらっと立ち寄った人同士が自然につながったり、<br />
+                      思いがけない交流が生まれたり。<br />
+                    </p>
+                    <p className="mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
+
+                      ここでのひとときが、旅の思い出や新しいご縁につながるかもしれません。
+                  </p>
                 </div>
               </div>
               <div className={`flex-none w-[290px] h-[450px] relative ml-[80px] mb-[150px] transition-opacity duration-1000 fade-in${showCommunityImgRight ? ' show' : ''}`}>

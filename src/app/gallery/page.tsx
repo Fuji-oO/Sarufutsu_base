@@ -55,12 +55,13 @@ export default function GalleryPage() {
               className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${modalVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
               onClick={closeModal}
             >
-              <div className="relative w-11/12 max-w-md aspect-[3/2] md:w-4/5 md:max-w-3xl" onClick={e => e.stopPropagation()}>
+              <button
+                className="absolute top-4 right-4 z-50 text-3xl md:text-4xl text-white"
+                onClick={closeModal}
+                aria-label="閉じる"
+              >×</button>
+              <div className="relative w-11/12 max-w-md aspect-[2/3] md:w-4/5 md:max-w-4xl md:h-4/5 w-2/3" onClick={e => e.stopPropagation()}>
                 <Image src={modalImg} alt="拡大画像" fill className="object-contain rounded" />
-                <button
-                  className="absolute top-2 right-2 bg-white bg-opacity-80 rounded-full px-2 py-1 text-xs font-bold transition-opacity duration-300"
-                  onClick={closeModal}
-                >閉じる</button>
               </div>
             </div>
           )}

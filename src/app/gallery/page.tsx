@@ -60,7 +60,7 @@ export default function GalleryPage() {
                 onClick={closeModal}
                 aria-label="閉じる"
               >×</button>
-              <div className="relative w-11/12 max-w-md aspect-[2/3] md:w-4/5 md:max-w-4xl md:h-4/5 w-2/3" onClick={e => e.stopPropagation()}>
+              <div className="relative w-11/12 max-w-md aspect-[1/1] md:w-4/5 md:max-w-4xl md:h-4/5" onClick={e => e.stopPropagation()}>
                 <Image src={modalImg} alt="拡大画像" fill className="object-contain rounded" />
               </div>
             </div>

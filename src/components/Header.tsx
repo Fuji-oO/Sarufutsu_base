@@ -43,8 +43,8 @@ export default function Header() {
           <div className="hidden md:flex flex-1 justify-end space-x-6 items-center">
             <FadeLink href="/about" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>About</FadeLink>
             <FadeLink href="/rooms" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>Rooms</FadeLink>
-            {/* <a href="/style" className="hover:text-gray-600">Spend</a> */}
             <FadeLink href="/reservation" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>Reservation</FadeLink>
+            <FadeLink href="/gallery" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>Gallery</FadeLink>
             <FadeLink href="/faq" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>FAQ</FadeLink>
             <FadeLink href="/access" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>Access</FadeLink>
             <FadeLink href="/contact" className="hover:text-gray-600" style={{fontFamily: 'Klee One, cursive'}}>Contact</FadeLink>
@@ -69,13 +69,21 @@ export default function Header() {
             <span className="block w-6 h-0.5 bg-gray-800 rotate-45 translate-y-1"></span>
             <span className="block w-6 h-0.5 bg-gray-800 -rotate-45 -translate-y-1 -mt-0.5"></span>
           </button>
-          <div className="flex flex-col space-y-4 py-10 px-6">
-            <FadeLink href="/about" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>About</FadeLink>
-            <FadeLink href="/rooms" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Rooms</FadeLink>
-            <FadeLink href="/reservation" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Reservation</FadeLink>
-            <FadeLink href="/faq" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>FAQ</FadeLink>
-            <FadeLink href="/access" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Access</FadeLink>
-            <FadeLink href="/contact" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Contact</FadeLink>
+          <div className="flex flex-col space-y-2 py-10 px-6">
+            <FadeLink href="/about" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>About<br />
+            <span className="text-[10px]">- さるふつbaseについて -</span></FadeLink>
+            <FadeLink href="/rooms" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Rooms<br />
+            <span className="text-[10px]">- お部屋 -</span></FadeLink>
+            <FadeLink href="/reservation" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Reservation<br />
+            <span className="text-[10px]">- ご予約 -</span></FadeLink>
+            <FadeLink href="/gallery" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Gallery<br />
+            <span className="text-[10px]">- 猿払村の風景 -</span></FadeLink>
+            <FadeLink href="/faq" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>FAQ<br />
+            <span className="text-[10px]">- よくあるご質問 -</span></FadeLink>
+            <FadeLink href="/access" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Access<br />
+            <span className="text-[10px]">- アクセス -</span></FadeLink>
+            <FadeLink href="/contact" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Contact<br />
+            <span className="text-[10px]">- お問い合わせ -</span></FadeLink>
           </div>
         </div>
       </nav>

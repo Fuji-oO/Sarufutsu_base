@@ -115,7 +115,7 @@ export default function ReservationPage() {
                 <FaInstagram size={22} /> Instagram
               </a>
             </div>
-            <div className="text-xs md:text-sm text-gray-500 mt-4">※お電話での受付は、9:00〜18:00の時間帯となっております。</div>
+            <div className="text-xs md:text-sm text-gray-500 mt-4">※お電話での受付は、9:00〜18:00の時間帯となります。</div>
             <div className="text-xs md:text-sm text-gray-500">※空室状況やご質問もお気軽にご連絡ください。</div>
           </div>
         </div>

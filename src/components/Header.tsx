@@ -42,29 +42,31 @@ export default function Header() {
                 />
               </a>
             </div>
-
             {/* 右側：メニュー + ハンバーガー */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-10">
               <FadeLink
                 href="/rooms"
-                className="hover:text-gray-600"
+                className="hover:text-gray-600 text-center"
                 style={{ fontFamily: 'Klee One, cursive' }}
               >
-                Rooms
+                Rooms & Facilities<br />
+                <span className="text-[12px]">- お部屋・設備 -</span>
               </FadeLink>
               <FadeLink
                 href="/reservation"
-                className="hover:text-gray-600"
+                className="hover:text-gray-600 text-center"
                 style={{ fontFamily: 'Klee One, cursive' }}
               >
-                Reservation
+                Reservation<br />
+                <span className="text-[12px]">- ご予約 -</span>
               </FadeLink>
               <FadeLink
                 href="/access"
-                className="hover:text-gray-600"
+                className="hover:text-gray-600 text-center"
                 style={{ fontFamily: 'Klee One, cursive' }}
               >
-                Access
+                Access<br />
+                <span className="text-[12px]">- アクセス -</span>
               </FadeLink>
 
               {/* ハンバーガーアイコン */}
@@ -104,35 +106,66 @@ export default function Header() {
                 <div className="flex flex-col space-y-4 py-10 px-6">
                   <FadeLink
                     href="/about"
-                    className="text-lg py-2"
+                    className="text-lg py-2 hover:text-gray-600"
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setPcMenuOpen(false)}
                   >
-                    About
+                    About<br />
+                    <span className="text-[12px]">- さるふつbaseについて -</span>
+                  </FadeLink>
+                  <FadeLink
+                    href="/rooms"
+                    className="text-lg py-2 hover:text-gray-600"
+                    style={{ fontFamily: 'Klee One, cursive' }}
+                    onClick={() => setPcMenuOpen(false)}
+                  >
+                    Rooms & Facilities<br />
+                    <span className="text-[12px]">- お部屋・設備 -</span>
+                  </FadeLink>
+                  <FadeLink
+                    href="/reservation"
+                    className="text-lg py-2 hover:text-gray-600"
+                    style={{ fontFamily: 'Klee One, cursive' }}
+                    onClick={() => setPcMenuOpen(false)}
+                  >
+                    Reservation<br />
+                    <span className="text-[12px]">- ご予約 -</span>
                   </FadeLink>
                   <FadeLink
                     href="/gallery"
-                    className="text-lg py-2"
+                    className="text-lg py-2 hover:text-gray-600"
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setPcMenuOpen(false)}
                   >
-                    Gallery
+                    Gallery<br />
+                    <span className="text-[12px]">- 猿払村の風景 -</span>
                   </FadeLink>
                   <FadeLink
                     href="/faq"
-                    className="text-lg py-2"
+                    className="text-lg py-2 hover:text-gray-600"
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setPcMenuOpen(false)}
                   >
-                    FAQ
+                    FAQ<br />
+                    <span className="text-[12px]">- よくあるご質問 -</span>
+                  </FadeLink>
+                  <FadeLink
+                    href="/access"
+                    className="text-lg py-2 hover:text-gray-600"
+                    style={{ fontFamily: 'Klee One, cursive' }}
+                    onClick={() => setPcMenuOpen(false)}
+                  >
+                    Access<br />
+                    <span className="text-[12px]">- アクセス -</span>
                   </FadeLink>
                   <FadeLink
                     href="/contact"
-                    className="text-lg py-2"
+                    className="text-lg py-2 hover:text-gray-600"
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setPcMenuOpen(false)}
                   >
-                    Contact
+                    Contact<br />
+                    <span className="text-[12px]">- お問い合わせ -</span>
                   </FadeLink>
                 </div>
               </div>

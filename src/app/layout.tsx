@@ -10,7 +10,7 @@ import TransitionOverlay from '../components/TransitionOverlay'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'さるふつbase',
+  title: 'さるふつbase | 北海道・猿払村のゲストハウス',
   description: '北海道・猿払村のゲストハウス「さるふつbase」の公式ホームページです。',
 }
 
@@ -55,6 +55,7 @@ export default function RootLayout({
                     <li><FadeLink href="/about" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>About - さるふつbaseについて -</FadeLink></li>
                     <li><FadeLink href="/rooms" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Rooms - お部屋 -</FadeLink></li>
                     <li><FadeLink href="/reservation" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Reservation - ご予約 -</FadeLink></li>
+                    <li><FadeLink href="/gallery" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Gallery - 猿払村の風景 -</FadeLink></li>
                     <li><FadeLink href="/faq" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>FAQ - よくあるご質問 -</FadeLink></li>
                     <li><FadeLink href="/access" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Access - アクセス -</FadeLink></li>
                     <li><FadeLink href="/contact" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Contact - お問い合わせ -</FadeLink></li>
@@ -88,6 +89,7 @@ export default function RootLayout({
                     <li><FadeLink href="/about" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>About - さるふつbaseについて -</FadeLink></li>
                     <li><FadeLink href="/rooms" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Rooms - お部屋 -</FadeLink></li>
                     <li><FadeLink href="/reservation" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Reservation - ご予約 -</FadeLink></li>
+                    <li><FadeLink href="/gallery" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Gallery - 猿払村の風景 -</FadeLink></li>
                     <li><FadeLink href="/faq" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>FAQ - よくあるご質問 -</FadeLink></li>
                     <li><FadeLink href="/access" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Access - アクセス -</FadeLink></li>
                     <li><FadeLink href="/contact" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Contact - お問い合わせ -</FadeLink></li>

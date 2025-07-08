@@ -97,10 +97,15 @@ const ContactPage = () => {
                       <div className="bg-[#fff] p-3 md:p-6 rounded-lg mb-4 md:mb-8 border-2" style={{ borderColor: '#BFAE8A' }}>
                         <h2 className="text-base md:text-2xl font-black mb-2 md:mb-4">お電話でのお問い合わせ</h2>
                         <p className="text-xs md:text-base text-gray-700 ml-20 md:ml-16 mb-1 md:mb-2">
-                          <span className="font-bold">TEL:</span> 070-2616-1188
+                          <span className="font-bold">TEL: </span> 
+                          <a 
+                            href="tel:070-2616-1188"
+                            className="transition-colors duration-200 text-gray-700 hover:text-[#BFAE8A] focus:text-[#BFAE8A] font-normal"
+                            style={{textDecoration: 'none'}}
+                          >070-2616-1188</a>
                         </p>
                         <p className="text-xs md:text-base text-gray-700 ml-20 md:ml-16">
-                          <span className="font-bold">受付時間:</span> 9:00 〜 18:00（年中無休）
+                          <span className="font-bold">受付時間:</span> 9:00 〜 18:00
                         </p>
                       </div>
                       <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 pb-4 md:pb-8">

@@ -49,8 +49,8 @@ export default function Header() {
                 className="hover:text-gray-600 text-center"
                 style={{ fontFamily: 'Klee One, cursive' }}
               >
-                Rooms & Facilities<br />
-                <span className="text-[12px]">- お部屋・設備 -</span>
+                Rooms<br />
+                <span className="text-[12px]">- お部屋 -</span>
               </FadeLink>
               <FadeLink
                 href="/reservation"
@@ -119,8 +119,8 @@ export default function Header() {
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setPcMenuOpen(false)}
                   >
-                    Rooms & Facilities<br />
-                    <span className="text-[12px]">- お部屋・設備 -</span>
+                    Rooms<br />
+                    <span className="text-[12px]">- お部屋 -</span>
                   </FadeLink>
                   <FadeLink
                     href="/reservation"

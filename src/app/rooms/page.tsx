@@ -133,9 +133,9 @@ export default function RoomsPage() {
               <p className="text-xs md:text-sm text-center mb-2 md:mb-4 text-gray-600">※画像をクリックまたはタップで拡大します</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 {/* リビングスペース */}
-                <div className="bg-[#FEFDFC] rounded-lg shadow p-4 flex flex-col items-center h-full min-h-[320px] justify-between cursor-pointer" onClick={()=>openModal('/images/2fspace1.jpg')}>
+                <div className="bg-[#FEFDFC] rounded-lg shadow p-4 flex flex-col items-center h-full min-h-[320px] justify-between cursor-pointer" onClick={()=>openModal('/images/2Fspace1.jpg')}>
                   <div className="w-full h-48 mb-4 relative rounded overflow-hidden">
-                    <Image src="/images/2fspace1.jpg" alt="リビングスペース" fill className="object-cover" />
+                    <Image src="/images/2Fspace1.jpg" alt="リビングスペース" fill className="object-cover" />
                   </div>
                   <div className="font-bold text-lg md:text-xl mb-2">リビングスペース</div>
                   <div className="text-xs md:text-sm text-gray-700 text-center min-h-[40px] flex items-center justify-center">

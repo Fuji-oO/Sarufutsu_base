@@ -53,7 +53,7 @@ export default function RootLayout({
                   <div className="mt-1 pt-2 border-t text-center text-gray-600" style={{ borderTopColor: '#BFAE8A', borderTopWidth: '1px', borderTopStyle: 'solid' }}></div>
                   <ul className="flex flex-col gap-1">
                     <li><FadeLink href="/about" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>About - さるふつbaseについて -</FadeLink></li>
-                    <li><FadeLink href="/rooms" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Rooms - お部屋 -</FadeLink></li>
+                    <li><FadeLink href="/rooms" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Rooms & Facilities - お部屋・設備 -</FadeLink></li>
                     <li><FadeLink href="/reservation" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Reservation - ご予約 -</FadeLink></li>
                     <li><FadeLink href="/gallery" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Gallery - 猿払村の風景 -</FadeLink></li>
                     <li><FadeLink href="/faq" className="text-xs text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>FAQ - よくあるご質問 -</FadeLink></li>
@@ -87,7 +87,7 @@ export default function RootLayout({
                 <div className="mt-2 pt-6 border-t text-center text-gray-600" style={{ borderTopColor: '#BFAE8A', borderTopWidth: '1px', borderTopStyle: 'solid' }}></div>
                 <ul className="flex flex-col gap-2">
                     <li><FadeLink href="/about" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>About - さるふつbaseについて -</FadeLink></li>
-                    <li><FadeLink href="/rooms" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Rooms - お部屋 -</FadeLink></li>
+                    <li><FadeLink href="/rooms" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Rooms & Facilities - お部屋・設備 -</FadeLink></li>
                     <li><FadeLink href="/reservation" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Reservation - ご予約 -</FadeLink></li>
                     <li><FadeLink href="/gallery" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>Gallery - 猿払村の風景 -</FadeLink></li>
                     <li><FadeLink href="/faq" className="text-gray-600 hover:text-gray-900" style={{fontFamily: 'Klee One, cursive'}}>FAQ - よくあるご質問 -</FadeLink></li>

@@ -29,7 +29,7 @@ const posts = [
   {
     id: '5',
     imageUrl: '/images/insta5.jpg',
-    postUrl: 'https://www.instagram.com/sarufutsu_base?igsh=d3JjMmcwb3VkcjB0&utm_source=qr',
+    postUrl: 'https://www.instagram.com/sarufutsu_base/p/DL01UHcTC2B/',
     likes: 90,
   },
   {

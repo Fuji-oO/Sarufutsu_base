@@ -265,7 +265,7 @@ export default function Home() {
           <div className="container mx-auto px-2 md:px-4">
           <div ref={roomsRef}></div>
             <div className={`relative z-20 max-w-xl w-full mx-auto bg-transparent px-2 md:px-4 py-4 md:py-8 transition-opacity duration-1000 fade-in${showRoomsText ? ' show' : ''}`}>
-              <h2 className="text-base md:text-2xl text-center mt-0 mb-1 md:mb-2" style={{fontFamily: 'Klee One, cursive'}}>- Rooms -</h2>
+              <h2 className="text-base md:text-2xl text-center mt-0 mb-1 md:mb-2" style={{fontFamily: 'Klee One, cursive'}}>- Rooms & Facilities -</h2>
               <h3 className="text-xl md:text-3xl text-center md:text-4xl font-bold mt-0 mb-6 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>静けさにひたる、ちょっと特別な時間。</h3>
               {/* スマホのみ */}
               <p className="mb-2 text-sm block md:hidden text-center" style={{fontFamily: 'Klee One, cursive'}}>

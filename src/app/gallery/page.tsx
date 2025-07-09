@@ -33,7 +33,7 @@ export default function GalleryPage() {
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em'}}>Gallery</h1>
           <div className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- 猿払村の風景 -</div>
-          <p className="text-xs md:text-sm text-center mb-2 md:mb-4 text-gray-600">※画像をクリックまたはタップで拡大します</p>
+          <p className="text-xs md:text-base text-center mb-2 md:mb-4 text-gray-600">※画像をクリックまたはタップで拡大します</p>
           {/* PC版: グリッドで大きく表示 */}
           <div className="hidden md:grid grid-cols-4 gap-4 mb-12">
             {imageFiles.map((file, i) => (
@@ -66,6 +66,22 @@ export default function GalleryPage() {
               </div>
             </div>
           )}
+        </div>
+        <div className="text-center text-xs md:text-base text-gray-500 mt-10" style={{letterSpacing:'0.1em'}}>
+          写真提供：SARUFUTSU-LABO　新家拓朗
+        </div>
+        <div className="text-center mt-2">
+          <a
+            href="https://saruphoto.base.ec"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-500 underline hover:text-gray-800 text-xs md:text-base"
+          >
+            @https://saruphoto.base.ec
+          </a>
+        </div>
+        <div className="text-center text-xs md:text-base text-gray-500 mt-8" style={{letterSpacing:'0.1em'}}>
+          写真の無断転載・二次利用を固く禁じます。
         </div>
       </div>
     </FadeTransitionWrapper>

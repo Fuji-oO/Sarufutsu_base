@@ -49,8 +49,8 @@ export default function Header() {
                 className="hover:text-gray-600 text-center"
                 style={{ fontFamily: 'Klee One, cursive' }}
               >
-                Rooms<br />
-                <span className="text-[12px]">- お部屋 -</span>
+                Rooms & Facilities<br />
+                <span className="text-[12px]">- お部屋・設備 -</span>
               </FadeLink>
               <FadeLink
                 href="/reservation"
@@ -119,8 +119,8 @@ export default function Header() {
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setPcMenuOpen(false)}
                   >
-                    Rooms<br />
-                    <span className="text-[12px]">- お部屋 -</span>
+                    Rooms & Facilities<br />
+                    <span className="text-[12px]">- お部屋・設備 -</span>
                   </FadeLink>
                   <FadeLink
                     href="/reservation"
@@ -208,8 +208,8 @@ export default function Header() {
           <div className="flex flex-col space-y-2 py-10 px-6">
             <FadeLink href="/about" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>About<br />
             <span className="text-[10px]">- さるふつbaseについて -</span></FadeLink>
-            <FadeLink href="/rooms" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Rooms<br />
-            <span className="text-[10px]">- お部屋 -</span></FadeLink>
+            <FadeLink href="/rooms" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Rooms & Facilities<br />
+            <span className="text-[10px]">- お部屋・設備 -</span></FadeLink>
             <FadeLink href="/reservation" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Reservation<br />
             <span className="text-[10px]">- ご予約 -</span></FadeLink>
             <FadeLink href="/gallery" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Gallery<br />

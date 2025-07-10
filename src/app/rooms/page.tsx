@@ -52,7 +52,7 @@ export default function RoomsPage() {
               <span className="text-red-600 font-bold text-base md:text-2xl tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>【7月限定オープニングセール開催中！】</span><br />
               <span className="text-red-600 text-xs md:text-ml tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>さるふつbaseのオープンを記念して、<br />7月のご宿泊を特別セール価格でご案内いたします。</span>
             </div>
-            <div className="mb-2">【宿泊料金】</div>
+            <div className="mb-2">【宿泊料金(素泊まり)】</div>
             <div className="mb-1">
               <span className="line-through text-gray-400 mr-2">大人：9,000円（税込9,900円）/ 1泊</span><br />
               <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">大人：7,000円（税込7,700円）／ 1泊</span>
@@ -67,13 +67,15 @@ export default function RoomsPage() {
             </div>
             {/* スマホ用注意書き */}
             <div className="block md:hidden mt-4 text-xs text-gray-700">
-              ※10月～5月の間は、暖房費としてお一人様1泊につき<br />
+              ※現在は、素泊まりのみのご案内となります。<br />
+              ※10月～4月の間は、暖房費としてお一人様1泊につき<br />
               500円(税込550円)を頂戴しております。<br />
               ※村民割引あり(詳細はお問い合わせください)
             </div>
             {/* PC用注意書き */}
             <div className="hidden md:block mt-4 text-sm text-gray-700">
-              ※10月～5月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
+              ※現在は、素泊まりのみのご案内となります。<br />
+              ※10月～4月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
               ※村民割引あり(詳細はお問い合わせください)
             </div>
           </div>

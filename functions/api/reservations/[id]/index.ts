@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 
 export const onRequestGet = async (context: any) => {
   try {
-    const supabaseUrl = context.env.SUPABASE_URL;
-    const supabaseKey = context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -13,8 +13,7 @@ export const onRequestGet = async (context: any) => {
     }
     
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const url = new URL(context.request.url);
-    const id = url.pathname.split('/').pop();
+    const id = context.params.id;
     
     const { data, error } = await supabase
       .from('reservations')
@@ -22,7 +21,7 @@ export const onRequestGet = async (context: any) => {
       .eq('id', id)
       .single();
     
-    if (error || !data) {
+    if (error) {
       return new Response(
         JSON.stringify({ error: 'Reservation not found' }),
         { status: 404, headers: { 'Content-Type': 'application/json' } }
@@ -42,8 +41,8 @@ export const onRequestGet = async (context: any) => {
 
 export const onRequestPut = async (context: any) => {
   try {
-    const supabaseUrl = context.env.SUPABASE_URL;
-    const supabaseKey = context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -53,29 +52,28 @@ export const onRequestPut = async (context: any) => {
     }
     
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const url = new URL(context.request.url);
-    const id = url.pathname.split('/').pop();
-    const data = await context.request.json();
+    const id = context.params.id;
+    const updateData = await context.request.json();
     
-    const { data: updatedData, error } = await supabase
+    const { data, error } = await supabase
       .from('reservations')
-      .update(data)
+      .update(updateData)
       .eq('id', id)
       .select();
     
     if (error) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Failed to update reservation' }),
+        JSON.stringify({ error: 'Failed to update reservation' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
     
-    return new Response(JSON.stringify({ success: true, data: updatedData }), {
+    return new Response(JSON.stringify(data[0]), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
     return new Response(
-      JSON.stringify({ success: false, error: String(error) }),
+      JSON.stringify({ error: 'Failed to update reservation' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
@@ -83,8 +81,8 @@ export const onRequestPut = async (context: any) => {
 
 export const onRequestDelete = async (context: any) => {
   try {
-    const supabaseUrl = context.env.SUPABASE_URL;
-    const supabaseKey = context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -94,8 +92,7 @@ export const onRequestDelete = async (context: any) => {
     }
     
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const url = new URL(context.request.url);
-    const id = url.pathname.split('/').pop();
+    const id = context.params.id;
     
     const { error } = await supabase
       .from('reservations')
@@ -104,7 +101,7 @@ export const onRequestDelete = async (context: any) => {
     
     if (error) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Failed to delete reservation' }),
+        JSON.stringify({ error: 'Failed to delete reservation' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -114,7 +111,7 @@ export const onRequestDelete = async (context: any) => {
     });
   } catch (error) {
     return new Response(
-      JSON.stringify({ success: false, error: String(error) }),
+      JSON.stringify({ error: 'Failed to delete reservation' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

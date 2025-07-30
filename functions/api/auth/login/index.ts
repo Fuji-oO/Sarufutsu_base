@@ -4,13 +4,13 @@ export const onRequestPost = async (context: any) => {
   try {
     // デバッグ用ログ
     console.log('=== Environment Variables Debug ===');
-    console.log('context.env keys:', Object.keys(context.env || {}));
-    console.log('SUPABASE_URL:', context.env.SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('SUPABASE_ANON_KEY:', context.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    console.log('process.env keys:', Object.keys(process.env || {}));
+    console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
     
-    // Cloudflare Functionsでは環境変数をcontext.envでアクセス
-    const supabaseUrl = context.env.SUPABASE_URL;
-    const supabaseKey = context.env.SUPABASE_ANON_KEY;
+    // Cloudflare Functionsでは環境変数をprocess.envでアクセス
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       console.log('Environment variables missing');

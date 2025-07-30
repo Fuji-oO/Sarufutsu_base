@@ -3,8 +3,8 @@ import { sendContactEmail } from '../../../src/lib/email';
 
 export const onRequestPost = async (context: any) => {
   try {
-    const supabaseUrl = context.env.SUPABASE_URL;
-    const supabaseKey = context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -14,28 +14,28 @@ export const onRequestPost = async (context: any) => {
     }
     
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const data = await context.request.json();
+    const { name, email, message } = await context.request.json();
     
-    // お問い合わせデータをSupabaseに保存（contactsテーブルがある場合）
-    try {
-      await supabase
-        .from('contacts')
-        .insert([{
-          name: data.name,
-          email: data.email,
-          message: data.message,
-          created_at: new Date().toISOString()
-        }]);
-    } catch (dbError) {
-      console.error('Database insert failed:', dbError);
-      // データベース保存に失敗してもメール送信は続行
+    if (!name || !email || !message) {
+      return new Response(
+        JSON.stringify({ error: 'Name, email, and message are required' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
     
-    // メール送信
-    const apiKey = context.env.RESEND_API_KEY;
-    await sendContactEmail(data, apiKey);
+    const { data, error } = await supabase
+      .from('contacts')
+      .insert([{ name, email, message }])
+      .select();
     
-    return new Response(JSON.stringify({ success: true }), {
+    if (error) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Failed to send message' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    return new Response(JSON.stringify({ success: true, data }), {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {

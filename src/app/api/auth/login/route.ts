@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../../lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
@@ -7,6 +7,19 @@ export async function POST(request: NextRequest) {
     const { email, password } = await request.json()
     
     console.log('認証リクエスト:', { email, password: password ? '***' : 'undefined' })
+
+    // 環境変数の確認
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        { error: '環境変数が設定されていません' },
+        { status: 500 }
+      )
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
     // バリデーション
     if (!email || !password) {

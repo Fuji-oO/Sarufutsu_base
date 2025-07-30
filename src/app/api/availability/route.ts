@@ -1,8 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
     console.log('=== 空室状況API開始 ===');
@@ -100,26 +98,15 @@ export async function GET(request: NextRequest) {
           // 貸切の場合、Room1またはRoom2のいずれかに予約があるか、貸切予約がある日は満室
           return reservation.room_type === 'Room1' || reservation.room_type === 'Room2' || reservation.room_type === '貸切' || reservation.room_type === '休業日';
         } else if (roomType === 'Room1' || roomType === 'Room2') {
-          // Room1またはRoom2の場合、選択された部屋タイプの予約、または貸切予約、または休業日がある日は満室
+          // Room1またはRoom2の場合、同じ部屋タイプまたは貸切予約がある日は満室
           return reservation.room_type === roomType || reservation.room_type === '貸切' || reservation.room_type === '休業日';
-        } else if (roomType === '休業日') {
-          // 休業日の場合は、Room1またはRoom2のいずれかに予約があるか、貸切予約がある日は満室
-          // また、休業日予約がある日も満室とする
-          return reservation.room_type === 'Room1' || reservation.room_type === 'Room2' || reservation.room_type === '貸切' || reservation.room_type === '休業日';
-        } else {
-          // その他の部屋タイプは、選択された部屋タイプの予約のみをチェック
-          return reservation.room_type === roomType;
         }
+        return false;
       });
 
-      // 部屋タイプ別の最大部屋数を設定
-      let maxRooms = 1;
-      if (roomType === 'Room1' || roomType === 'Room2') {
-        maxRooms = 1; // 各タイプ1部屋ずつ
-      } else if (roomType === '貸切' || roomType === '休業日') {
-        maxRooms = 1; // 貸切と休業日は1部屋（Room1とRoom2の両方が空いている必要）
-      }
-
+      // 最大部屋数（貸切の場合は1、Room1/Room2の場合は1）
+      const maxRooms = 1;
+      
       // 空室状況を判定
       availability[dateStr] = roomTypeReservations.length < maxRooms;
     }
@@ -128,9 +115,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       availability,
-      roomType,
-      dateRange: { start: startDate, end: endDate },
-      totalReservations: reservations?.length || 0
+      maxRooms: 1,
+      dateRange: { start: startDate, end: endDate }
     });
 
   } catch (error) {

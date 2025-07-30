@@ -2,19 +2,31 @@ import { createClient } from '@supabase/supabase-js';
 
 export const onRequestPost = async (context: any) => {
   try {
+    // デバッグ用ログ
+    console.log('=== Environment Variables Debug ===');
+    console.log('context.env keys:', Object.keys(context.env || {}));
+    console.log('SUPABASE_URL:', context.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_ANON_KEY:', context.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    
     // Cloudflare Functionsでは環境変数をcontext.envでアクセス
     const supabaseUrl = context.env.SUPABASE_URL;
     const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
+      console.log('Environment variables missing');
       return new Response(
         JSON.stringify({ error: '環境変数が設定されていません' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
     
+    console.log('Supabase URL (first 20 chars):', supabaseUrl.substring(0, 20) + '...');
+    console.log('Supabase Key (first 20 chars):', supabaseKey.substring(0, 20) + '...');
+    
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { email, password } = await context.request.json();
+    
+    console.log('Login attempt for email:', email);
     
     // 管理者ユーザーを取得
     const { data: user, error } = await supabase
@@ -24,15 +36,20 @@ export const onRequestPost = async (context: any) => {
       .single();
     
     if (error || !user) {
+      console.log('User not found or error:', error);
       return new Response(
         JSON.stringify({ error: 'Invalid credentials' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       );
     }
     
+    console.log('User found:', user.email);
+    
     // パスワード検証（簡易版 - 実際の運用では適切なハッシュ検証が必要）
     // Cloudflare Functionsではbcryptの使用が制限されるため、一時的に簡易検証
     const isValidPassword = user.password_hash === password; // 実際の運用では適切なハッシュ検証
+    
+    console.log('Password validation result:', isValidPassword);
     
     if (!isValidPassword) {
       return new Response(
@@ -40,6 +57,8 @@ export const onRequestPost = async (context: any) => {
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       );
     }
+    
+    console.log('Login successful');
     
     return new Response(JSON.stringify({ 
       success: true, 
@@ -52,6 +71,7 @@ export const onRequestPost = async (context: any) => {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
+    console.log('Login error:', error);
     return new Response(
       JSON.stringify({ error: 'Login failed' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }

@@ -3,14 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 export const onRequestPost = async (context: any) => {
   try {
     // デバッグ用ログ
-    console.log('=== Environment Variables Debug ===');
+    console.log('=== Login Function Called ===');
     console.log('process.env keys:', Object.keys(process.env || {}));
-    console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
     
-    // Cloudflare Functionsでは環境変数をprocess.envでアクセス
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY;
+    // 正しい環境変数名を使用
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       console.log('Environment variables missing');

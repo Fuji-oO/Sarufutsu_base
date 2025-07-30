@@ -2,12 +2,33 @@ import { createClient } from '@supabase/supabase-js';
 
 export const onRequestPost = async (context: any) => {
   try {
-    const supabaseUrl = context.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = context.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    // 環境変数の取得を試行（複数の方法）
+    const supabaseUrl = context.env.NEXT_PUBLIC_SUPABASE_URL || 
+                       context.env.SUPABASE_URL || 
+                       context.env.VITE_SUPABASE_URL;
+    const supabaseKey = context.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
+                       context.env.SUPABASE_ANON_KEY || 
+                       context.env.VITE_SUPABASE_ANON_KEY;
+    
+    // デバッグ情報
+    console.log('Environment variables:', {
+      NEXT_PUBLIC_SUPABASE_URL: context.env.NEXT_PUBLIC_SUPABASE_URL,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: context.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      SUPABASE_URL: context.env.SUPABASE_URL,
+      SUPABASE_ANON_KEY: context.env.SUPABASE_ANON_KEY,
+      allKeys: Object.keys(context.env)
+    });
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
-        JSON.stringify({ error: '環境変数が設定されていません' }),
+        JSON.stringify({ 
+          error: '環境変数が設定されていません',
+          debug: {
+            supabaseUrl: !!supabaseUrl,
+            supabaseKey: !!supabaseKey,
+            availableKeys: Object.keys(context.env)
+          }
+        }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -52,7 +73,7 @@ export const onRequestPost = async (context: any) => {
     });
   } catch (error) {
     return new Response(
-      JSON.stringify({ error: 'Login failed' }),
+      JSON.stringify({ error: 'Login failed', details: String(error) }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

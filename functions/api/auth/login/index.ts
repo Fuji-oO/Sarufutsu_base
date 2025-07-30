@@ -5,12 +5,28 @@ export const onRequestPost = async (context: any) => {
     // デバッグ用ログ - 環境変数の詳細確認
     console.log('=== Environment Variables Debug ===');
     console.log('context.env keys:', Object.keys(context.env || {}));
-    console.log('NEXT_PUBLIC_SUPABASE_URL:', context.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', context.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
-    console.log('RESEND_API_KEY:', context.env.RESEND_API_KEY ? 'SET' : 'NOT SET');
     
-    const supabaseUrl = context.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = context.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    // 複数の方法で環境変数にアクセスを試行
+    let supabaseUrl = context.env.NEXT_PUBLIC_SUPABASE_URL;
+    let supabaseKey = context.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    // もしcontext.envで取得できない場合、process.envを試行
+    if (!supabaseUrl || !supabaseKey) {
+      console.log('Trying process.env...');
+      supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    }
+    
+    // 環境変数名を変更して試行（NEXT_PUBLIC_プレフィックスを削除）
+    if (!supabaseUrl || !supabaseKey) {
+      console.log('Trying without NEXT_PUBLIC_ prefix...');
+      supabaseUrl = context.env.SUPABASE_URL || process.env.SUPABASE_URL;
+      supabaseKey = context.env.SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+    }
+    
+    console.log('Final check - URL:', !!supabaseUrl, 'KEY:', !!supabaseKey);
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? 'SET' : 'NOT SET');
+    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseKey ? 'SET' : 'NOT SET');
     
     if (!supabaseUrl || !supabaseKey) {
       console.log('Environment variables missing - URL:', !!supabaseUrl, 'KEY:', !!supabaseKey);

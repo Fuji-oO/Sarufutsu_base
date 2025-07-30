@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 静的エクスポートを無効化（APIルートとの互換性のため）
-  // ...(process.env.NODE_ENV === 'production' && { output: 'export' }),
+  output: 'export',
   // 画像の最適化設定
   images: {
     domains: ['localhost'],

@@ -188,12 +188,21 @@ const ContactPage = () => {
                           ></textarea>
                         </div>
 
-                        <div className="mt-4 md:mt-8 text-gray-700 text-center">
+                        <div className="mt-4 md:mt-8 text-gray-700">
                           <span className="block md:hidden">
-                            <p className="text-xs">返信には2~3営業日お時間を要する場合もございます。<br />何卒ご了承ください。</p>
+                            <p className="text-xs">
+                              ・返信には2~3営業日お時間を要する場合もございます。<br />
+                              　何卒ご了承ください。<br />
+                              ・「sarufutsu.base@gmail.com」からのメールが受信できるよう、<br />
+                              　設定をご変更の上ご利用ください。
+                            </p>
                           </span>
                           <span className="hidden md:block">
-                            <p className="text-base">ご返信には2~3営業日お時間を要する場合もございます。何卒ご了承ください。</p>
+                            <p className="text-base">
+                              ・ご返信には2~3営業日お時間を要する場合もございます。何卒ご了承ください。<br />
+                              ・「sarufutsu.base@gmail.com」からのメールが受信できるよう、<br />
+                              　設定をご変更の上ご利用ください。
+                            </p>
                           </span>
                         </div>
 

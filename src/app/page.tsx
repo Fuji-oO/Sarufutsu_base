@@ -402,7 +402,7 @@ export default function Home() {
                   <h2 className="text-base md:text-2xl mt-0 mb-1 md:mb-2" style={{fontFamily: 'Klee One, cursive'}}>- Community Space -</h2>
                   <h3 className="text-xl md:text-3xl text-center md:text-4xl font-bold mt-0 mb-2 md:mb-10 whitespace-nowrap flex justify-center items-center" style={{fontFamily: 'Klee One, cursive'}}>つながりが広がる場所。</h3>
                   <p className="mb-2 md:mb-4 text-sm md:text-base" style={{fontFamily: 'Klee One, cursive'}}>
-                    さるふつbaseのコミュニティスペースは、<br />
+                  さるふつbaseのコミュニティスペースは、<br />
                     イベントやワークショップ、 地元の人とのおしゃべりなどから、<br />
                     いろんな出会いや発見が生まれる、気軽でオープンな空間です。  
                   </p>

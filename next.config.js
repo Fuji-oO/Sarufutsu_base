@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // 開発環境では静的エクスポートを無効にする
+  ...(process.env.NODE_ENV === 'production' && { output: 'export' }),
   // 画像の最適化設定
   images: {
     domains: ['localhost'],

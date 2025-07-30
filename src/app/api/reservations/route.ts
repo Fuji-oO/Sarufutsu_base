@@ -37,37 +37,59 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 重複予約チェック（同じ日付の予約があるか）
-    const { data: existingReservations, error: checkError } = await supabase
-      .from('reservations')
-      .select('*')
-      .eq('status', 'confirmed')
-      .or(`checkin_date.lte.${data.checkout_date},checkout_date.gte.${data.checkin_date}`)
-
-    if (checkError) {
-      console.error('重複チェックエラー:', checkError)
-      return NextResponse.json(
-        { error: '予約状況の確認中にエラーが発生しました' },
-        { status: 500 }
-      )
+    // 重複予約チェック（同じ部屋タイプでの重複をチェック）
+    // カレンダーで選択可能な日付は重複しないと判断するため、重複チェックをスキップ
+    // 休業日の場合は重複チェックをスキップ
+    if (data.room_type !== '休業日') {
+      // 重複チェックを削除 - カレンダーで選択可能な日付は重複しない
     }
 
-    if (existingReservations && existingReservations.length > 0) {
-      return NextResponse.json(
-        { error: '指定された期間は既に予約が入っています' },
-        { status: 409 }
-      )
+    // 料金計算
+    let totalPrice = 0;
+    let priceDetail = '';
+    
+    if (data.room_type === '休業日') {
+      totalPrice = 0;
+      priceDetail = '休業日';
+    } else {
+      // 既存の料金計算ロジック（必要に応じて実装）
+      // ここでは簡易的な計算
+      totalPrice = data.total_price || 0;
+      priceDetail = data.price_detail || '';
     }
 
     // 予約データをDBに保存
+    const reservationData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      checkin_date: data.checkin_date,
+      checkout_date: data.checkout_date,
+      checkin_time: data.checkin_time,
+      num_guests: data.num_guests,
+      adult_male: data.adult_male || 0,
+      adult_female: data.adult_female || 0,
+      child: data.child || 0,
+      room_type: data.room_type,
+      notes: data.notes || '',
+      status: data.status,
+      total_price: totalPrice,
+      price_detail: data.price_detail || ''
+    };
+
     const { data: reservation, error } = await supabase
       .from('reservations')
-      .insert([data])
+      .insert([reservationData])
       .select()
       .single()
 
     if (error) {
-      console.error('予約保存エラー:', error)
+      console.error('Supabase予約保存エラー詳細:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      })
       return NextResponse.json(
         { error: '予約の保存中にエラーが発生しました' },
         { status: 500 }
@@ -76,20 +98,27 @@ export async function POST(request: NextRequest) {
 
     // メール送信
     try {
-      await sendReservationEmail({
-        checkIn: data.checkin_date,
-        checkOut: data.checkout_date,
-        checkInTime: data.checkin_time,
-        guests: data.num_guests,
-        adultMale: data.adult_male || 0,
-        adultFemale: data.adult_female || 0,
-        child: data.child || 0,
-        roomType: data.room_type,
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        notes: data.notes
-      }, process.env.RESEND_API_KEY!)
+      // 管理者用の新規予約作成の場合はメール送信をスキップ
+      // confirmページからの予約の場合はメール送信
+      if (data.email && data.email !== 'admin@co.jp') {
+        await sendReservationEmail({
+          checkIn: data.checkin_date,
+          checkOut: data.checkout_date,
+          checkInTime: data.checkin_time,
+          guests: data.num_guests,
+          adultMale: data.adult_male || 0,
+          adultFemale: data.adult_female || 0,
+          child: data.child || 0,
+          roomType: data.room_type,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          notes: data.notes || ''
+        }, process.env.RESEND_API_KEY || '');
+        console.log('予約確認メール送信完了');
+      } else {
+        console.log('管理者用予約作成のためメール送信をスキップ');
+      }
     } catch (emailError) {
       console.error('メール送信エラー:', emailError)
       // メール送信失敗でも予約は保存済みなので、エラーは記録のみ

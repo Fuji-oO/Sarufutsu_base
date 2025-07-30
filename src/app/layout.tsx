@@ -66,7 +66,7 @@ export default function RootLayout({
                 <FadeLink href="/policy" className="text-xs underline transition-colors hover:text-gray-900 custom-footer-link" style={{fontFamily: 'Klee One, cursive'}}>利用規約</FadeLink>
                 <FadeLink href="/terms" className="text-xs ml-2 underline transition-colors hover:text-gray-900 custom-footer-link" style={{fontFamily: 'Klee One, cursive'}}>宿泊約款</FadeLink>
                 <FadeLink href="/privacy" className="text-xs ml-2 underline transition-colors hover:text-gray-900 custom-footer-link" style={{fontFamily: 'Klee One, cursive'}}>プライバシーポリシー</FadeLink>
-                <p className="mt-1 text-[10px]" style={{fontFamily: 'Klee One, cursive'}}>&copy; 2025 さるふつbase. All rights reserved.</p>
+                <p className="mt-1 text-[10px]" style={{fontFamily: 'Klee One, cursive'}}>&copy; 2025 <FadeLink href="/admin/login" className="hover:text-gray-900">さるふつbase</FadeLink>. All rights reserved.</p>
               </div>
             </div>
             <div className="container mx-auto px-4 py-8 hidden md:block">
@@ -100,7 +100,7 @@ export default function RootLayout({
                 <FadeLink href="/policy" className="text-sm underline transition-colors hover:text-gray-900 custom-footer-link" style={{fontFamily: 'Klee One, cursive'}}>利用規約</FadeLink>
                 <FadeLink href="/terms" className="text-sm ml-4 underline transition-colors hover:text-gray-900 custom-footer-link" style={{fontFamily: 'Klee One, cursive'}}>宿泊約款</FadeLink>
                 <FadeLink href="/privacy" className="text-sm ml-4 underline transition-colors hover:text-gray-900 custom-footer-link" style={{fontFamily: 'Klee One, cursive'}}>プライバシーポリシー</FadeLink>
-                <p className="mt-2" style={{fontFamily: 'Klee One, cursive'}}>&copy; 2025 さるふつbase. All rights reserved.</p>
+                <p className="mt-2" style={{fontFamily: 'Klee One, cursive'}}>&copy; 2025 <FadeLink href="/admin/login" className="hover:text-gray-900">さるふつbase</FadeLink>. All rights reserved.</p>
             </div>
           </div>
         </footer>

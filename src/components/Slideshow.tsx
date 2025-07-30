@@ -91,7 +91,7 @@ export default function Slideshow() {
             videoRef.current.play().catch(error => {
               if (error.name !== 'AbortError') {
                 console.log('動画の再生に失敗しました:', error)
-              }
+      }
             })
           }
         }
@@ -132,7 +132,7 @@ export default function Slideshow() {
           loop
           playsInline
           style={{ pointerEvents: 'auto', maxWidth: 'none' }}
-        >
+      >
           <source src="/images/sarufutsubase_video_music-1.mp4" type="video/mp4" />
           お使いのブラウザは動画の再生に対応していません。
         </video>

@@ -1,42 +1,108 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { useRouter } from 'next/navigation'
 import { FaInstagram } from "react-icons/fa";
 import FadeTransitionWrapper from '../../components/FadeTransitionWrapper';
 
-// サンプル空室状況データ
-const availability: Record<string, { Room1: boolean, Room2: boolean }> = {
-  '2025-05-24': { Room1: true, Room2: true },
-  '2025-05-25': { Room1: true, Room2: false },
-  '2025-05-26': { Room1: false, Room2: true },
-  '2025-05-27': { Room1: true, Room2: true },
-  '2025-05-28': { Room1: true, Room2: true },
-  '2025-05-29': { Room1: false, Room2: false },
-  '2025-05-30': { Room1: true, Room2: true },
-};
+// カレンダーの曜日色カスタマイズ用CSS
+const calendarStyles = `
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+  }
+  .react-calendar__tile--now {
+    background: #fef3c7 !important;
+  }
+  .react-calendar__tile--active {
+    background: #3b82f6 !important;
+    color: white !important;
+  }
+  .react-calendar__tile:disabled {
+    background: #f3f4f6 !important;
+    color: #9ca3af !important;
+  }
+  /* 土曜日の日付を青字にする */
+  .react-calendar__tile--saturday {
+    color: #3b82f6 !important;
+  }
+  /* 日曜日の日付を赤字にする */
+  .react-calendar__tile--sunday {
+    color: #ef4444 !important;
+  }
+`;
+
+// 空室状況の型定義
+interface AvailabilityData {
+  availability: Record<string, 'available' | 'limited' | 'full'>
+  maxRooms: number
+  dateRange: { start: string, end: string }
+}
 
 const guestOptions = [1,2,3,4,5];
 const roomTypeLabels = { Room1: 'Room1（定員3名）', Room2: 'Room2（定員2名）', '貸切': '貸切（定員5名）' };
 
-function getAvailableRoomTypes(guestCount: number, availability: Record<string, { Room1: boolean, Room2: boolean }>) {
+// 空室状況を部屋タイプ別に変換する関数
+function convertAvailabilityToRoomTypes(availability: Record<string, 'available' | 'limited' | 'full'>) {
+  const roomTypes: Record<string, { Room1: boolean, Room2: boolean }> = {};
+  
+  Object.keys(availability).forEach(date => {
+    const status = availability[date];
+    // available: 両方の部屋が空いている
+    // limited: 片方の部屋のみ空いている
+    // full: 両方の部屋が埋まっている
+    roomTypes[date] = {
+      Room1: status === 'available' || status === 'limited',
+      Room2: status === 'available' || status === 'limited'
+    };
+  });
+  
+  return roomTypes;
+}
+
+function getAvailableRoomTypes(guestCount: number, availability: Record<string, 'available' | 'limited' | 'full'>) {
   const roomTypes = new Set<string>();
-  for (let date in availability) {
-    const r1 = availability[date].Room1;
-    const r2 = availability[date].Room2;
+  
+  // 空室状況が取得できない場合は、人数のみで判定
+  if (Object.keys(availability).length === 0) {
     if (guestCount <= 2) {
-      if (r1) roomTypes.add('Room1');
-      if (r2) roomTypes.add('Room2');
-      if (r1 && r2) roomTypes.add('貸切'); // 1人でも貸切選択可
+      roomTypes.add('Room1');
+      roomTypes.add('Room2');
+      roomTypes.add('貸切');
     } else if (guestCount === 3) {
-      if (r1) roomTypes.add('Room1');
-      if (r1 && r2) roomTypes.add('貸切');
-    } else if (guestCount >= 4 && r1 && r2) {
+      roomTypes.add('Room1');
+      roomTypes.add('貸切');
+    } else if (guestCount >= 4 && guestCount <= 5) {
+      roomTypes.add('貸切');
+    }
+    return Array.from(roomTypes);
+  }
+  
+  // 少なくとも1日でも利用可能な部屋タイプを返す
+  const dates = Object.keys(availability);
+  if (dates.length === 0) return [];
+  
+  // 各日付で利用可能な部屋タイプをチェック
+  for (let date of dates) {
+    const status = availability[date];
+    
+    if (guestCount <= 2) {
+      if (status === 'available' || status === 'limited') {
+        roomTypes.add('Room1');
+        roomTypes.add('Room2');
+        roomTypes.add('貸切');
+      }
+    } else if (guestCount === 3) {
+      if (status === 'available' || status === 'limited') {
+        roomTypes.add('Room1');
+        roomTypes.add('貸切');
+      }
+    } else if (guestCount >= 4 && status === 'available') {
       roomTypes.add('貸切');
     }
   }
+  
   return Array.from(roomTypes);
 }
 
@@ -62,6 +128,14 @@ function formatYMD(date: Date|null) {
   return date.toLocaleDateString('sv-SE'); // 'yyyy-mm-dd'形式
 }
 
+// 曜日を判定してCSSクラスを返す関数
+function getDayClassName(date: Date) {
+  const dayOfWeek = date.getDay() // 0: 日曜日, 1: 月曜日, ..., 6: 土曜日
+  if (dayOfWeek === 0) return 'react-calendar__tile--sunday' // 日曜日
+  if (dayOfWeek === 6) return 'react-calendar__tile--saturday' // 土曜日
+  return ''
+}
+
 // 電話番号バリデーション関数
 function validatePhone(phone: string) {
   const numeric = phone.replace(/-/g, '');
@@ -73,8 +147,6 @@ function validatePhone(phone: string) {
 }
 
 export default function ReservationPage() {
-  // --- 既存予約フォームUI・ロジックは一時停止のため全てコメントアウトで温存 ---
-  /*
   const [adultMale, setAdultMale] = useState(0);
   const [adultFemale, setAdultFemale] = useState(0);
   const [child, setChild] = useState(0);
@@ -95,37 +167,167 @@ export default function ReservationPage() {
   const [checkInError, setCheckInError] = useState('');
   const [checkOutError, setCheckOutError] = useState('');
   const [showDetails, setShowDetails] = useState(false);
+  const [availability, setAvailability] = useState<Record<string, 'available' | 'limited' | 'full'>>({});
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [currentView, setCurrentView] = useState<Date>(new Date());
+  const [selectedRoomAvailability, setSelectedRoomAvailability] = useState<Record<string, boolean>>({});
+  const [checkInAvailability, setCheckInAvailability] = useState<Record<string, boolean>>({});
   const router = useRouter();
-  
+
+  // 部屋タイプ選択時に空室状況を取得（チェックアウト日用）
+  useEffect(() => {
+    if (!roomType) {
+      setSelectedRoomAvailability({});
+      setCheckInAvailability({});
+      return;
+    }
+
+    const fetchRoomAvailability = async () => {
+      try {
+        console.log('選択された部屋タイプの空室状況を取得中...', roomType);
+        
+        // チェックイン日がある場合は、チェックイン日の月と翌月の予約状況を取得
+        let startDate, endDate;
+        
+        if (checkIn) {
+          // チェックイン日の月の開始日
+          const checkInYear = checkIn.getFullYear();
+          const checkInMonth = checkIn.getMonth();
+          startDate = `${checkInYear}-${String(checkInMonth + 1).padStart(2, '0')}-01`;
+          
+          // 翌月の最終日
+          const nextMonth = new Date(checkInYear, checkInMonth + 2, 0);
+          endDate = `${nextMonth.getFullYear()}-${String(nextMonth.getMonth() + 1).padStart(2, '0')}-${nextMonth.getDate()}`;
+        } else {
+          // チェックイン日がない場合は、カレンダーの表示月に基づいてAPIリクエスト
+          const viewYear = currentView.getFullYear();
+          const viewMonth = currentView.getMonth() + 1;
+          const daysInMonth = new Date(viewYear, viewMonth, 0).getDate();
+          
+          startDate = `${viewYear}-${viewMonth.toString().padStart(2, '0')}-01`;
+          endDate = `${viewYear}-${viewMonth.toString().padStart(2, '0')}-${daysInMonth}`;
+        }
+        
+        const response = await fetch(`/api/availability?start_date=${startDate}&end_date=${endDate}&room_type=${encodeURIComponent(roomType)}`);
+        
+        if (!response.ok) {
+          throw new Error(`APIエラー: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('APIから取得した空室状況:', data);
+        console.log('取得期間:', startDate, '～', endDate);
+        console.log('チェックイン日:', checkIn ? formatYMD(checkIn) : 'なし');
+        
+        setSelectedRoomAvailability(data.availability);
+      } catch (error) {
+        console.error('部屋空室状況取得エラー:', error);
+        // エラー時は空のデータを設定
+        setSelectedRoomAvailability({});
+      }
+    };
+
+    // チェックイン日用の空室状況を取得
+    const fetchCheckInAvailability = async () => {
+      try {
+        // 現在表示中の月の予約状況を取得
+        const viewYear = currentView.getFullYear();
+        const viewMonth = currentView.getMonth() + 1;
+        const daysInMonth = new Date(viewYear, viewMonth, 0).getDate();
+        
+        const startDate = `${viewYear}-${viewMonth.toString().padStart(2, '0')}-01`;
+        const endDate = `${viewYear}-${viewMonth.toString().padStart(2, '0')}-${daysInMonth}`;
+        
+        const response = await fetch(`/api/availability?start_date=${startDate}&end_date=${endDate}&room_type=${encodeURIComponent(roomType)}`);
+        
+        if (!response.ok) {
+          throw new Error(`APIエラー: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('チェックイン日用空室状況:', data);
+        
+        setCheckInAvailability(data.availability);
+      } catch (error) {
+        console.error('チェックイン用空室状況取得エラー:', error);
+        setCheckInAvailability({});
+      }
+    };
+    
+    fetchRoomAvailability();
+    fetchCheckInAvailability();
+  }, [roomType, currentView, checkIn]);
+
+  // チェックイン日が変更された際にチェックアウト日をリセット
+  useEffect(() => {
+    if (checkIn) {
+      setCheckOut(null);
+    }
+  }, [checkIn]);
+
   // 人数に応じた部屋タイプ候補（大人+子供で判定）
-  const availableRoomTypes = useMemo(() => getAvailableRoomTypes(adultMale + adultFemale + child, availability), [adultMale, adultFemale, child]);
+  const availableRoomTypes = useMemo(() => getAvailableRoomTypes(adultMale + adultFemale + child, availability), [adultMale, adultFemale, child, availability]);
 
-  // 部屋タイプに応じた予約可能日
-  const validDateList = useMemo(() => roomType ? getValidDateList(roomType, availability) : [], [roomType]);
-  const validDateSet = useMemo(() => new Set(validDateList), [validDateList]);
-
-  // カレンダーで選択不可日
+  // チェックイン日選択不可の日付（過去の日付 + 選択された部屋タイプの満室日）
   function tileDisabled({date}: {date: Date}) {
-    // 今日より前は選択不可、翌日以降は全て選択可
     const today = new Date();
-    today.setHours(0,0,0,0);
-    return date < today;
+    today.setHours(0, 0, 0, 0);
+    
+    // 過去の日付は選択不可
+    if (date < today) return true;
+    
+    // 部屋タイプが選択されていない場合は、過去の日付のみ無効化
+    if (!roomType || Object.keys(checkInAvailability).length === 0) {
+      return false;
+    }
+    
+    // 選択された部屋タイプの空室状況をチェック
+    const dateStr = formatYMD(date);
+    const isAvailable = checkInAvailability[dateStr];
+    
+    // 空室でない場合は選択不可
+    return !isAvailable;
   }
 
-  // チェックアウトはチェックイン日+1以降で全日選択可（予約状況は無関係）
+  // チェックアウト日選択不可の日付（チェックイン日以前 + 連続予約不可日）
   function checkOutTileDisabled({date}: {date: Date}) {
     if (!checkIn) return true;
-    const nextDay = new Date(checkIn.getTime());
+    
+    // チェックイン日以前は選択不可
+    if (date <= checkIn) return true;
+    
+    // 部屋タイプが選択されていない場合は、チェックイン日以前のみ無効化
+    if (!roomType || Object.keys(selectedRoomAvailability).length === 0) {
+      return false;
+    }
+    
+    // チェックイン日の翌日は必ず選択可能
+    const nextDay = new Date(checkIn);
     nextDay.setDate(nextDay.getDate() + 1);
-    return date < nextDay;
+    if (date.getTime() === nextDay.getTime()) {
+      return false; // 翌日は選択可能
+    }
+    
+    // チェックイン日+2日以降は、連続して予約可能な日まで選択可能
+    const checkInDate = new Date(checkIn);
+    checkInDate.setHours(0, 0, 0, 0);
+    
+    // チェックイン日からチェックアウト候補日までの各日をチェック
+    for (let d = new Date(checkInDate); d < date; d.setDate(d.getDate() + 1)) {
+      const dateStr = formatYMD(d);
+      const isAvailable = selectedRoomAvailability[dateStr];
+      
+      // 途中で満室日があれば、その日は選択不可
+      if (!isAvailable) {
+        return true;
+      }
+    }
+    
+    // 全ての日が空室であれば選択可能
+    return false;
   }
 
-  // カレンダーに空室マーク表示
-  function tileContent() {
-    return null;
-  }
-
-  // 部屋タイプ選択時にチェックイン/アウトをリセット
   function handleRoomTypeChange(val: string) {
     setRoomType(val);
     setCheckIn(null);
@@ -134,15 +336,19 @@ export default function ReservationPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError('');
+
     let hasError = false;
     setGuestsError('');
     setRoomTypeError('');
     setCheckInError('');
     setCheckOutError('');
+    
     // 電話番号バリデーションを再実行し、エラーがあればセット
     const phoneValidation = validatePhone(phone);
     setPhoneError(phoneValidation ?? '');
     if (phoneValidation) hasError = true;
+    
     if ((adultMale + adultFemale + child) < 1) {
       setGuestsError('宿泊人数を1名以上選択してください。');
       hasError = true;
@@ -165,7 +371,9 @@ export default function ReservationPage() {
       setCheckOutError('チェックアウト日を選択してください。');
       hasError = true;
     }
+    
     if (hasError) return;
+
     // バリデーション後、クエリパラメータで/confirmに遷移
     const params = new URLSearchParams({
       checkIn: formatYMD(checkIn),
@@ -228,7 +436,7 @@ export default function ReservationPage() {
     return Math.max(1, Math.round(diff));
   }
 
-  // 暖房費用が必要な日数をカウント（10/1～5/31のみ）
+  // 暖房費用が必要な日数をカウント（10/1～4/30のみ）
   function countHeatingNights() {
     if (!checkIn || !checkOut) return 0;
     let d = new Date(checkIn.getTime());
@@ -236,9 +444,9 @@ export default function ReservationPage() {
     while (d < checkOut) {
       const m = d.getMonth() + 1; // 1-12
       const day = d.getDate();
-      // 10/1～12/31, 1/1～5/31
-      if ((m === 10 && day >= 1) || (m === 11) || (m === 12) || (m >= 1 && m <= 5)) {
-        if (!(m === 5 && day > 31)) count++;
+      // 10/1～12/31, 1/1～4/30
+      if ((m === 10 && day >= 1) || (m === 11) || (m === 12) || (m >= 1 && m <= 4)) {
+        count++;
       }
       d.setDate(d.getDate() + 1);
     }
@@ -329,22 +537,51 @@ export default function ReservationPage() {
   const totalPrice = basePrice + heatingFee;
 
   return (
-    <FadeTransitionWrapper>
+    <FadeTransitionWrapper> 
       <div className="min-h-screen pt-16 pb-16 md:py-[120px]" style={{background:'#F5EEDC'}}>
+        {/* カレンダー用CSSスタイル */}
+        <style jsx global>{calendarStyles}</style>
+        
         <div className="container mx-auto px-2 md:px-4">
           <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>Reservation</h1>
           <p className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- ご予約 -</p>
           <div className="mb-6 md:mb-10 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{border: '2px solid #bfae8a'}}>
-            <div className="mb-2">
+            <div className="mb-4">
               <span className="text-red-600 font-bold text-base md:text-2xl tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>【7月限定オープニングセール開催中！】</span><br />
-              <span className="text-red-600 text-xs md:text-base tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>さるふつbaseのオープンを記念して、<br />7月のご宿泊を特別セール価格でご案内いたします。</span>
+              <span className="text-red-600 text-xs md:text-ml tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>さるふつbaseのオープンを記念して、<br />7月のご宿泊を特別セール価格でご案内いたします。</span>
+            </div>
+            <div className="mb-2">【宿泊料金(素泊まり)】</div>
+            <div className="mb-1">
+              <span className="line-through text-gray-400 mr-2">大人：9,000円（税込9,900円）/ 1泊</span><br />
+              <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">大人：7,000円（税込7,700円）／ 1泊</span>
+            </div>
+            <div className="mb-1">
+              <span className="line-through text-gray-400 mr-2">子供：4,500円（税込4,950円）／ 1泊</span><br />
+              <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">子供：3,500円（税込3,850円）／ 1泊</span>
+            </div>
+            <div className="mb-1">
+              <span className="line-through text-gray-400 mr-2">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span><br />
+              <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">貸切(定員5名)：35,000円（税込38,500円）／ 1泊</span>
+            </div>
+            {/* スマホ用注意書き */}
+            <div className="block md:hidden mt-4 text-xs text-gray-700">
+              ※現在は、素泊まりのみのご案内となります。<br />
+              ※10月～4月の間は、暖房費としてお一人様1泊につき<br />
+              500円(税込550円)を頂戴しております。<br />
+              ※村民割引あり(詳細はお問い合わせください)
+            </div>
+            {/* PC用注意書き */}
+            <div className="hidden md:block mt-4 text-sm text-gray-700">
+              ※現在は、素泊まりのみのご案内となります。<br />
+              ※10月～4月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
+              ※村民割引あり(詳細はお問い合わせください)
             </div>
           </div>
           <div className="max-w-3xl mx-auto bg-white bg-opacity-90 rounded-lg shadow-lg px-4 py-8 md:p-8">
             <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-              <div className="mb-6 md:mb-8 text-center">
+              {/* <div className="mb-6 md:mb-8 text-center">
                 <p className="text-xs md:text-lg font-bold mb-4">
-                  最新の空室状況はInstagramをご覧ください。
+                  空室状況は、Instagramでもご覧いただけます。
                 </p>
                 <a
                   href="https://www.instagram.com/sarufutsu_base/"
@@ -362,8 +599,8 @@ export default function ReservationPage() {
                   Instagram
                   <FaInstagram size={22} />
                 </a>
-              </div>
-              {/* 人数選択（合計は自動計算） *//*}
+              </div> */}
+              {/* 人数選択（合計は自動計算） */}
               <div>
                 <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">宿泊人数</label>
                 <div className="flex gap-2 md:gap-4 mb-2">
@@ -409,7 +646,7 @@ export default function ReservationPage() {
                 <div className="text-xs md:text-sm text-gray-700">合計: {adultMale + adultFemale + child}名</div>
                 {guestsError && <p className="text-red-600 text-xs md:text-sm mt-1">{guestsError}</p>}
               </div>
-              {/* 部屋タイプ選択 *//*}
+              {/* 部屋タイプ選択 */}
               <div>
                 <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">部屋タイプ</label>
                 {availableRoomTypes.length === 0 ? (
@@ -434,15 +671,25 @@ export default function ReservationPage() {
                 )}
                 {roomTypeError && <p className="text-red-600 text-xs md:text-sm mt-1">{roomTypeError}</p>}
               </div>
-              {/* カレンダー *//*}
+              {/* カレンダー */}
               <div className="flex flex-col items-center md:grid md:grid-cols-2 gap-4 md:gap-8">
                 <div className="w-full max-w-xs md:max-w-full mx-auto">
-                  <h2 className="text-base md:text-xl font-bold mb-2 md:mb-4 text-center md:text-left">チェックイン</h2>
+                  <h2 className="text-base md:text-xl font-bold mb-2 md:mb-4 text-center ">チェックイン</h2>
+                  {/* チェックインカレンダー注釈 */}
+                  <div className="text-center text-xs md:text-sm text-gray-600 mb-2">
+                    <span style={{color: '#f3f4f6'}}>■</span>：選択不可
+                  </div>
                   <Calendar
                     onChange={(date) => setCheckIn(date as Date)}
                     value={checkIn}
                     tileDisabled={tileDisabled}
-                    tileContent={tileContent}
+                    tileClassName={({ date }) => getDayClassName(date)}
+                    onActiveStartDateChange={({ activeStartDate }) => {
+                      if (activeStartDate) {
+                        setCurrentView(activeStartDate);
+                      }
+                    }}
+                    showNeighboringMonth={false}
                     className="w-full"
                   />
                   <input
@@ -456,12 +703,22 @@ export default function ReservationPage() {
                   {checkInError && <p className="text-red-600 text-xs md:text-sm mt-1">{checkInError}</p>}
                 </div>
                 <div className="w-full max-w-xs md:max-w-full mx-auto">
-                  <h2 className="text-base md:text-xl font-bold mb-2 md:mb-4 text-center md:text-left">チェックアウト</h2>
+                  <h2 className="text-base md:text-xl font-bold mb-2 md:mb-4 text-center ">チェックアウト</h2>
+                  {/* チェックアウトカレンダー注釈 */}
+                  <div className="text-center text-xs md:text-sm text-gray-600 mb-2">
+                    <span style={{color: '#f3f4f6'}}>■</span>：選択不可
+                  </div>
                   <Calendar
                     onChange={(date) => setCheckOut(date as Date)}
                     value={checkOut}
                     tileDisabled={checkOutTileDisabled}
-                    tileContent={() => null}
+                    tileClassName={({ date }) => getDayClassName(date)}
+                    onActiveStartDateChange={({ activeStartDate }) => {
+                      if (activeStartDate) {
+                        setCurrentView(activeStartDate);
+                      }
+                    }}
+                    showNeighboringMonth={false}
                     className="w-full"
                   />
                   <input
@@ -475,7 +732,7 @@ export default function ReservationPage() {
                   {checkOutError && <p className="text-red-600 text-xs md:text-sm mt-1">{checkOutError}</p>}
                 </div>
               </div>
-              {/* 宿泊料金合計表示 *//*}
+              {/* 宿泊料金合計表示 */}
               <div className="my-6 md:my-8 text-center">
                 <div className="inline-block bg-[#fff] rounded-lg px-4 md:px-6 py-2 md:py-4 shadow text-base md:text-lg font-bold text-gray-800 max-w-lg w-full border-2" style={{ borderColor: '#BFAE8A' }}>
                   料金合計：
@@ -519,7 +776,7 @@ export default function ReservationPage() {
                   ))}
                 </select>
               </div>
-              {/* お客様情報 *//*}
+              {/* お客様情報 */}
               <div className="space-y-2 md:space-y-4">
                 <div>
                   <label className="block text-xs md:text-sm font-medium text-gray-700 mb-1">お名前 <span className="text-red-500">*</span></label>
@@ -567,39 +824,15 @@ export default function ReservationPage() {
                 </div>
               </div>
               <div className="text-center">
-                <button
-                  type="submit"
-                  className="text-white px-6 md:px-8 py-2 md:py-3 rounded-md font-bold transition hover:opacity-80 text-sm md:text-base"
-                  style={{ background: '#BFAE8A' }}
-                >
-                  予約内容を確認する
-                </button>
+                  <button
+                    type="submit"
+                    className="text-white px-6 md:px-8 py-2 md:py-3 rounded-md font-bold transition hover:opacity-80 text-sm md:text-base"
+                    style={{ background: '#BFAE8A' }}
+                  >
+                    予約内容を確認する
+                  </button>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
-*/
-
-  // --- ここから一時的な案内画面 ---
-  return (
-    <FadeTransitionWrapper>
-      <div className="min-h-screen pt-16 pb-16 md:py-[120px]" style={{background:'#F5EEDC'}}>
-        <div className="container mx-auto px-2 md:px-4">
-          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em', color:'#000'}}>Reservation</h1>
-          <p className="text-xs md:text-base text-center mb-6 md:mb-12" style={{letterSpacing:'0.1em'}}>- ご予約 -</p>
-          <div className="max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-6 md:p-10 text-center text-base md:text-xl font-semibold text-gray-800 flex flex-col items-center gap-6" style={{border: '2px solid #bfae8a'}}>
-            <div className="mb-2">
-              <span className="font-bold text-base md:text-xl tracking-widest font-mono" style={{fontFamily: 'Klee One, cursive', letterSpacing:'0.1em'}}>現在、ご予約はお電話または<br />InstagramのDMにて受け付けております。</span>
-            </div>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full">
-              <a href="tel:070-2616-1188" className="inline-block px-6 py-3 rounded-full font-bold bg-[#bfae8a] text-white text-base md:text-xl shadow hover:opacity-90 transition" style={{letterSpacing:'0.1em', minWidth:'180px'}}>☎ 070-2616-1188</a>
-              <a href="https://www.instagram.com/sarufutsu_base/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold bg-[#f5f1e6] text-[#3a2e13] text-lg md:text-xl shadow border border-[#bfae8a] hover:bg-[#bfae8a] hover:text-white transition" style={{letterSpacing:'0.1em', minWidth:'180px'}}>
-                <FaInstagram size={22} /> Instagram
-              </a>
-            </div>
-            <div className="text-xs md:text-sm text-gray-500 mt-4">※お電話での受付は、9:00〜18:00の時間帯となります。</div>
-            <div className="text-xs md:text-sm text-gray-500">※空室状況やご質問もお気軽にご連絡ください。</div>
           </div>
         </div>
       </div>

@@ -89,8 +89,9 @@ export async function sendReservationEmail(data: {
     while (d < outDate) {
       const m = d.getMonth() + 1;
       const day = d.getDate();
-      if ((m === 10 && day >= 1) || (m === 11) || (m === 12) || (m >= 1 && m <= 5)) {
-        if (!(m === 5 && day > 31)) count++;
+      // 10/1～12/31, 1/1～4/30
+      if ((m === 10 && day >= 1) || (m === 11) || (m === 12) || (m >= 1 && m <= 4)) {
+        count++;
       }
       d.setDate(d.getDate() + 1);
     }
@@ -158,7 +159,8 @@ export async function sendReservationEmail(data: {
     if (julyChildNights > 0) priceDetail += `  ・子供 ${Number(data.child || 0)}名 × ${julyChildNights / (Number(data.child || 0) || 1)}泊 × 3,850円 = ${baseChildJuly.toLocaleString()}円 【7月限定セール価格適用】\n`;
     if (normalChildNights > 0) priceDetail += `  ・子供 ${Number(data.child || 0)}名 × ${normalChildNights / (Number(data.child || 0) || 1)}泊 × 4,950円 = ${baseChildNormal.toLocaleString()}円\n`;
   }
-  const heatingFee = (Number(data.adultMale || 0) + Number(data.adultFemale || 0) + Number(data.child || 0)) * 550 * heatingNights;
+  
+  const heatingFee = data.roomType === '休業日' ? 0 : (Number(data.adultMale || 0) + Number(data.adultFemale || 0) + Number(data.child || 0)) * 550 * heatingNights;
   totalPrice = basePrice + heatingFee;
   if (heatingFee > 0) priceDetail += `  ・暖房費 ${Number(data.adultMale || 0) + Number(data.adultFemale || 0) + Number(data.child || 0)}名 × ${heatingNights}泊 × 550円 = ${(heatingFee).toLocaleString()}円\n`;
 
@@ -206,8 +208,8 @@ ${priceDetail}`;
     userResult = await resend.emails.send({
       from: 'さるふつbase <onboarding@resend.dev>',
       to: data.email,
-      subject: '【さるふつbase】ご予約内容の確認（自動返信）',
-      text: `この度は「さるふつbase」へご予約いただき、誠にありがとうございます。\n本メールは自動返信です。内容を確認のうえ、担当者より改めてご連絡いたします。\n\n──────────────\n【ご予約内容】\n\nチェックイン日：${data.checkIn}\nチェックアウト日：${data.checkOut}\nチェックイン予定時間：${data.checkInTime}\n\n宿泊人数合計：${data.guests}名\n大人(男性)：${data.adultMale}名\n大人(女性)：${data.adultFemale}名\n子供：${data.child}名\n部屋タイプ：${data.roomType}\n\nお名前：${data.name}\nメールアドレス：${data.email}\n電話番号：${data.phone}\n\nご要望/ご質問：\n${data.notes || '（なし）'}\n\n------------------------------\n■ 料金合計：${totalPrice.toLocaleString()}円（税込）\n■ 料金明細：\n${priceDetail}\n\n──────────────\n※本メールは自動送信です。ご返信いただいてもお答えできません。\n※内容に誤りがある場合や、3営業日以内に返信がない場合は、お手数ですが再度ご連絡ください。\n\nさるふつbase\nsarufutsu.base@gmail.com`,
+      subject: '【さるふつbase】ご予約内容の確認',
+      text: `この度は「さるふつbase」へご予約いただき、誠にありがとうございます。\nご予約内容の詳細を以下にお送りしますので、内容をご確認いただけますと幸いです。\n\n──────────────\n【ご予約内容】\n\nチェックイン日：${data.checkIn}\nチェックアウト日：${data.checkOut}\nチェックイン予定時間：${data.checkInTime}\n\n宿泊人数合計：${data.guests}名\n大人(男性)：${data.adultMale}名\n大人(女性)：${data.adultFemale}名\n子供：${data.child}名\n部屋タイプ：${data.roomType}\n\nお名前：${data.name}\nメールアドレス：${data.email}\n電話番号：${data.phone}\n\nご要望/ご質問：\n${data.notes || '（なし）'}\n\n------------------------------\n■ 料金合計：${totalPrice.toLocaleString()}円（税込）\n■ 料金明細：\n${priceDetail}\n\n──────────────\n※本メールは自動送信です。ご返信いただいてもお答えできません。\n※内容に誤りがある場合は、恐れ入りますが、お問い合わせフォームよりご一報ください。\n\nさるふつbase\nsarufutsu.base@gmail.com`,
     });
     console.log('Resend reservation user auto-reply result:', userResult);
   } catch (error) {

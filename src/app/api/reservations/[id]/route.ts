@@ -1,36 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase, Reservation } from '../../../../lib/supabase'
-
-// 個別予約取得
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const { data: reservation, error } = await supabase
-      .from('reservations')
-      .select('*')
-      .eq('id', params.id)
-      .single()
-
-    if (error) {
-      console.error('予約取得エラー:', error)
-      return NextResponse.json(
-        { error: '予約が見つかりません' },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json({ reservation })
-
-  } catch (error) {
-    console.error('予約取得APIエラー:', error)
-    return NextResponse.json(
-      { error: '予期せぬエラーが発生しました' },
-      { status: 500 }
-    )
-  }
-}
+import { supabase } from '../../../../lib/supabase'
 
 // 予約更新
 export async function PUT(
@@ -38,7 +7,15 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const data: Partial<Reservation> = await request.json()
+    const { id } = params
+    const data = await request.json()
+
+    if (!id) {
+      return NextResponse.json(
+        { error: '予約IDが指定されていません' },
+        { status: 400 }
+      )
+    }
 
     // バリデーション
     if (data.checkin_date && data.checkout_date) {
@@ -53,25 +30,29 @@ export async function PUT(
       }
     }
 
+    // 予約を更新
     const { data: reservation, error } = await supabase
       .from('reservations')
       .update(data)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
     if (error) {
-      console.error('予約更新エラー:', error)
+      console.error('Supabase更新エラー:', error)
       return NextResponse.json(
-        { error: '予約の更新中にエラーが発生しました' },
+        { error: '予約の更新に失敗しました' },
         { status: 500 }
       )
     }
 
-    return NextResponse.json({ 
-      message: '予約を更新しました',
-      reservation 
-    })
+    return NextResponse.json(
+      { 
+        message: '予約が正常に更新されました',
+        reservation: reservation
+      },
+      { status: 200 }
+    )
 
   } catch (error) {
     console.error('予約更新APIエラー:', error)
@@ -88,22 +69,33 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = params
+
+    if (!id) {
+      return NextResponse.json(
+        { error: '予約IDが指定されていません' },
+        { status: 400 }
+      )
+    }
+
+    // 予約を削除
     const { error } = await supabase
       .from('reservations')
       .delete()
-      .eq('id', params.id)
+      .eq('id', id)
 
     if (error) {
-      console.error('予約削除エラー:', error)
+      console.error('Supabase削除エラー:', error)
       return NextResponse.json(
-        { error: '予約の削除中にエラーが発生しました' },
+        { error: '予約の削除に失敗しました' },
         { status: 500 }
       )
     }
 
-    return NextResponse.json({ 
-      message: '予約を削除しました'
-    })
+    return NextResponse.json(
+      { message: '予約が正常に削除されました' },
+      { status: 200 }
+    )
 
   } catch (error) {
     console.error('予約削除APIエラー:', error)

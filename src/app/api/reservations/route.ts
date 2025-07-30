@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase, Reservation } from '../../../lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 import { sendReservationEmail } from '../../../lib/email'
+import type { Reservation } from '../../../lib/supabase'
 
 // 新規予約作成
 export async function POST(request: NextRequest) {
   try {
     const data: Reservation = await request.json()
+
+    // 環境変数の確認
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        { error: '環境変数が設定されていません' },
+        { status: 500 }
+      )
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
     // バリデーション
     if (!data.name || !data.email || !data.phone || !data.checkin_date || 
@@ -148,6 +162,19 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     const startDate = searchParams.get('start_date')
     const endDate = searchParams.get('end_date')
+
+    // 環境変数の確認
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        { error: '環境変数が設定されていません' },
+        { status: 500 }
+      )
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
     let query = supabase
       .from('reservations')

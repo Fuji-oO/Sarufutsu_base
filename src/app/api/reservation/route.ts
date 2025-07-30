@@ -3,14 +3,18 @@ import { createClient } from '@supabase/supabase-js'
 
 export const runtime = 'edge';
 
-// Supabaseクライアントの初期化
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
-
 export async function POST(req: NextRequest) {
   try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        { error: '環境変数が設定されていません' },
+        { status: 500 }
+      )
+    }
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
     const data = await req.json();
     
     // Supabaseに予約データを挿入
@@ -39,6 +43,16 @@ export async function POST(req: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (!supabaseUrl || !supabaseKey) {
+      return NextResponse.json(
+        { error: '環境変数が設定されていません' },
+        { status: 500 }
+      )
+    }
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
     const { searchParams } = new URL(request.url)
     const month = searchParams.get('month') // YYYY-MM形式
     

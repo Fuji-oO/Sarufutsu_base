@@ -3,8 +3,8 @@ import { sendContactEmail } from '../../../src/lib/email';
 
 export const onRequestPost = async (context: any) => {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -32,7 +32,7 @@ export const onRequestPost = async (context: any) => {
     }
     
     // メール送信
-    const apiKey = process.env.RESEND_API_KEY;
+    const apiKey = context.env.RESEND_API_KEY;
     await sendContactEmail(data, apiKey);
     
     return new Response(JSON.stringify({ success: true }), {

@@ -3,8 +3,8 @@ import { sendReservationEmail } from '../../../src/lib/email';
 
 export const onRequestPost = async (context: any) => {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -32,7 +32,7 @@ export const onRequestPost = async (context: any) => {
     // メール送信（room_typeが'休業日'でない場合のみ）
     if (data.room_type !== '休業日') {
       try {
-        const apiKey = process.env.RESEND_API_KEY;
+        const apiKey = context.env.RESEND_API_KEY;
         await sendReservationEmail(data, apiKey);
       } catch (emailError) {
         console.error('Email sending failed:', emailError);
@@ -53,8 +53,8 @@ export const onRequestPost = async (context: any) => {
 
 export const onRequestGet = async (context: any) => {
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(

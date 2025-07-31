@@ -1,3 +1,5 @@
+import { sendContactEmail } from '../../../src/lib/email';
+
 export const onRequestPost = async (context: any) => {
   try {
     const supabaseUrl = context.env.SUPABASE_URL;
@@ -21,6 +23,7 @@ export const onRequestPost = async (context: any) => {
       );
     }
     
+    // データベースに保存
     const { data, error } = await supabase
       .from('contacts')
       .insert([{ name, email, message }])
@@ -28,9 +31,18 @@ export const onRequestPost = async (context: any) => {
     
     if (error) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Failed to send message' }),
+        JSON.stringify({ success: false, error: 'Failed to save message' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
+    }
+    
+    // メール送信
+    try {
+      const apiKey = context.env.RESEND_API_KEY;
+      await sendContactEmail({ name, email, message }, apiKey);
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // メール送信に失敗してもデータベース保存は成功とする
     }
     
     return new Response(JSON.stringify({ success: true, data }), {

@@ -1,81 +1,99 @@
-export const onRequestPost = async (context: any) => {
+import bcrypt from 'bcryptjs'
+
+export interface Env {
+  SUPABASE_URL: string
+  SUPABASE_ANON_KEY: string
+}
+
+export async function POST(request: Request, context: { env: Env }) {
   try {
-    // デバッグ用ログ
-    console.log('=== Environment Variables Debug ===');
-    console.log('context.env keys:', Object.keys(context.env || {}));
-    console.log('SUPABASE_URL:', context.env.SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('SUPABASE_ANON_KEY:', context.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    const { email, password } = await request.json()
     
-    // Cloudflare Functionsでは環境変数をcontext.envでアクセス
-    const supabaseUrl = context.env.SUPABASE_URL;
-    const supabaseKey = context.env.SUPABASE_ANON_KEY;
-    
+    console.log('認証リクエスト:', { email, password: password ? '***' : 'undefined' })
+
+    // 環境変数の確認
+    const supabaseUrl = context.env.SUPABASE_URL
+    const supabaseKey = context.env.SUPABASE_ANON_KEY
+
     if (!supabaseUrl || !supabaseKey) {
-      console.log('Environment variables missing');
       return new Response(
         JSON.stringify({ error: '環境変数が設定されていません' }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+      )
     }
-    
-    console.log('Supabase URL (first 20 chars):', supabaseUrl.substring(0, 20) + '...');
-    console.log('Supabase Key (first 20 chars):', supabaseKey.substring(0, 20) + '...');
-    
-    // Supabaseクライアントを動的インポートで作成
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    const { email, password } = await context.request.json();
-    
-    console.log('Login attempt for email:', email);
-    
-    // 管理者ユーザーを取得
-    const { data: user, error } = await supabase
+
+    // 動的インポートでSupabaseクライアントを作成
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    // バリデーション
+    if (!email || !password) {
+      console.log('バリデーションエラー: メールアドレスまたはパスワードが不足')
+      return new Response(
+        JSON.stringify({ error: 'メールアドレスとパスワードを入力してください' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // ユーザー情報を取得
+    console.log('ユーザー検索中:', email)
+    const { data: user, error: userError } = await supabase
       .from('users')
       .select('*')
       .eq('email', email)
-      .single();
-    
-    if (error || !user) {
-      console.log('User not found or error:', error);
+      .single()
+
+    console.log('ユーザー検索結果:', { user: user ? 'found' : 'not found', error: userError })
+
+    if (userError || !user) {
+      console.log('ユーザーが見つかりません:', userError)
       return new Response(
-        JSON.stringify({ error: 'Invalid credentials' }),
+        JSON.stringify({ error: 'ユーザーが見つかりません' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+      )
     }
+
+    console.log('パスワード検証中...')
+    // パスワード検証
+    const isValidPassword = await bcrypt.compare(password, user.password_hash)
     
-    console.log('User found:', user.email);
-    
-    // パスワード検証（簡易版 - 実際の運用では適切なハッシュ検証が必要）
-    // Cloudflare Functionsではbcryptの使用が制限されるため、一時的に簡易検証
-    const isValidPassword = user.password_hash === password; // 実際の運用では適切なハッシュ検証
-    
-    console.log('Password validation result:', isValidPassword);
-    
+    console.log('パスワード検証結果:', { isValid: isValidPassword })
+
     if (!isValidPassword) {
+      console.log('パスワードが正しくありません')
       return new Response(
-        JSON.stringify({ error: 'Invalid credentials' }),
+        JSON.stringify({ error: 'パスワードが正しくありません' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+      )
     }
-    
-    console.log('Login successful');
-    
-    return new Response(JSON.stringify({ 
-      success: true, 
-      user: { 
-        id: user.id, 
-        email: user.email, 
-        role: user.role 
-      } 
-    }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    console.log('Login error:', error);
+
+    console.log('ログイン成功、最終ログイン時刻を更新中...')
+    // 最終ログイン時刻を更新
+    await supabase
+      .from('users')
+      .update({ last_login_at: new Date().toISOString() })
+      .eq('id', user.id)
+
+    // ログイン成功
+    console.log('認証完了:', { userId: user.id, email: user.email })
     return new Response(
-      JSON.stringify({ error: 'Login failed' }),
+      JSON.stringify({
+        success: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
+      }),
+      { headers: { 'Content-Type': 'application/json' } }
+    )
+
+  } catch (error) {
+    console.error('認証エラー:', error)
+    return new Response(
+      JSON.stringify({ error: '認証中にエラーが発生しました' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    )
   }
-}; 
+} 

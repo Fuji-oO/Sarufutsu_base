@@ -6,6 +6,18 @@ export interface Env {
 }
 
 export async function POST(request: Request, context: { env: Env }) {
+  // CORS headers
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  }
+
+  // Handle preflight requests
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders })
+  }
+
   try {
     const { email, password } = await request.json()
     
@@ -18,7 +30,13 @@ export async function POST(request: Request, context: { env: Env }) {
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
         JSON.stringify({ error: '環境変数が設定されていません' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
       )
     }
 
@@ -31,7 +49,13 @@ export async function POST(request: Request, context: { env: Env }) {
       console.log('バリデーションエラー: メールアドレスまたはパスワードが不足')
       return new Response(
         JSON.stringify({ error: 'メールアドレスとパスワードを入力してください' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 400, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
       )
     }
 
@@ -49,7 +73,13 @@ export async function POST(request: Request, context: { env: Env }) {
       console.log('ユーザーが見つかりません:', userError)
       return new Response(
         JSON.stringify({ error: 'ユーザーが見つかりません' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 401, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
       )
     }
 
@@ -63,7 +93,13 @@ export async function POST(request: Request, context: { env: Env }) {
       console.log('パスワードが正しくありません')
       return new Response(
         JSON.stringify({ error: 'パスワードが正しくありません' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 401, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
       )
     }
 
@@ -86,14 +122,25 @@ export async function POST(request: Request, context: { env: Env }) {
           role: user.role
         }
       }),
-      { headers: { 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        } 
+      }
     )
 
   } catch (error) {
     console.error('認証エラー:', error)
     return new Response(
       JSON.stringify({ error: '認証中にエラーが発生しました' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { 
+        status: 500, 
+        headers: { 
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        } 
+      }
     )
   }
 } 

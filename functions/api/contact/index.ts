@@ -1,10 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
-import { sendContactEmail } from '../../../src/lib/email';
-
 export const onRequestPost = async (context: any) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -13,6 +10,7 @@ export const onRequestPost = async (context: any) => {
       );
     }
     
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
     const { name, email, message } = await context.request.json();
     

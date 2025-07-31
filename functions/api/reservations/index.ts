@@ -1,9 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
-
 export const onRequestGet = async (context: any) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -12,6 +10,7 @@ export const onRequestGet = async (context: any) => {
       );
     }
     
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
     const url = new URL(context.request.url);
     const month = url.searchParams.get('month');
@@ -47,8 +46,8 @@ export const onRequestGet = async (context: any) => {
 
 export const onRequestPost = async (context: any) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -57,6 +56,7 @@ export const onRequestPost = async (context: any) => {
       );
     }
     
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
     const data = await context.request.json();
     

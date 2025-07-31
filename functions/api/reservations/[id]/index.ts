@@ -1,9 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
-
 export const onRequestGet = async (context: any) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -12,6 +10,7 @@ export const onRequestGet = async (context: any) => {
       );
     }
     
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
     const id = context.params.id;
     
@@ -41,8 +40,8 @@ export const onRequestGet = async (context: any) => {
 
 export const onRequestPut = async (context: any) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -51,6 +50,7 @@ export const onRequestPut = async (context: any) => {
       );
     }
     
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
     const id = context.params.id;
     const updateData = await context.request.json();
@@ -81,8 +81,8 @@ export const onRequestPut = async (context: any) => {
 
 export const onRequestDelete = async (context: any) => {
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       return new Response(
@@ -91,6 +91,7 @@ export const onRequestDelete = async (context: any) => {
       );
     }
     
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
     const id = context.params.id;
     

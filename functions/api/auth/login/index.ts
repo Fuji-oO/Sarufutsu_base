@@ -1,19 +1,14 @@
-import { createClient } from '@supabase/supabase-js';
-
 export const onRequestPost = async (context: any) => {
   try {
     // デバッグ用ログ
     console.log('=== Environment Variables Debug ===');
-    console.log('process.env keys:', Object.keys(process.env || {}));
     console.log('context.env keys:', Object.keys(context.env || {}));
-    console.log('SUPABASE_URL (process.env):', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('SUPABASE_ANON_KEY (process.env):', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
-    console.log('SUPABASE_URL (context.env):', context.env.SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('SUPABASE_ANON_KEY (context.env):', context.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_URL:', context.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_ANON_KEY:', context.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
     
-    // 環境変数の取得を試行
-    let supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
-    let supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
+    // Cloudflare Functionsでは環境変数をcontext.envでアクセス
+    const supabaseUrl = context.env.SUPABASE_URL;
+    const supabaseKey = context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       console.log('Environment variables missing');
@@ -26,7 +21,10 @@ export const onRequestPost = async (context: any) => {
     console.log('Supabase URL (first 20 chars):', supabaseUrl.substring(0, 20) + '...');
     console.log('Supabase Key (first 20 chars):', supabaseKey.substring(0, 20) + '...');
     
+    // Supabaseクライアントを動的インポートで作成
+    const { createClient } = await import('@supabase/supabase-js');
     const supabase = createClient(supabaseUrl, supabaseKey);
+    
     const { email, password } = await context.request.json();
     
     console.log('Login attempt for email:', email);

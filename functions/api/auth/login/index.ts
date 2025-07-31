@@ -3,14 +3,17 @@ import { createClient } from '@supabase/supabase-js';
 export const onRequestPost = async (context: any) => {
   try {
     // デバッグ用ログ
-    console.log('=== Login Function Called ===');
+    console.log('=== Environment Variables Debug ===');
     console.log('process.env keys:', Object.keys(process.env || {}));
-    console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'NOT SET');
-    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    console.log('context.env keys:', Object.keys(context.env || {}));
+    console.log('SUPABASE_URL (process.env):', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_ANON_KEY (process.env):', process.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_URL (context.env):', context.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_ANON_KEY (context.env):', context.env.SUPABASE_ANON_KEY ? 'SET' : 'NOT SET');
     
-    // 正しい環境変数名を使用
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    // 環境変数の取得を試行
+    let supabaseUrl = process.env.SUPABASE_URL || context.env.SUPABASE_URL;
+    let supabaseKey = process.env.SUPABASE_ANON_KEY || context.env.SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       console.log('Environment variables missing');

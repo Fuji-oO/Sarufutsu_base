@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Cloudflare Pages用の静的エクスポート設定
-  output: 'export',
-  trailingSlash: true,
   // 画像の最適化設定
   images: {
     domains: ['localhost'],

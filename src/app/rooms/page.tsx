@@ -48,22 +48,15 @@ export default function RoomsPage() {
           <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em'}}>Rooms</h1>
           <p className="text-xs md:text-base text-center mb-8 md:mb-12" style={{letterSpacing:'0.1em'}}>- お部屋 -</p>
           <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{border: '2px solid #bfae8a'}}>
-            <div className="mb-4">
-              <span className="text-red-600 font-bold text-base md:text-2xl tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>【7月限定オープニングセール開催中！】</span><br />
-              <span className="text-red-600 text-xs md:text-ml tracking-widest font-mono" style={{letterSpacing:'0.1em'}}>さるふつbaseのオープンを記念して、<br />7月のご宿泊を特別セール価格でご案内いたします。</span>
-            </div>
-            <div className="mb-2">【宿泊料金(素泊まり)】</div>
+            <div className="font-mono mb-2">【宿泊料金(素泊まり)】</div>
             <div className="mb-1">
-              <span className="line-through text-gray-400 mr-2">大人：9,000円（税込9,900円）/ 1泊</span><br />
-              <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">大人：7,000円（税込7,700円）／ 1泊</span>
+              <span className="text-gray-800 font-bold text-base md:text-lg">大人：9,000円（税込9,900円）／ 1泊</span>
             </div>
             <div className="mb-1">
-              <span className="line-through text-gray-400 mr-2">子供：4,500円（税込4,950円）／ 1泊</span><br />
-              <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">子供：3,500円（税込3,850円）／ 1泊</span>
+              <span className="text-gray-800 font-bold text-base md:text-lg">子供：4,500円（税込4,950円）／ 1泊</span>
             </div>
             <div className="mb-1">
-              <span className="line-through text-gray-400 mr-2">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span><br />
-              <span className="text-red-600 font-extrabold text-base md:text-lg font-mono">貸切(定員5名)：35,000円（税込38,500円）／ 1泊</span>
+              <span className="text-gray-800 font-bold text-base md:text-lg">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span>
             </div>
             {/* スマホ用注意書き */}
             <div className="block md:hidden mt-4 text-xs text-gray-700">

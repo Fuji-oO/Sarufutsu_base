@@ -17,7 +17,6 @@ export default function AdminLoginPage() {
     setError('')
 
     try {
-      // Cloudflare Functions用のAPI呼び出し
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

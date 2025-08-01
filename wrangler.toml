@@ -1,0 +1,16 @@
+name = "sarufutsu-base"
+compatibility_date = "2024-01-01"
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "service-worker"
+
+# Cloudflare Pages Functions configuration
+[functions]
+directory = "functions"
+
+# Environment variables (these should be set in Cloudflare Pages dashboard)
+[vars]
+NODE_ENV = "production" 

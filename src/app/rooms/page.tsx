@@ -50,13 +50,13 @@ export default function RoomsPage() {
           <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{border: '2px solid #bfae8a'}}>
             <div className="font-mono mb-2">【宿泊料金(素泊まり)】</div>
             <div className="mb-1">
-              <span className="text-gray-800 font-bold text-base md:text-lg">大人：9,000円（税込9,900円）／ 1泊</span>
+              <span className="text-gray-800 font-bold text-sm md:text-base">大人：9,000円（税込9,900円）／ 1泊</span>
             </div>
             <div className="mb-1">
-              <span className="text-gray-800 font-bold text-base md:text-lg">子供：4,500円（税込4,950円）／ 1泊</span>
+              <span className="text-gray-800 font-bold text-sm md:text-base">子供：4,500円（税込4,950円）／ 1泊</span>
             </div>
             <div className="mb-1">
-              <span className="text-gray-800 font-bold text-base md:text-lg">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span>
+              <span className="text-gray-800 font-bold text-sm md:text-base">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span>
             </div>
             {/* スマホ用注意書き */}
             <div className="block md:hidden mt-4 text-xs text-gray-700">

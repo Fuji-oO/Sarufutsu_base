@@ -61,6 +61,7 @@ export default function RoomsPage() {
             {/* スマホ用注意書き */}
             <div className="block md:hidden mt-4 text-xs text-gray-700">
               ※現在は、素泊まりのみのご案内となります。<br />
+              ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
               ※10月～4月の間は、暖房費としてお一人様1泊につき<br />
               500円(税込550円)を頂戴しております。<br />
               ※村民割引あり(詳細はお問い合わせください)
@@ -68,6 +69,7 @@ export default function RoomsPage() {
             {/* PC用注意書き */}
             <div className="hidden md:block mt-4 text-sm text-gray-700">
               ※現在は、素泊まりのみのご案内となります。<br />
+              ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
               ※10月～4月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
               ※村民割引あり(詳細はお問い合わせください)
             </div>

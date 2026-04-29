@@ -53,9 +53,13 @@ export default function ReservationPage() {
             <p className="text-xs md:text-sm text-gray-700 mb-10 md:mb-20">
               下部の空室状況カレンダーをご確認の上、ご予約にお進みください。<br />
             </p>
-            <h2 className="text-xl md:text-2xl font-bold mb-2" style={{ letterSpacing: '0.08em' }}>空室状況カレンダー</h2>
+            <h2 className="text-xl md:text-2xl font-bold mb-4" style={{ letterSpacing: '0.08em' }}>空室状況カレンダー</h2>
             <p className="text-xs md:text-sm text-gray-700">
-              ※「満室」や「空室あり」等の記載のない日は、全室ご予約可能です。
+              ×：満室、△：一部空室あり
+            </p>
+            <p className="text-xs md:text-sm text-gray-700 mt-3">
+            クリックすると空室詳細をご確認いただけます。<br />
+              「 × 」や「 △ 」の記載のない日は全室ご予約可能です。
             </p>
           </div>
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-2 md:p-4">

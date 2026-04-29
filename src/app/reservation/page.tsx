@@ -55,7 +55,7 @@ export default function ReservationPage() {
             </p>
             <h2 className="text-xl md:text-2xl font-bold mb-4" style={{ letterSpacing: '0.08em' }}>空室状況カレンダー</h2>
             <p className="text-xs md:text-sm text-gray-700">
-              ×：満室、△：一部空室あり
+              ×：満室　　　△：一部空室あり
             </p>
             <p className="text-xs md:text-sm text-gray-700 mt-3">
             クリックすると空室詳細をご確認いただけます。<br />

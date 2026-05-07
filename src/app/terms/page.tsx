@@ -1,6 +1,7 @@
 "use client";
 
 import ReactMarkdown from 'react-markdown';
+import FadeTransitionWrapper from '../../components/FadeTransitionWrapper';
 
 const termsText = `
 
@@ -153,13 +154,23 @@ const termsText = `
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-white py-[100px] px-4" style={{background:'#F5EEDC'}}>
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">宿泊約款</h1>
-        <div className="prose prose-sm max-w-none [&_p]:mb-4 [&_ul]:mb-4 [&_ol]:mb-4 [&_li]:mb-2 [&_h1]:mb-4 [&_h2]:mb-4 [&_h3]:mb-4 [&_h4]:mb-4 [&_strong]:block [&_strong]:mb-2">
-          <ReactMarkdown>{termsText}</ReactMarkdown>
+    <FadeTransitionWrapper>
+      <div className="min-h-screen pt-16 pb-16 md:py-[120px] px-2 md:px-0" style={{ background: '#f5eedc' }}>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{ letterSpacing: '0.1em', color: '#000' }}>
+            宿泊約款
+          </h1>
+          <div className="text-xs md:text-base text-center mb-6 md:mb-12" style={{ letterSpacing: '0.1em' }}>
+            - Terms of Stay -
+          </div>
+
+          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow py-4 md:py-8 px-2 md:px-6">
+            <div className="prose prose-sm max-w-none [&_p]:mb-4 [&_ul]:mb-4 [&_ol]:mb-4 [&_li]:mb-2 [&_h1]:mb-4 [&_h2]:mb-4 [&_h3]:mb-4 [&_h4]:mb-4 [&_strong]:block [&_strong]:mb-2">
+              <ReactMarkdown>{termsText}</ReactMarkdown>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </FadeTransitionWrapper>
   );
 } 

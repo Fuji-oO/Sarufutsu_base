@@ -9,9 +9,15 @@ export default function Header() {
   const isHomePage = pathname === '/'
   const [menuOpen, setMenuOpen] = useState(false)
   const [pcMenuOpen, setPcMenuOpen] = useState(false)
+  const [topReservationOpen, setTopReservationOpen] = useState(false)
+  const [pcDrawerReservationOpen, setPcDrawerReservationOpen] = useState(false)
+  const [mobileReservationOpen, setMobileReservationOpen] = useState(false)
   
   // メニューを閉じる関数をuseCallbackで定義
-  const closeMenu = useCallback(() => setMenuOpen(false), [])
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false)
+    setMobileReservationOpen(false)
+  }, [])
   
   return (
     <header className={`w-full z-50 ${isHomePage ? 'fixed bg-transparent' : 'relative'}`} style={!isHomePage ? {backgroundColor: '#BFAE8A'} : {}}>
@@ -52,14 +58,46 @@ export default function Header() {
                 Rooms & Facilities<br />
                 <span className="text-[12px]">- お部屋・設備 -</span>
               </FadeLink>
-              <FadeLink
-                href="/reservation"
-                className="hover:text-gray-600 text-center"
-                style={{ fontFamily: 'Klee One, cursive' }}
-              >
-                Reservation<br />
-                <span className="text-[12px]">- ご予約 -</span>
-              </FadeLink>
+              <div className="relative">
+                <button
+                  type="button"
+                  className="hover:text-gray-600 text-center transition-colors"
+                  style={{ fontFamily: 'Klee One, cursive' }}
+                  onClick={() => setTopReservationOpen((prev) => !prev)}
+                  aria-expanded={topReservationOpen}
+                >
+                  Reservation<br />
+                  <span className="text-[12px]">- ご予約 -</span>
+                </button>
+                <div
+                  className={`absolute top-full left-1/2 mt-5 w-40 border border-white/60 bg-[#BFAE8A]/70 backdrop-blur-md shadow-[0_10px_32px_rgba(0,0,0,0.18)] z-50 transition-all duration-500 origin-top ${
+                    topReservationOpen
+                      ? 'opacity-100 pointer-events-auto'
+                      : 'opacity-0 pointer-events-none'
+                  }`}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    transform: `translateX(-50%) perspective(900px) rotateX(${topReservationOpen ? '0deg' : '-80deg'})`,
+                  }}
+                >
+                  <FadeLink
+                    href="/reservation"
+                    className="block px-4 py-2 text-center text-xs hover:bg-[#f5eedc]/80 transition-colors"
+                    style={{ fontFamily: 'Klee One, cursive' }}
+                    onClick={() => setTopReservationOpen(false)}
+                  >
+                    宿泊予約
+                  </FadeLink>
+                  <FadeLink
+                    href="/reservation/space-rental"
+                    className="block px-4 py-2 text-xs hover:bg-[#f5eedc]/80 transition-colors"
+                    style={{ fontFamily: 'Klee One, cursive' }}
+                    onClick={() => setTopReservationOpen(false)}
+                  >
+                    スペースレンタル予約
+                  </FadeLink>
+                </div>
+              </div>
               <FadeLink
                 href="/access"
                 className="hover:text-gray-600 text-center"
@@ -122,15 +160,39 @@ export default function Header() {
                     Rooms & Facilities<br />
                     <span className="text-[12px]">- お部屋・設備 -</span>
                   </FadeLink>
-                  <FadeLink
-                    href="/reservation"
-                    className="text-lg py-2 hover:text-gray-600"
+                  <button
+                    type="button"
+                    className="text-left text-lg py-2 hover:text-gray-600 transition-colors"
                     style={{ fontFamily: 'Klee One, cursive' }}
-                    onClick={() => setPcMenuOpen(false)}
+                    onClick={() => setPcDrawerReservationOpen((prev) => !prev)}
                   >
                     Reservation<br />
                     <span className="text-[12px]">- ご予約 -</span>
-                  </FadeLink>
+                  </button>
+                  <div className={`overflow-hidden transition-all duration-300 pl-3 space-y-2 ${pcDrawerReservationOpen ? 'max-h-28 opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <FadeLink
+                      href="/reservation"
+                      className="text-sm py-1 hover:text-gray-600 block transition-colors"
+                      style={{ fontFamily: 'Klee One, cursive' }}
+                      onClick={() => {
+                        setPcMenuOpen(false)
+                        setPcDrawerReservationOpen(false)
+                      }}
+                    >
+                      宿泊予約
+                    </FadeLink>
+                    <FadeLink
+                      href="/reservation/space-rental"
+                      className="text-sm py-1 hover:text-gray-600 block transition-colors"
+                      style={{ fontFamily: 'Klee One, cursive' }}
+                      onClick={() => {
+                        setPcMenuOpen(false)
+                        setPcDrawerReservationOpen(false)
+                      }}
+                    >
+                      スペースレンタル予約
+                    </FadeLink>
+                  </div>
                   <FadeLink
                     href="/gallery"
                     className="text-lg py-2 hover:text-gray-600"
@@ -210,8 +272,23 @@ export default function Header() {
             <span className="text-[10px]">- さるふつbaseについて -</span></FadeLink>
             <FadeLink href="/rooms" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Rooms & Facilities<br />
             <span className="text-[10px]">- お部屋・設備 -</span></FadeLink>
-            <FadeLink href="/reservation" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Reservation<br />
-            <span className="text-[10px]">- ご予約 -</span></FadeLink>
+            <button
+              type="button"
+              className="text-left text-lg py-2"
+              style={{fontFamily: 'Klee One, cursive'}}
+              onClick={() => setMobileReservationOpen((prev) => !prev)}
+            >
+              Reservation<br />
+              <span className="text-[10px]">- ご予約 -</span>
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 pl-3 space-y-2 ${mobileReservationOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <FadeLink href="/reservation" className="text-sm py-1 block" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>
+                宿泊予約
+              </FadeLink>
+              <FadeLink href="/reservation/space-rental" className="text-sm py-1 block" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>
+                スペースレンタル予約
+              </FadeLink>
+            </div>
             <FadeLink href="/gallery" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>Gallery<br />
             <span className="text-[10px]">- 猿払村の風景 -</span></FadeLink>
             <FadeLink href="/faq" className="text-lg py-2" style={{fontFamily: 'Klee One, cursive'}} onClick={closeMenu}>FAQ<br />

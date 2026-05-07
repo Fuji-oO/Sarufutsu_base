@@ -1,16 +1,22 @@
+'use client';
+
 import ReactMarkdown from 'react-markdown';
+import { useState } from 'react';
+import FadeTransitionWrapper from '../../components/FadeTransitionWrapper';
 
 const policyText = `
 
-本規約は、当ゲストハウスをご利用いただくすべての方に適用されます。すべてのお客様に安全で快適にお過ごしいただくため、以下の規則をご理解・ご協力の上、ご利用をお願いいたします。
+本規約は、当館を宿泊目的でご利用いただくすべての方に適用されます。
+すべてのお客様に安全で快適にお過ごしいただくため、以下の内容をご確認のうえ、ご利用をお願いいたします。
 
 ---
 **第1条（適用）**
-本規約は、当ゲストハウスをご利用いただくすべての方に適用されます。規約を遵守いただけない場合は、やむを得ずご宿泊をお断りする場合があります。
+本規約は、当ゲストハウスをご利用いただくすべての方に適用されます。
+規約を遵守いただけない場合は、やむを得ずご宿泊をお断りする場合があります。
 
 ---
 **第2条（予約とキャンセル）**
-1.ご予約は、公式サイト、Instagramまたはお電話にて承ります。
+1.ご予約は、公式サイトまたはお電話にて承ります。
 
 2.キャンセル料は以下のとおりです：
 
@@ -64,7 +70,7 @@ const policyText = `
 **第5条（禁止事項）**
 以下の行為を禁止します：
 
-（1）館内全館での喫煙（電子タバコ含む）
+（1）館内全館および敷地内での喫煙（電子タバコ含む）
 
 　　※喫煙は建物外にて行い、吸い殻はお手持ちの携帯灰皿をご使用ください
 
@@ -109,16 +115,191 @@ const policyText = `
 緊急連絡先：070-2616-1188
 `;
 
+const spaceRentalPolicyText = `
+本規約は、当館をレンタルスペース目的でご利用いただくすべての方に適用されます。
+すべてのお客様に安全かつ快適にご利用いただくため、以下の内容をご確認のうえ、ご利用をお願いいたします。
+
+---
+**第1条（利用申込と契約成立）**
+1.レンタルスペースのご利用は、本規約に同意いただいたうえで、所定の方法によりお申し込みください。
+
+2.当施設が申込内容を承認した時点で、利用契約成立とします。
+
+3.利用内容によっては、当施設の判断によりご利用をお断りする場合があります。
+
+---
+**第2条（利用目的）**
+1.レンタルスペースは、お申し込み時に申告いただいた目的に限りご利用いただけます。
+
+2.以下の用途・行為は禁止します：
+
+（1）公序良俗に反する行為
+
+（2）違法行為またはそれに準ずる行為
+
+（3）騒音・振動等により近隣へ迷惑を及ぼす行為
+
+（4）宗教・政治活動（事前許可がある場合を除く）
+
+---
+**第3条（利用時間）** 
+1.ご利用時間は、基本的に事前に申請いただいた時間内とします。
+
+2.準備・撤収時間も利用時間に含まれます。
+
+3.無断延長はお断りしております。延長が発生した場合は、追加料金を頂戴いたします。
+
+---
+**第4条（利用料金および支払い）**
+1.利用料金は、当施設が定める料金表に基づきます。
+
+2.利用料金のお支払いは、当日利用開始時に現金にてお願いいたします。
+
+3.お支払いが確認できない場合は、ご利用をお断りする場合があります。
+
+---
+**第5条（キャンセルおよび日程変更）**
+1.キャンセルおよび日程変更のご連絡は、当施設指定の方法にてお願いいたします。
+
+2.利用者様のご都合によるキャンセル・日程変更については、以下のキャンセル料が発生します。
+
+・14日前まで：無料
+
+・13日前〜7日前：利用料金の30％
+
+・6日前〜前日：利用料金の50％
+
+・当日：利用料金の100％
+
+3.日程変更につきましても、変更時点が上記期間に該当する場合はキャンセル扱いとなります。
+
+4.無断キャンセルの場合は、利用料金の100％をご請求するとともに、今後のご利用をお断りする場合があります。
+
+5.台風・大雪等の天災や公共交通機関の停止など、やむを得ない事情と当施設が判断した場合は、キャンセル料を減額または免除する場合があります。
+
+6.当施設都合により利用が困難となった場合は、受領済みの利用料金を全額返金いたします。
+
+---
+**第6条（利用上の注意事項）**
+1.館内および敷地内は禁煙です。（電子タバコ含む）
+
+2.火気使用は事前申請・許可制となります。
+
+3.大音量での音楽再生や騒音行為はご遠慮ください。
+
+4.ゴミは原則お持ち帰りいただくか、指定方法に従って処理をお願いいたします。
+
+5.ご利用後は原状回復をお願いいたします。
+
+6.備品・設備は丁寧にお取り扱いください。
+
+---
+**第7条（設備・備品の取り扱い）**
+1.設備・備品を破損または汚損された場合は、修理費用または相当額をご負担いただきます。
+
+2.持ち込み機材による事故・故障等について、当施設では責任を負いかねます。
+
+---
+**第8条（イベント時における安全管理）**
+1.イベント参加者の安全管理は、イベント主催者様ご自身でお願いいたします。
+
+2.当施設内で発生した事故・怪我・盗難等について、当施設では一切の責任を負いません。
+
+3.必要に応じて、保険への加入を推奨しております。
+
+---
+**第9条（近隣への配慮）**
+1.近隣住民の方へのご配慮をお願いいたします。
+
+2.苦情等が発生した場合は、当施設の判断により利用を中止していただく場合があります。
+
+---
+**第10条（禁止事項）**
+以下の行為を禁止します：
+
+（1）定員を超える利用
+
+（2）無断での第三者への転貸
+
+（3）建物・設備への改造や装飾（許可がある場合を除く）
+
+（4）危険物の持ち込み
+
+（5）ペットの同伴（許可がある場合を除く）
+
+---
+**第11条（利用停止・契約解除）**
+以下の場合、当施設は利用停止または契約解除を行う場合があります：
+
+（1）本規約に違反した場合
+
+（2）虚偽の申請があった場合
+
+（3）管理運営上支障があると判断した場合
+
+※この場合、利用料金の返金はいたしません。
+
+---
+**第12条（免責事項）**
+1.天災・災害・設備不良等により利用が困難となった場合、当施設では責任を負いかねます。
+
+2.利用者様および参加者間で発生したトラブルについて、当施設は関与いたしません。
+
+---
+**第13条（個人情報の取扱い）**
+取得した個人情報は、施設運営および必要なご連絡の目的にのみ使用いたします。
+
+---
+**第14条（規約の変更）**
+本規約は、必要に応じて内容を変更する場合があります。
+`;
+
 const PolicyPage = () => {
+  const [activeTab, setActiveTab] = useState<'stay' | 'space'>('stay');
+
   return (
-    <div className="min-h-screen bg-white py-[100px] px-4" style={{background:'#F5EEDC'}}>
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-8">
-        <h1 className="text-3xl font-bold mb-8 text-center">利用規約</h1>
-        <div className="prose prose-sm max-w-none [&_p]:mb-4 [&_ul]:mb-4 [&_ol]:mb-4 [&_li]:mb-2 [&_h1]:mb-4 [&_h2]:mb-4 [&_h3]:mb-4 [&_h4]:mb-4 [&_strong]:block [&_strong]:mb-2">
-          <ReactMarkdown>{policyText}</ReactMarkdown>
+    <FadeTransitionWrapper>
+      <div className="min-h-screen pt-16 pb-16 md:py-[120px] px-2 md:px-0" style={{ background: '#f5eedc' }}>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{ letterSpacing: '0.1em', color: '#000' }}>
+            利用規約
+          </h1>
+          <div className="text-xs md:text-base text-center mb-6 md:mb-12" style={{ letterSpacing: '0.1em' }}>
+            - Terms of Service -
+          </div>
+
+          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow py-4 md:py-8 px-2 md:px-6">
+            <div className="grid grid-cols-2 gap-2 mb-6 md:mb-10 md:flex md:flex-wrap md:justify-center md:gap-4">
+            <button
+              type="button"
+              onClick={() => setActiveTab('stay')}
+                className={`px-2 md:px-4 py-2 text-xs md:text-lg font-semibold border-b-2 transition-all duration-200 rounded md:rounded-none ${
+                activeTab === 'stay'
+                    ? 'border-[#bfae8a] text-black font-bold bg-[#f5eedc] md:bg-transparent'
+                    : 'border-transparent text-gray-500 hover:text-black bg-white md:bg-transparent'
+              }`}
+            >
+              宿泊
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('space')}
+                className={`px-2 md:px-4 py-2 text-xs md:text-lg font-semibold border-b-2 transition-all duration-200 rounded md:rounded-none ${
+                activeTab === 'space'
+                    ? 'border-[#bfae8a] text-black font-bold bg-[#f5eedc] md:bg-transparent'
+                    : 'border-transparent text-gray-500 hover:text-black bg-white md:bg-transparent'
+              }`}
+            >
+              スペースレンタル
+            </button>
+            </div>
+            <div className="prose prose-sm max-w-none [&_p]:mb-4 [&_ul]:mb-4 [&_ol]:mb-4 [&_li]:mb-2 [&_h1]:mb-4 [&_h2]:mb-4 [&_h3]:mb-4 [&_h4]:mb-4 [&_strong]:block [&_strong]:mb-2">
+              <ReactMarkdown>{activeTab === 'stay' ? policyText : spaceRentalPolicyText}</ReactMarkdown>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </FadeTransitionWrapper>
   );
 };
 

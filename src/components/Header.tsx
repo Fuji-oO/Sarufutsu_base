@@ -12,6 +12,12 @@ export default function Header() {
   const [topReservationOpen, setTopReservationOpen] = useState(false)
   const [pcDrawerReservationOpen, setPcDrawerReservationOpen] = useState(false)
   const [mobileReservationOpen, setMobileReservationOpen] = useState(false)
+  const topReservationDropdownClass = isHomePage
+    ? 'border border-white/70 bg-white/45 shadow-[0_10px_32px_rgba(0,0,0,0.14)]'
+    : 'border border-white/60 bg-[#BFAE8A]/70 shadow-[0_10px_32px_rgba(0,0,0,0.18)]'
+  const topReservationItemHoverClass = isHomePage
+    ? 'hover:bg-white/60'
+    : 'hover:bg-[#f5eedc]/80'
   
   // メニューを閉じる関数をuseCallbackで定義
   const closeMenu = useCallback(() => {
@@ -70,7 +76,7 @@ export default function Header() {
                   <span className="text-[12px]">- ご予約 -</span>
                 </button>
                 <div
-                  className={`absolute top-full left-1/2 mt-5 w-40 border border-white/60 bg-[#BFAE8A]/70 backdrop-blur-md shadow-[0_10px_32px_rgba(0,0,0,0.18)] z-50 transition-all duration-500 origin-top ${
+                  className={`absolute top-full left-1/2 mt-5 w-40 backdrop-blur-md z-50 transition-all duration-500 origin-top ${topReservationDropdownClass} ${
                     topReservationOpen
                       ? 'opacity-100 pointer-events-auto'
                       : 'opacity-0 pointer-events-none'
@@ -82,7 +88,7 @@ export default function Header() {
                 >
                   <FadeLink
                     href="/reservation"
-                    className="block px-4 py-2 text-center text-xs hover:bg-[#f5eedc]/80 transition-colors"
+                    className={`block px-4 py-2 text-center text-xs transition-colors ${topReservationItemHoverClass}`}
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setTopReservationOpen(false)}
                   >
@@ -90,7 +96,7 @@ export default function Header() {
                   </FadeLink>
                   <FadeLink
                     href="/reservation/space-rental"
-                    className="block px-4 py-2 text-xs hover:bg-[#f5eedc]/80 transition-colors"
+                    className={`block px-4 py-2 text-xs transition-colors ${topReservationItemHoverClass}`}
                     style={{ fontFamily: 'Klee One, cursive' }}
                     onClick={() => setTopReservationOpen(false)}
                   >

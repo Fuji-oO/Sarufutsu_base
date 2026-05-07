@@ -64,11 +64,11 @@ export default function ReservationPage() {
           </div>
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow p-2 md:p-4">
             <iframe 
-              src="https://calendar.google.com/calendar/embed?src=5c91ff2da4d1cd5fb03f911fc1966b93b3e5ba9011b25d3509baa24b8540b5f7%40group.calendar.google.com&ctz=Asia%2FTokyo" 
+              src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FTokyo&showPrint=0&showTitle=0&showTabs=0&showCalendars=0&showTz=0&src=NWM5MWZmMmRhNGQxY2Q1ZmIwM2Y5MTFmYzE5NjZiOTNiM2U1YmE5MDExYjI1ZDM1MDliYWEyNGI4NTQwYjVmN0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23795548" 
               style={{ borderWidth: 0 }} 
               className="mx-auto w-[95%] md:w-full h-[360px] md:h-[600px]"
               frameBorder="0" 
-              scrolling="no" 
+              scrolling="no"
               title="空き状況カレンダー">
             </iframe>
           </div>

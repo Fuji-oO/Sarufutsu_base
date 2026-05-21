@@ -8,8 +8,8 @@ export default function ReservationPage() {
     <FadeTransitionWrapper>
       <div className="min-h-screen pt-16 pb-24 md:py-[120px]" style={{ background: '#F5EEDC' }}>
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{ letterSpacing: '0.1em' }}>Reservation</h1>
-          <p className="text-xs md:text-base text-center mb-8 md:mb-12" style={{ letterSpacing: '0.1em' }}>- ご予約 -</p>
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{ letterSpacing: '0.1em' }}>Stay Reservation</h1>
+          <p className="text-xs md:text-base text-center mb-8 md:mb-12" style={{ letterSpacing: '0.1em' }}>- 宿泊予約 -</p>
           <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{ border: '2px solid #bfae8a' }}>
             <div className="font-mono mb-2">【宿泊料金(素泊まり)】</div>
             <div className="mb-1">
@@ -34,6 +34,26 @@ export default function ReservationPage() {
               ※現在は、素泊まりのみのご案内となります。<br />
               ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
               ※10月～4月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
+              ※村民割引あり(詳細はお問い合わせください)
+            </div>
+          </div>
+
+          <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{ border: '2px solid #bfae8a' }}>
+            <div className="font-mono mb-2">【夏季宿泊料金(6月1日～9月30日)】</div>
+            <div className="mb-1">
+              <span className="text-gray-800 font-bold text-sm md:text-base">1室1名様ご利用時</span>
+            </div>
+            <div className="mb-1">
+              <span className="text-gray-800 font-bold text-sm md:text-base">12,000円（税込13,200円）／ 1泊</span>
+            </div>
+            {/* スマホ用注意書き */}
+            <div className="block md:hidden mt-4 text-xs text-gray-700">
+              ※1室2～3名様ご利用時、または貸切ご利用時の料金に変更はございません。<br />
+              ※村民割引あり(詳細はお問い合わせください)
+            </div>
+            {/* PC用注意書き */}
+            <div className="hidden md:block mt-4 text-sm text-gray-700">
+              ※1室2～3名様ご利用時、または貸切ご利用時の料金に変更はございません。<br />
               ※村民割引あり(詳細はお問い合わせください)
             </div>
           </div>

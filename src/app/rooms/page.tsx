@@ -47,33 +47,14 @@ export default function RoomsPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{letterSpacing:'0.1em'}}>Rooms</h1>
           <p className="text-xs md:text-base text-center mb-8 md:mb-12" style={{letterSpacing:'0.1em'}}>- お部屋 -</p>
-          <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{border: '2px solid #bfae8a'}}>
-            <div className="font-mono mb-2">【宿泊料金(素泊まり)】</div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">大人：9,000円（税込9,900円）／ 1泊</span>
+            {/* スマホ用テキスト */}
+            <div className="block md:hidden mb-8 text-gray-700 font-bold text-sm md:text-base text-center">
+              ご宿泊人数やスタイルに合わせて、<br />2タイプのお部屋からお選びいただけます。            
             </div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">子供：4,500円（税込4,950円）／ 1泊</span>
+            {/* PC用テキスト */}
+            <div className="hidden md:block mb-12 text-gray-700 font-bold text-sm md:text-base text-center">
+              ご宿泊人数やスタイルに合わせて、2タイプのお部屋からお選びいただけます。
             </div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span>
-            </div>
-            {/* スマホ用注意書き */}
-            <div className="block md:hidden mt-4 text-xs text-gray-700">
-              ※現在は、素泊まりのみのご案内となります。<br />
-              ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
-              ※10月～4月の間は、暖房費としてお一人様1泊につき<br />
-              500円(税込550円)を頂戴しております。<br />
-              ※村民割引あり(詳細はお問い合わせください)
-            </div>
-            {/* PC用注意書き */}
-            <div className="hidden md:block mt-4 text-sm text-gray-700">
-              ※現在は、素泊まりのみのご案内となります。<br />
-              ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
-              ※10月～4月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
-              ※村民割引あり(詳細はお問い合わせください)
-            </div>
-          </div>
           <div className="flex flex-col gap-12 md:gap-24">
             {/* Room1 */}
             <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-8">

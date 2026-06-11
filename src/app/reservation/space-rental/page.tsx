@@ -50,8 +50,11 @@ export default function ReservationPage() {
           </div>
 
           <div className="max-w-4xl mx-auto text-center mb-4 md:mb-6">
-            <p className="text-xs md:text-sm text-gray-700 mb-10 md:mb-20">
+            <p className="text-xs md:text-sm text-gray-700 mb-1">
               下部の空き状況カレンダーをご確認の上、ご予約にお進みください。<br />
+            </p>
+            <p className="text-xs md:text-sm font-bold text-red-500 mb-10 md:mb-20">
+              ※当日のご予約につきましては、お電話またはメールにてお問い合わせください。<br />
             </p>
             <h2 className="text-xl md:text-2xl font-bold mb-4" style={{ letterSpacing: '0.08em' }}>空き状況カレンダー</h2>
             <p className="text-xs md:text-sm text-gray-700">

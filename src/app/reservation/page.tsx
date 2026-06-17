@@ -16,7 +16,7 @@ type PriceSection = {
 const priceSections: PriceSection[] = [
   {
     label: '1室1名',
-    image: '/images/room1_1.jpg',
+    image: '/images/S__36700182_0.jpg',
     iconType: 'single',
     content: (
       <p className="text-[#332211] font-bold text-xs md:text-lg leading-tight">
@@ -26,7 +26,7 @@ const priceSections: PriceSection[] = [
   },
   {
     label: '1室2~3名',
-    image: '/images/room2_8.jpg',
+    image: '/images/S__36700183_0.jpg',
     iconType: 'group',
     content: (
       <div className="text-[#332211] text-left w-full max-w-[142px] md:max-w-[170px] mx-auto">

@@ -8,7 +8,7 @@ import FadeTransitionWrapper from '../../../components/FadeTransitionWrapper';
 
 export default function Room2TypePage() {
   const images = [
-    { src: '/images/room2_8.jpg', alt: 'Room2 Main' },
+    { src: '/images/S__36700183_0.jpg', alt: 'Room2 Main' },
     { src: '/images/room2_2.jpg', alt: 'Room2 View' },
     { src: '/images/room2_3.jpg', alt: 'Room2 Detail' },
     { src: '/images/room2_7.jpg', alt: 'Room2 Facility' },

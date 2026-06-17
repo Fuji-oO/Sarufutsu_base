@@ -13,7 +13,7 @@ const rooms = [
     description: 'やわらかな光が差し込む、ナチュラルで温かな部屋。',
     price: '6,000円〜/名',
     capacity: '定員：3名',
-    image: '/images/room1_1.jpg'
+    image: '/images/S__36700182_0.jpg'
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const rooms = [
     description: 'グレーと木の質感が調和する、落ち着いたモダン空間。',
     price: '6,000円〜/名',
     capacity: '定員：2名',
-    image: '/images/room2_1.jpg'
+    image: '/images/S__36700183_0.jpg'
   },
 ]
 
@@ -60,7 +60,7 @@ export default function RoomsPage() {
             <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-8">
               {/* 画像 */}
               <div className="md:w-1/2 w-full h-[300px] md:h-[340px] relative rounded-lg overflow-hidden shadow-lg">
-                <Image src="/images/room1_1.jpg" alt="Room1" fill className="object-cover" />
+                <Image src="/images/S__36700182_0.jpg" alt="Room1" fill className="object-cover" />
               </div>
               {/* 情報 */}
               <div className="md:w-1/2 w-full flex flex-col justify-center">
@@ -84,7 +84,7 @@ export default function RoomsPage() {
             <div className="flex flex-col md:flex-row items-stretch gap-4 md:gap-8">
               {/* 画像 */}
               <div className="md:w-1/2 w-full h-[300px] md:h-[340px] relative rounded-lg overflow-hidden shadow-lg">
-                <Image src="/images/room2_8.jpg" alt="Room2" fill className="object-cover" />
+                <Image src="/images/S__36700183_0.jpg" alt="Room2" fill className="object-cover" />
               </div>
               {/* 情報 */}
               <div className="md:w-1/2 w-full flex flex-col justify-center">

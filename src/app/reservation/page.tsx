@@ -1,7 +1,88 @@
 'use client'
 
-import { FaInstagram } from 'react-icons/fa'
+import Image from 'next/image'
+import { FaChild, FaUser } from 'react-icons/fa'
 import FadeTransitionWrapper from '../../components/FadeTransitionWrapper'
+
+type PriceIconType = 'single' | 'group' | 'none'
+
+type PriceSection = {
+  label: string
+  image: string
+  iconType: PriceIconType
+  content: React.ReactNode
+}
+
+const priceSections: PriceSection[] = [
+  {
+    label: '1室1名',
+    image: '/images/room1_1.jpg',
+    iconType: 'single',
+    content: (
+      <p className="text-[#332211] font-bold text-xs md:text-lg leading-tight">
+        ¥13,200<span className="text-[10px] md:text-sm font-semibold">(税込)</span>
+      </p>
+    ),
+  },
+  {
+    label: '1室2~3名',
+    image: '/images/room2_8.jpg',
+    iconType: 'group',
+    content: (
+      <div className="text-[#332211] text-left w-full max-w-[142px] md:max-w-[170px] mx-auto">
+        <div className="mb-2 md:mb-3">
+          <p className="text-[11px] md:text-sm font-bold leading-snug">・大人 1名</p>
+          <p className="font-bold text-[11px] md:text-sm leading-snug pl-3 md:pl-10">
+          ¥9,900<span className="font-semibold">(税込)</span>
+          </p>
+        </div>
+        <div>
+          <p className="text-[11px] md:text-sm font-bold leading-snug">・子供 1名</p>
+          <p className="font-bold text-[11px] md:text-sm leading-snug pl-3 md:pl-10">
+          ¥4,950<span className="font-semibold">(税込)</span>
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    label: '一棟貸切(定員5名)',
+    image: '/images/S__36700181_0.jpg',
+    iconType: 'none',
+    content: (
+      <p className="text-[#332211] font-bold text-xs md:text-lg leading-tight">
+        ¥44,000<span className="text-[10px] md:text-sm font-semibold">(税込)</span>
+      </p>
+    ),
+  },
+]
+
+function PriceIconOverlay({ type }: { type: PriceIconType }) {
+  //if (type === 'none') return null
+
+  if (type === 'none') {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+      </div>
+    )
+  }
+
+  if (type === 'single') {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+        <FaUser className="text-white text-2xl md:text-5xl drop-shadow" aria-hidden />
+      </div>
+    )
+  }
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center gap-1 md:gap-1.5 bg-black/25">
+      <FaUser className="text-white text-lg md:text-4xl drop-shadow" aria-hidden />
+      <FaUser className="text-white text-lg md:text-4xl drop-shadow" aria-hidden />
+      <FaChild className="text-white text-base md:text-3xl drop-shadow" aria-hidden />
+    </div>
+  )
+}
 
 export default function ReservationPage() {
   return (
@@ -10,19 +91,47 @@ export default function ReservationPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center" style={{ letterSpacing: '0.1em' }}>Stay Reservation</h1>
           <p className="text-xs md:text-base text-center mb-8 md:mb-12" style={{ letterSpacing: '0.1em' }}>- 宿泊予約 -</p>
-          <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{ border: '2px solid #bfae8a' }}>
-            <div className="font-mono mb-2">【宿泊料金(素泊まり)】</div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">大人：9,000円（税込9,900円）／ 1泊</span>
+          <div className="mb-8 md:mb-12 max-w-4xl mx-auto bg-white rounded-lg shadow p-5 md:p-8 text-[#332211]" style={{ border: '2px solid #bfae8a' }}>
+            <div className="flex items-center gap-3 mb-1 md:mb-5">
+              <span className="flex-1 border-t border-dotted border-[#bfae8a]" />
+              <h2 className="text-sm md:text-base font-bold whitespace-nowrap tracking-wide">宿泊料金(1泊)</h2>
+              <span className="flex-1 border-t border-dotted border-[#bfae8a]" />
             </div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">子供：4,500円（税込4,950円）／ 1泊</span>
+
+            <div className="grid grid-cols-3 gap-2 md:gap-0">
+              {priceSections.map((section, index) => (
+                <section
+                  key={section.label}
+                  className={`flex flex-col items-center px-1 md:px-4 ${
+                    index < priceSections.length - 1 ? 'border-r border-[#e5dcc8]' : ''
+                  }`}
+                >
+                  <span className="bg-[#F5F0E1] text-[9px] md:text-xs font-bold px-2 md:px-4 py-1 md:py-1.5 rounded-full text-center mb-3 md:mb-4 leading-tight">
+                    {section.label}
+                  </span>
+                  <div className="relative w-full max-w-[142px] md:max-w-[170px] aspect-square overflow-hidden rounded-sm mb-3 md:mb-4 mx-auto">
+                    <Image
+                      src={section.image}
+                      alt={section.label}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 88px, 112px"
+                    />
+                    <PriceIconOverlay type={section.iconType} />
+                  </div>
+                  <div
+                    className={`w-full ${
+                      section.iconType === 'group' ? '' : 'text-center px-1'
+                    }`}
+                  >
+                    {section.content}
+                  </div>
+                </section>
+              ))}
             </div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">貸切(定員5名)：40,000円（税込44,000円）／ 1泊</span>
-            </div>
+
             {/* スマホ用注意書き */}
-            <div className="block md:hidden mt-4 text-xs text-gray-700">
+            <div className="block md:hidden mt-8 text-xs text-gray-700 text-center">
               ※現在は、素泊まりのみのご案内となります。<br />
               ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
               ※10月～4月の間は、暖房費としてお一人様1泊につき<br />
@@ -30,34 +139,13 @@ export default function ReservationPage() {
               ※村民割引あり(詳細はお問い合わせください)
             </div>
             {/* PC用注意書き */}
-            <div className="hidden md:block mt-4 text-sm text-gray-700">
+            <div className="hidden md:block mt-8 text-sm text-gray-700 text-center">
               ※現在は、素泊まりのみのご案内となります。<br />
               ※別途、宿泊税を頂戴しております。（詳細は<a href="https://hokkaido-shukuhakuzei.pref.hokkaido.lg.jp/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">こちら</a>）<br />
               ※10月～4月の間は、暖房費としてお一人様1泊につき500円(税込550円)を頂戴しております。<br />
               ※村民割引あり(詳細はお問い合わせください)
             </div>
           </div>
-
-          <div className="mb-8 md:mb-12 max-w-2xl mx-auto bg-[#FEFDFC] rounded-lg shadow p-4 md:p-6 text-center text-sm md:text-lg font-semibold text-gray-800" style={{ border: '2px solid #bfae8a' }}>
-            <div className="font-mono mb-2">【夏季宿泊料金(6月1日～9月30日)】</div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">1室1名様ご利用時</span>
-            </div>
-            <div className="mb-1">
-              <span className="text-gray-800 font-bold text-sm md:text-base">12,000円（税込13,200円）／ 1泊</span>
-            </div>
-            {/* スマホ用注意書き */}
-            <div className="block md:hidden mt-4 text-xs text-gray-700">
-              ※1室2～3名様ご利用時、または貸切ご利用時の料金に変更はございません。<br />
-              ※村民割引あり(詳細はお問い合わせください)
-            </div>
-            {/* PC用注意書き */}
-            <div className="hidden md:block mt-4 text-sm text-gray-700">
-              ※1室2～3名様ご利用時、または貸切ご利用時の料金に変更はございません。<br />
-              ※村民割引あり(詳細はお問い合わせください)
-            </div>
-          </div>
-
           <div className="flex justify-center text-sm md:text-lg mb-4 md:mb-6">
             <a
               href="https://docs.google.com/forms/d/e/1FAIpQLSeEW9wCoj_N2BAcs8kjP5FKX0ocBwN8FO1XNB08Y3cgiweCpQ/viewform"

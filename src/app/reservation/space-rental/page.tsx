@@ -36,6 +36,13 @@ export default function ReservationPage() {
                 飲み会・食事会利用
               </button>
             </div>
+            <div className="block md:hidden mt-8 text-xs text-gray-700 text-center">
+              ※10月～4月の間は、暖房費として1000円(税込1100円)を<br />別途頂戴しております。
+            </div>
+            {/* PC用注意書き */}
+            <div className="hidden md:block mt-8 text-sm text-gray-700 text-center">
+              ※10月～4月の間は、暖房費として1000円(税込1100円)を別途頂戴しております。
+            </div>
           </div>
 
           <div className="flex justify-center text-sm md:text-lg mb-4 md:mb-6">
